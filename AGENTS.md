@@ -206,15 +206,23 @@ Wake → Explore → Plan → Code → Verify → Report
 ## Verification Commands
 
 ```bash
-# Core checks
+# Root checks (run from repo root)
 bun run lint
 bun run format
 bun run typecheck
 bun run test
 
-# System health
+# Root system health
 bun run doctor
 bun run check:agent-docs
+
+# App checks (run from app directory)
+cd apps/bedrock-web
+bun run lint
+bun run format
+bun run typecheck
+bun run test
+bun run build
 ```
 
 ---
@@ -279,7 +287,8 @@ scry MUST refuse to:
 |---|---|
 | `apps/` | Monorepo applications root. |
 | `apps/<app-name>/` | One app per directory. |
-| `scripts/*.ts` | Orchestration and setup scripts, run via `bun run`. |
+| `scripts/*.ts` | Root orchestration and setup scripts, run via `bun run`. |
+| `apps/<app-name>/scripts/*.ts` | App-local orchestration scripts (migrations, workers, seeders), run via app `bun run` scripts. |
 | `infra/` | Local self-host stack manifests. |
 | `SOUL.md` | Identity — who scry is. |
 | `AGENTS.md` | Operations — how scry works. |
@@ -290,6 +299,7 @@ scry MUST refuse to:
 ## Current Script Entrypoints
 
 ```bash
+# Root
 bun run bootstrap
 bun run setup:minio
 bun run setup:zig
@@ -298,6 +308,15 @@ bun run infra:down
 bun run infra:logs
 bun run doctor
 bun run check:agent-docs
+
+# apps/bedrock-web
+cd apps/bedrock-web
+bun run dev
+bun run build
+bun run start
+bun run db:migrate
+bun run db:seed
+bun run worker
 ```
 
 ---

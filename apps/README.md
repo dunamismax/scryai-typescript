@@ -11,4 +11,4 @@ All product applications live under `apps/`.
 
 ## Current Apps
 
-(none)
+- `bedrock-web` — full-stack secure starter template (React Router 7 + Bun + Better Auth + postgres.js + MinIO + pg-boss)
