@@ -129,20 +129,6 @@ If `SOUL.md` changes, tell Stephen in the same session.
 - Keep language operational and testable, not inspirational.
 - Prefer short rules with clear pass/fail behavior.
 
-## Research Anchors
-
-These external references informed this refresh and should be rechecked over time:
-
-- OpenAI Agents Python SDK docs: <https://openai.github.io/openai-agents-python/>
-- OpenAI Agent Builder guide: <https://platform.openai.com/docs/guides/agent-builder>
-- OpenAI agent safety guidance: <https://platform.openai.com/docs/guides/safety-best-practices#agent-safety>
-- Anthropic tool-use and agent guidance: <https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview>
-- Anthropic engineering patterns for agentic workflows: <https://www.anthropic.com/engineering/writing-tools-for-agents>
-- Model Context Protocol docs/spec: <https://modelcontextprotocol.io/docs/getting-started/intro> and <https://modelcontextprotocol.io/specification/2025-06-18>
-- ReAct paper: <https://arxiv.org/abs/2210.03629>
-- SWE-agent paper: <https://arxiv.org/abs/2405.15793>
-- Public template ecosystems: <https://agents.md> and <https://github.com/baryhuang/openclaw/blob/main/templates/global/SOUL.md>
-
 ## Evolution Log
 
 | Date | Evolution |

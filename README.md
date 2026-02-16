@@ -2,8 +2,6 @@
 
 This is the meta-repo for Stephen and **scry**: identity, standards, infrastructure, and monorepo apps.
 
-Canonical repository URL: <https://github.com/dunamismax/scryai>
-
 ## Core Stack (Mandatory)
 
 - App framework: **React Router 7** (Data Mode)
