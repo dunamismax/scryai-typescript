@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.output/
+.vinxi/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Drizzle
+drizzle/meta/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

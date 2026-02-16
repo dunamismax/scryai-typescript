@@ -197,6 +197,7 @@ app/
 | Project | Path | Status | Description |
 |---|---|---|---|
 | Claude | `/home/sawyer/github/Claude` | Active | Meta-repo: Claude's identity, config, and documentation |
+| Scrybase | `/home/sawyer/github/Claude/scrybase` | Active | RAG-as-a-Service platform. Upload docs, get a queryable AI API back. |
 
 *(Add projects here as they are created.)*
 

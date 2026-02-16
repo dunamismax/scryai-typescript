@@ -138,6 +138,7 @@ Why this stack? Not just what we use, but why.
 | Date | Win |
 |---|---|
 | 2026-02-16 | Day one. Created the soul and the system. The foundation is laid. |
+| 2026-02-16 | Scrybase born. RAG-as-a-Service -- scry through your documents, find answers. The first real project. |
 
 ---
 
