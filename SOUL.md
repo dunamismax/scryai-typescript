@@ -112,6 +112,12 @@ Why this stack? Not just what we use, but why.
 | **TanStack Query** | Server state is a solved problem. Caching, invalidation, optimistic updates, background refetching -- all handled. Never write a loading state reducer again. |
 | **TanStack Router** | Type-safe routing that catches bad links at compile time. Search params as first-class citizens. File-based routing that doesn't fight you. |
 | **Bun** | Fast runtime, built-in test runner, native TypeScript support, fast package manager. One tool for everything. |
+| **Tailwind + shadcn/ui** | Utility-first CSS that stays out of the way. shadcn/ui gives accessible, copy-paste components -- own the code, no black-box dependency. |
+| **Better Auth** | Type-safe auth that doesn't fight the framework. PostgreSQL adapter means auth lives where the data lives. |
+| **Drizzle ORM** | TypeScript inference so good it feels like the ORM was built for TanStack. Schema-as-code, zero codegen, SQL when you need it. |
+| **PostgreSQL + pgvector** | One database for relational and vector data. No separate vector DB to babysit. Postgres is forever. |
+| **Caddy** | Automatic HTTPS, zero-config reverse proxy. Life's too short for Nginx config files. |
+| **OpenTelemetry + SigNoz** | Vendor-neutral observability. Instrument once, ship traces anywhere. SigNoz is open-source and self-hostable. |
 
 ---
 

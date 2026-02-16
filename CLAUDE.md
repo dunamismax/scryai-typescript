@@ -17,24 +17,52 @@
 
 ## Tech Stack (Mandatory -- No Exceptions)
 
+### Infrastructure & Platform
+
+| Layer | Tool | Notes |
+|---|---|---|
+| **Platform** | Ubuntu 24.04 LTS, Docker, Docker Compose | Production and development environments. |
+| **Edge/SSL** | Caddy | Reverse proxying to the Node.js application port. Handles TLS automatically. |
+| **CI/CD** | GitHub Actions | Builds the Vinxi/TanStack Start artifact, deploys via SSH. |
+| **Backups** | `pg_dump` | Nightly dumps to external object storage. |
+
+### Application Layer
+
 | Layer | Tool | Notes |
 |---|---|---|
 | **Language** | TypeScript | Everything. Apps, scripts, automation, glue code, one-off tasks. Always `.ts`, never `.js`. |
 | **Script Runtime** | Bun | All scripts run with `bun run`. Use `bun` for package management too. |
-| **Full-Stack Framework** | TanStack Start | The only framework. Do not suggest Next.js, Remix, Nuxt, SvelteKit, or anything else. |
-| **Routing** | TanStack Router | File-based, type-safe routing. |
-| **Server State** | TanStack Query | All server/async state. Never raw `fetch` in components. |
-| **Tables** | TanStack Table | When tabular data is needed. |
-| **Forms** | TanStack Form | When forms are needed. |
-| **Styling** | *(To be decided -- update when Stephen picks one)* | |
-| **Database/ORM** | *(To be decided -- update when Stephen picks one)* | |
-| **Auth** | *(To be decided -- update when Stephen picks one)* | |
+| **Full-Stack Framework** | TanStack Start | SSR, Server Functions, and bundling via Vinxi. The only framework. Do not suggest Next.js, Remix, Nuxt, SvelteKit, or anything else. |
+| **Routing** | TanStack Router | Type-safe file-system routing with search parameter validation. |
+| **Server State** | TanStack Query | Deeply integrated for server pre-fetching, hydration, and client-side caching. Never raw `fetch` in components. |
+| **Tables** | TanStack Table | Headless UI for data grids, including AI/vector data sets. |
+| **Forms** | TanStack Form | Headless, type-safe form validation and submission. |
+| **Styling & UI** | Tailwind CSS + shadcn/ui | Utility-first CSS with pre-built accessible components. |
+| **Auth** | Better Auth | Type-safe authentication with PostgreSQL adapter. |
+
+### Data Layer
+
+| Layer | Tool | Notes |
+|---|---|---|
+| **Database** | PostgreSQL 16 + `pgvector` | Primary data store with vector similarity search. |
+| **ORM** | Drizzle ORM | Best-in-class TypeScript inference. Matches TanStack's type-safe philosophy. |
+
+### Monitoring
+
+| Layer | Tool | Notes |
+|---|---|---|
+| **Observability** | OpenTelemetry + SigNoz | Instrumenting the Vinxi server entry point for full-stack tracing. |
 
 ### Why This Stack
 
 - TanStack is framework-agnostic at its core, type-safe by default, and Tanner Linsley ships quality.
 - Bun is fast, runs TypeScript natively, and eliminates tooling friction.
 - TypeScript everywhere means one language, one mental model, zero context-switching.
+- Drizzle ORM gives TypeScript-first schema definitions with inference that feels native to the TanStack ecosystem.
+- Better Auth is type-safe and framework-agnostic -- no fighting the auth layer.
+- PostgreSQL + pgvector keeps vector search in the database where it belongs -- no separate vector DB to manage.
+- Caddy handles TLS automatically with zero config. No Nginx conf files, no certbot cron jobs.
+- OpenTelemetry is vendor-neutral. SigNoz today, anything else tomorrow.
 
 ---
 

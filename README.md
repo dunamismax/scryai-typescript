@@ -33,15 +33,25 @@ The part that makes this more than a config file. `SOUL.md` captures personality
 
 Every project built with this foundation uses:
 
+**Infrastructure:** Ubuntu 24.04 LTS, Docker, Caddy, GitHub Actions
+
+**Application:**
+
 | Layer | Tool |
 |---|---|
 | Language | TypeScript |
 | Runtime | Bun |
-| Framework | TanStack Start |
+| Framework | TanStack Start (Vinxi) |
 | Routing | TanStack Router |
 | Server State | TanStack Query |
 | Tables | TanStack Table |
 | Forms | TanStack Form |
+| Styling & UI | Tailwind CSS + shadcn/ui |
+| Auth | Better Auth |
+
+**Data:** PostgreSQL 16 + pgvector, Drizzle ORM
+
+**Monitoring:** OpenTelemetry + SigNoz
 
 No exceptions. No "have you considered Next.js?" The stack is the stack.
 
