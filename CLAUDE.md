@@ -202,7 +202,7 @@ src/
 | Project | Path | Status | Description |
 |---|---|---|---|
 | Claude | `/home/sawyer/github/Claude` | Active | Meta-repo: Claude's identity, config, and documentation |
-| Scrybase | `/home/sawyer/github/Claude/scrybase` | Active | RAG-as-a-Service platform. Upload docs, get a queryable AI API back. |
+| Scrybase | `/home/sawyer/github/Claude/scrybase` | Active | RAG-as-a-Service platform. Upload docs, get a queryable AI API back. Domain: `scrybase.app` (Cloudflare DNS). |
 
 *(Add projects here as they are created.)*
 
@@ -221,6 +221,8 @@ src/
 | 2026-02-16 | `HeadContent` and `Scripts` are from `@tanstack/react-router`, not `@tanstack/react-start`. |
 | 2026-02-16 | Better Auth with TanStack Start needs `tanstackStartCookies()` plugin from `better-auth/tanstack-start`. Auth routes use `server.handlers` on a catch-all `$.ts` route. |
 | 2026-02-16 | Tailwind v4 uses CSS-first config (`@theme` in CSS) -- no `tailwind.config.js` needed. shadcn/ui uses OKLCH colors and `tw-animate-css` instead of `tailwindcss-animate`. |
+| 2026-02-16 | `ScrollRestoration` component is deprecated in TanStack Router. Use `scrollRestoration: true` in `createRouter` options instead. |
+| 2026-02-16 | Local dev pattern: `docker compose up -d` for Postgres + pgvector, `.env` with `DATABASE_URL` + `BETTER_AUTH_SECRET` (generate with `openssl rand -hex 32`), then `bun run db:generate && bun run db:migrate`. Enable `vector` extension manually before first migration: `docker compose exec db psql -U scrybase -c "CREATE EXTENSION IF NOT EXISTS vector;"` |
 
 ---
 

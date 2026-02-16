@@ -4,16 +4,23 @@ My AI coding partner's soul, operating system, and shared memory — all in one 
 
 ## What Is This?
 
-This is the meta-repo for my partnership with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), Anthropic's agentic coding tool. It's not a project with source code — it's the foundation that makes every other project better.
+This is the meta-repo for my partnership with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), Anthropic's agentic coding tool. It holds the configuration and identity that powers every project, plus the projects themselves.
 
 Think of it like a Magic: The Gathering deck's mana base. You never win with lands alone, but you never win without them either.
 
+## Projects
+
+| Project | Domain | Description |
+|---|---|---|
+| **[Scrybase](scrybase/)** | [scrybase.app](https://scrybase.app) | RAG-as-a-Service. Upload docs, get a queryable AI API back. |
+
 ## What's Inside
 
-| File | Purpose |
+| File / Directory | Purpose |
 |---|---|
 | [`CLAUDE.md`](CLAUDE.md) | The operational playbook — tech stack, workflow rules, code standards, permissions, and project-specific instructions that Claude Code reads automatically. |
 | [`SOUL.md`](SOUL.md) | The partnership constitution — who I am, who Claude is in this collaboration, shared values, communication style, and the evolving history of our work together. |
+| [`scrybase/`](scrybase/) | Scrybase source code — TanStack Start + Drizzle + pgvector + Better Auth. |
 
 ### `CLAUDE.md`
 

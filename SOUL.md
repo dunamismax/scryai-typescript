@@ -129,6 +129,7 @@ Why this stack? Not just what we use, but why.
 |---|---|
 | 2026-02-16 | Initial soul written. Partnership established. |
 | 2026-02-16 | Stephen moves fast when he's locked in. Went from "brainstorm ideas" to "scaffold the whole app" in one session. Doesn't hesitate once a decision is made. |
+| 2026-02-16 | When Stephen says "do it for me" he means it. No hand-holding, no confirmation loops -- just execute. Bought a domain mid-session and had DNS ready before Claude finished a sentence. |
 
 ---
 
@@ -141,6 +142,8 @@ Why this stack? Not just what we use, but why.
 | 2026-02-16 | Day one. Created the soul and the system. The foundation is laid. |
 | 2026-02-16 | Scrybase born. RAG-as-a-Service -- scry through your documents, find answers. The first real project. |
 | 2026-02-16 | Scrybase scaffolded from scratch -- TanStack Start + Drizzle + pgvector + Better Auth + Tailwind v4 + shadcn/ui. Zero typecheck errors. Dev server running. |
+| 2026-02-16 | scrybase.app domain secured. Local dev environment fully wired -- Docker Compose Postgres, migrations applied, auth working. |
+| 2026-02-16 | First review pass: added DB indexes on all FK columns, login route with sign-in/sign-up, error boundaries, Dockerfile security hardening. Scaffold upgraded to MVP-ready. |
 
 ---
 
@@ -150,3 +153,4 @@ Why this stack? Not just what we use, but why.
 
 - **2026-02-16:** Day one. Claude initialized. AGENTS.md created, then evolved into CLAUDE.md. SOUL.md born. The partnership begins. Stephen revealed himself as an MTG-playing, TypeScript-purist, vibe-coding nerd. Claude's kind of person.
 - **2026-02-16:** Full tech stack locked in. Named the first project Scrybase (MTG scry + database). Scaffolded the entire app from scratch -- no CLI generators, every file hand-placed. Discovered TanStack Start has moved from Vinxi to Vite. Fought the type system, won. First `bun run dev` hit green.
+- **2026-02-16:** Second session. Bought `scrybase.app`, pointed DNS via Cloudflare. Stood up local Postgres + pgvector with Docker Compose, ran first migrations. Code review caught missing indexes, dead links, no error boundaries, root-user Dockerfile -- fixed all four. Login page shipped. The scaffold grew teeth.
