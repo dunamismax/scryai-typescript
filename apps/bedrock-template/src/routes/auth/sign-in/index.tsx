@@ -82,7 +82,7 @@ export default component$(() => {
   const action = useSignInAction();
 
   return (
-    <main class="mx-auto max-w-md px-4 py-14 sm:px-0">
+    <main id="main-content" class="mx-auto max-w-md px-4 py-14 sm:px-0">
       <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h1 class="text-xl font-semibold text-slate-900">Sign in</h1>
         <p class="mt-1 text-sm text-slate-600">

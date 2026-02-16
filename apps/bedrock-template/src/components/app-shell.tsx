@@ -43,7 +43,7 @@ export const AppShell = component$<AppShellProps>(({ isAdmin }) => {
           ))}
         </nav>
       </aside>
-      <main>
+      <main id="main-content">
         <Slot />
       </main>
     </div>

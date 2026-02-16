@@ -23,7 +23,7 @@ const pillars = [
 
 export default component$(() => {
   return (
-    <main class="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+    <main id="main-content" class="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
       <section class="rounded-2xl border border-slate-200 bg-white/95 p-8 shadow-sm lg:p-12">
         <p class="text-sm font-medium uppercase tracking-wide text-sky-700">
           Reusable Full-Stack Template
@@ -45,6 +45,7 @@ export default component$(() => {
           <Link
             class="inline-flex h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
             href="/dashboard"
+            prefetch="js"
           >
             Open dashboard
           </Link>
@@ -89,6 +90,32 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
+      content:
+        "Production-first Qwik starter with Better Auth, postgres.js, pg-boss, MinIO, and RBAC.",
+    },
+    {
+      property: "og:title",
+      content: "bedrock-template | Qwik full-stack starter",
+    },
+    {
+      property: "og:description",
+      content:
+        "Production-first Qwik starter with Better Auth, postgres.js, pg-boss, MinIO, and RBAC.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "bedrock-template | Qwik full-stack starter",
+    },
+    {
+      name: "twitter:description",
       content:
         "Production-first Qwik starter with Better Auth, postgres.js, pg-boss, MinIO, and RBAC.",
     },

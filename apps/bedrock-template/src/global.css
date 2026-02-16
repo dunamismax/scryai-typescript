@@ -13,3 +13,8 @@ body {
 body {
   background-color: var(--color-canvas);
 }
+
+:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
