@@ -51,11 +51,15 @@ All projects in this repo are expected to follow this baseline unless explicitly
 - `bun`
 - `docker` + `docker compose`
 - `git`
+- `ssh`
 - `curl`
 - `tar`
+- `openssl`
 - `zig` (bootstrap can install/configure this path)
 
 ## Quick Start (Repo + App)
+
+Run from the `scryai` repo root (`~/github/scryai`).
 
 1. Install dependencies and initialize local defaults
 
@@ -82,6 +86,59 @@ bun run dev
 For app-specific details, always use that app's README:
 [`apps/bedrock-web/README.md`](apps/bedrock-web/README.md)
 
+## New System Bootstrap
+
+Use this flow when provisioning a fresh machine from `scryai`:
+
+1. Start rule: be inside `scryai` first
+
+If you are **not already inside** the `scryai` repo:
+
+```bash
+mkdir -p ~/github
+cd ~/github
+git clone git@github.com:dunamismax/scryai.git
+cd scryai
+bun install
+```
+
+If you are **already inside** `scryai` (for example you cloned it manually and launched Codex there), keep going from that working directory.
+
+2. Restore encrypted SSH backup (if available)
+
+```bash
+export SCRY_SSH_BACKUP_PASSPHRASE='use-a-long-unique-passphrase'
+bun run setup:ssh:restore
+```
+
+3. Bootstrap all repos in order (`scryai` anchor first, then `dunamismax`, then the rest from `REPOS.md`)
+
+```bash
+bun run setup:workstation
+```
+
+`setup:workstation` guarantees this order:
+- Ensure `~/github/scryai` exists first (anchor repo).
+- Clone/fetch `~/github/dunamismax` second.
+- Read `~/github/dunamismax/REPOS.md`.
+- Clone/fetch all listed repos and enforce dual SSH push URLs.
+
+4. Finish local tooling + infra setup
+
+```bash
+bun run bootstrap
+```
+
+5. Validate Git and SSH posture
+
+```bash
+ssh -T git@github.com
+ssh -T git@codeberg.org
+git -C ~/github/scryai remote get-url --all --push origin
+```
+
+SSH backup vault docs: [`vault/ssh/README.md`](vault/ssh/README.md)
+
 ## Root Commands
 
 These run from repo root:
@@ -89,6 +146,9 @@ These run from repo root:
 ```bash
 # Setup / health
 bun run bootstrap
+bun run setup:workstation
+bun run setup:ssh:backup
+bun run setup:ssh:restore
 bun run setup:minio
 bun run setup:zig
 bun run doctor

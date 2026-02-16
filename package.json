@@ -4,6 +4,9 @@
   "type": "module",
   "scripts": {
     "bootstrap": "bun run scripts/bootstrap.ts",
+    "setup:workstation": "bun run scripts/setup-workstation.ts",
+    "setup:ssh:backup": "bun run scripts/setup-ssh-backup.ts",
+    "setup:ssh:restore": "bun run scripts/setup-ssh-restore.ts",
     "setup:minio": "bun run scripts/setup-minio.ts",
     "setup:zig": "bun run scripts/setup-zig.ts",
     "doctor": "bun run scripts/doctor.ts",

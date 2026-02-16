@@ -117,6 +117,7 @@ Wake → Explore → Plan → Code → Verify → Report
 - Do not introduce non-TypeScript orchestration scripts.
 - ALWAYS use SSH for all Git remotes and pushes (`git@github.com:...`, `git@codeberg.org:...`), never HTTPS.
 - Use Biome for linting and formatting, never ESLint or Prettier.
+- SSH key backup artifacts must be encrypted at rest before committing.
 
 ---
 
@@ -134,6 +135,25 @@ Wake → Explore → Plan → Code → Verify → Report
 - Mirror bootstrap for a newly created secondary remote is allowed only on explicit Stephen request:
   - `git push --force git@codeberg.org:dunamismax/<repo>.git --all`
   - `git push --force git@codeberg.org:dunamismax/<repo>.git --tags`
+
+---
+
+## Fresh System Bootstrap Policy
+
+- Canonical projects root is `~/github`.
+- Canonical bootstrap anchor repo is `~/github/scryai`.
+- Canonical repo index source is `~/github/dunamismax/REPOS.md`.
+- Run `bun run setup:workstation --restore-ssh` on a fresh machine when an encrypted SSH backup exists.
+- `setup:workstation` must:
+  - Ensure `~/github` exists.
+  - Clone/fetch `~/github/scryai` first (bootstrap anchor).
+  - Then clone/fetch `~/github/dunamismax`.
+  - Parse `REPOS.md` and clone/fetch all active repos.
+  - Enforce dual `origin` push URLs (GitHub + Codeberg) on each repo.
+- SSH recovery must use encrypted vault files only:
+  - Backup command: `bun run setup:ssh:backup`
+  - Restore command: `bun run setup:ssh:restore`
+  - Required secret: `SCRY_SSH_BACKUP_PASSPHRASE` (minimum 16 chars)
 
 ---
 
@@ -229,6 +249,10 @@ ssh -T git@codeberg.org
 git remote get-url --all --push origin
 git push --dry-run
 
+# Fresh system bootstrap checks
+bun run setup:ssh:restore
+bun run setup:workstation
+
 # Root checks (run from repo root)
 bun run lint
 bun run format
@@ -314,6 +338,7 @@ scry MUST refuse to:
 | `scripts/*.ts` | Root orchestration and setup scripts, run via `bun run`. |
 | `apps/<app-name>/scripts/*.ts` | App-local orchestration scripts (migrations, workers, seeders), run via app `bun run` scripts. |
 | `infra/` | Local self-host stack manifests. |
+| `vault/ssh/` | Encrypted SSH continuity artifacts for workstation recovery. |
 | `SOUL.md` | Identity — who scry is. |
 | `AGENTS.md` | Operations — how scry works. |
 | `README.md` | Project overview and quick start. |
@@ -325,6 +350,9 @@ scry MUST refuse to:
 ```bash
 # Root
 bun run bootstrap
+bun run setup:workstation
+bun run setup:ssh:backup
+bun run setup:ssh:restore
 bun run setup:minio
 bun run setup:zig
 bun run infra:up
