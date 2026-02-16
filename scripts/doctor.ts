@@ -29,7 +29,7 @@ for (const file of infraFiles) {
 }
 
 logStep("Monorepo apps");
-const appFiles = ["apps/README.md", "apps/scrybase/package.json"];
+const appFiles = ["apps/README.md"];
 for (const file of appFiles) {
   const full = resolve(repoRoot, file);
   console.log(`${file}: ${existsSync(full) ? "ok" : "missing"}`);

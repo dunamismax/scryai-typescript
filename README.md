@@ -25,7 +25,6 @@ Everything must be self-hostable.
 | Path | Purpose |
 |---|---|
 | `apps/` | All product apps (`apps/<name>`). |
-| `apps/scrybase/` | Current application. |
 | `scripts/` | TypeScript orchestration scripts run through `bun run`. |
 | `infra/` | Self-host stack for PostgreSQL, MinIO, and Caddy. |
 | `SOUL.md` | Partnership constitution and long-term memory. |
@@ -37,7 +36,6 @@ Everything must be self-hostable.
 bun install
 bun run bootstrap
 bun run infra:up
-bun run app:scrybase:dev
 ```
 
 ## Useful Commands
@@ -49,13 +47,6 @@ bun run setup:zig
 bun run infra:up
 bun run infra:down
 bun run infra:logs
-
-# App
-bun run app:scrybase:dev
-bun run app:scrybase:build
-bun run app:scrybase:typecheck
-bun run app:scrybase:migrate
-bun run app:scrybase:worker
 
 # Tooling
 bun run lint

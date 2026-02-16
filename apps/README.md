@@ -11,16 +11,4 @@ All product applications live under `apps/`.
 
 ## Current Apps
 
-- `apps/scrybase`
-
-## Common Commands
-
-From repo root:
-
-```bash
-bun run app:scrybase:dev
-bun run app:scrybase:build
-bun run app:scrybase:typecheck
-bun run app:scrybase:migrate
-bun run app:scrybase:worker
-```
+(none)

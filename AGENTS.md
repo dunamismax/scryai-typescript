@@ -212,11 +212,6 @@ bun run format
 bun run typecheck
 bun run test
 
-# App-specific checks
-bun run app:scrybase:lint
-bun run app:scrybase:test
-bun run app:scrybase:typecheck
-
 # System health
 bun run doctor
 bun run check:agent-docs
@@ -301,13 +296,6 @@ bun run setup:zig
 bun run infra:up
 bun run infra:down
 bun run infra:logs
-bun run app:scrybase:dev
-bun run app:scrybase:build
-bun run app:scrybase:typecheck
-bun run app:scrybase:lint
-bun run app:scrybase:test
-bun run app:scrybase:migrate
-bun run app:scrybase:worker
 bun run doctor
 bun run check:agent-docs
 ```
