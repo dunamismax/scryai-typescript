@@ -11,4 +11,4 @@ All product applications live under `apps/`.
 
 ## Current Apps
 
-- `bedrock-web` — full-stack secure starter template currently on React Router 7 baseline; planned migration target to Qwik + Qwik City
+- `bedrock-template` — full-stack secure Qwik + Qwik City starter template (Bun, Tailwind v4, Better Auth, postgres.js, MinIO, pg-boss)

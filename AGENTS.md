@@ -136,6 +136,13 @@ Wake → Explore → Plan → Code → Verify → Report
   - `git push --force git@codeberg.org:dunamismax/<repo>.git --all`
   - `git push --force git@codeberg.org:dunamismax/<repo>.git --tags`
 
+### Standard Push to `main`
+
+- Push to `main` with: `git push origin main`
+- Always use `origin` (never direct one-off host pushes) so one push updates both GitHub and Codeberg.
+- Before pushing, ensure the working tree is clean (`git status --short`) and you are on `main` (`git branch --show-current`).
+- Never force-push `main`. Only the mirror bootstrap exception above allows force push, and only with explicit Stephen approval.
+
 ---
 
 ## Fresh System Bootstrap Policy
@@ -264,7 +271,7 @@ bun run doctor
 bun run check:agent-docs
 
 # App checks (run from app directory)
-cd apps/bedrock-web
+cd apps/bedrock-template
 bun run lint
 bun run format
 bun run typecheck
@@ -361,11 +368,11 @@ bun run infra:logs
 bun run doctor
 bun run check:agent-docs
 
-# apps/bedrock-web
-cd apps/bedrock-web
+# apps/bedrock-template
+cd apps/bedrock-template
 bun run dev
 bun run build
-bun run start
+bun run serve
 bun run db:migrate
 bun run db:seed
 bun run worker

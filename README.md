@@ -15,7 +15,7 @@ This README is the entrypoint for the entire repo. It tells you how to run share
 
 | Project | Type | Path | Docs |
 |---|---|---|---|
-| bedrock-web | Full-stack website template | `apps/bedrock-web` | [`apps/bedrock-web/README.md`](apps/bedrock-web/README.md) |
+| bedrock-template | Full-stack website template | `apps/bedrock-template` | [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md) |
 
 App index: [`apps/README.md`](apps/README.md)
 
@@ -77,14 +77,14 @@ bun run infra:up
 3. Open app and follow its setup
 
 ```bash
-cd apps/bedrock-web
+cd apps/bedrock-template
 cp .env.example .env
 bun run db:migrate
 bun run dev
 ```
 
 For app-specific details, always use that app's README:
-[`apps/bedrock-web/README.md`](apps/bedrock-web/README.md)
+[`apps/bedrock-template/README.md`](apps/bedrock-template/README.md)
 
 ## New System Bootstrap
 
@@ -168,12 +168,12 @@ bun run test
 
 ## App Commands
 
-Run these from inside an app directory (example: `apps/bedrock-web`):
+Run these from inside an app directory (example: `apps/bedrock-template`):
 
 ```bash
 bun run dev
 bun run build
-bun run start
+bun run serve
 bun run typecheck
 bun run lint
 bun run format
@@ -182,8 +182,6 @@ bun run db:migrate
 bun run db:seed
 bun run worker
 ```
-
-Note: `apps/bedrock-web` currently still reflects the previous React Router template baseline and will be migrated to Qwik in a separate app rewrite phase.
 
 ## Infra Defaults
 
@@ -204,7 +202,7 @@ Caddy baseline config is in [`infra/Caddyfile`](infra/Caddyfile).
 - Identity contract: [`SOUL.md`](SOUL.md)
 - Qwik migration plan: [`docs/qwik-cutover-plan.md`](docs/qwik-cutover-plan.md)
 - Apps index: [`apps/README.md`](apps/README.md)
-- bedrock-web docs: [`apps/bedrock-web/README.md`](apps/bedrock-web/README.md)
+- bedrock-template docs: [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md)
 
 ## Troubleshooting
 
