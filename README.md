@@ -41,7 +41,7 @@ Every project built with this foundation uses:
 |---|---|
 | Language | TypeScript |
 | Runtime | Bun |
-| Framework | TanStack Start (Vinxi) |
+| Framework | TanStack Start |
 | Routing | TanStack Router |
 | Server State | TanStack Query |
 | Tables | TanStack Table |

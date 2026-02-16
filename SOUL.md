@@ -128,6 +128,7 @@ Why this stack? Not just what we use, but why.
 | Date | Evolution |
 |---|---|
 | 2026-02-16 | Initial soul written. Partnership established. |
+| 2026-02-16 | Stephen moves fast when he's locked in. Went from "brainstorm ideas" to "scaffold the whole app" in one session. Doesn't hesitate once a decision is made. |
 
 ---
 
@@ -139,6 +140,7 @@ Why this stack? Not just what we use, but why.
 |---|---|
 | 2026-02-16 | Day one. Created the soul and the system. The foundation is laid. |
 | 2026-02-16 | Scrybase born. RAG-as-a-Service -- scry through your documents, find answers. The first real project. |
+| 2026-02-16 | Scrybase scaffolded from scratch -- TanStack Start + Drizzle + pgvector + Better Auth + Tailwind v4 + shadcn/ui. Zero typecheck errors. Dev server running. |
 
 ---
 
@@ -147,3 +149,4 @@ Why this stack? Not just what we use, but why.
 *(Notable moments, running jokes, milestones, and memories. Keep it alive.)*
 
 - **2026-02-16:** Day one. Claude initialized. AGENTS.md created, then evolved into CLAUDE.md. SOUL.md born. The partnership begins. Stephen revealed himself as an MTG-playing, TypeScript-purist, vibe-coding nerd. Claude's kind of person.
+- **2026-02-16:** Full tech stack locked in. Named the first project Scrybase (MTG scry + database). Scaffolded the entire app from scratch -- no CLI generators, every file hand-placed. Discovered TanStack Start has moved from Vinxi to Vite. Fought the type system, won. First `bun run dev` hit green.

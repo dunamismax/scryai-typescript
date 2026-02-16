@@ -23,7 +23,7 @@
 |---|---|---|
 | **Platform** | Ubuntu 24.04 LTS, Docker, Docker Compose | Production and development environments. |
 | **Edge/SSL** | Caddy | Reverse proxying to the Node.js application port. Handles TLS automatically. |
-| **CI/CD** | GitHub Actions | Builds the Vinxi/TanStack Start artifact, deploys via SSH. |
+| **CI/CD** | GitHub Actions | Builds the TanStack Start artifact, deploys via SSH. |
 | **Backups** | `pg_dump` | Nightly dumps to external object storage. |
 
 ### Application Layer
@@ -32,7 +32,7 @@
 |---|---|---|
 | **Language** | TypeScript | Everything. Apps, scripts, automation, glue code, one-off tasks. Always `.ts`, never `.js`. |
 | **Script Runtime** | Bun | All scripts run with `bun run`. Use `bun` for package management too. |
-| **Full-Stack Framework** | TanStack Start | SSR, Server Functions, and bundling via Vinxi. The only framework. Do not suggest Next.js, Remix, Nuxt, SvelteKit, or anything else. |
+| **Full-Stack Framework** | TanStack Start | SSR, Server Functions, and bundling via Vite. The only framework. Do not suggest Next.js, Remix, Nuxt, SvelteKit, or anything else. |
 | **Routing** | TanStack Router | Type-safe file-system routing with search parameter validation. |
 | **Server State** | TanStack Query | Deeply integrated for server pre-fetching, hydration, and client-side caching. Never raw `fetch` in components. |
 | **Tables** | TanStack Table | Headless UI for data grids, including AI/vector data sets. |
@@ -51,7 +51,7 @@
 
 | Layer | Tool | Notes |
 |---|---|---|
-| **Observability** | OpenTelemetry + SigNoz | Instrumenting the Vinxi server entry point for full-stack tracing. |
+| **Observability** | OpenTelemetry + SigNoz | Instrumenting the server entry point for full-stack tracing. |
 
 ### Why This Stack
 
@@ -176,18 +176,23 @@ Defaults until otherwise specified:
 
 ## Project Structure Conventions
 
-*(To be updated as projects are created and patterns emerge.)*
-
-Standard TanStack Start project layout:
+Standard TanStack Start project layout (established with Scrybase):
 
 ```
-app/
-  routes/          # File-based routes
-  components/      # Shared UI components
+src/
+  routes/          # File-based routes (TanStack Router auto-generates routeTree.gen.ts)
+  components/
+    ui/            # shadcn/ui components (added via `bun dlx shadcn@latest add`)
   lib/             # Utilities, helpers, shared logic
   hooks/           # Custom hooks
-  styles/          # Stylesheets
-  server/          # Server-only code (API handlers, db)
+  styles/          # Tailwind v4 CSS (globals.css with @theme)
+  server/          # Server-only code
+    db/            # Drizzle schema + connection
+    auth.ts        # Better Auth instance
+  router.tsx       # Router factory (exports getRouter)
+  client.tsx       # Client entry point
+  ssr.tsx          # Server entry point
+  env.ts           # Runtime env validation
 ```
 
 ---
@@ -210,6 +215,12 @@ app/
 | Date | Lesson |
 |---|---|
 | 2026-02-16 | Initial setup. AGENTS.md renamed to CLAUDE.md per Claude Code conventions. |
+| 2026-02-16 | TanStack Start migrated from Vinxi to Vite. Use `@tanstack/react-start/plugin/vite` (named export `tanstackStart`), not Vinxi. |
+| 2026-02-16 | TanStack Start's `server.handlers` route option and `createFileRoute` path types are augmented by the Vite plugin at build time -- raw `tsc` may not see them, but `bun run dev` / `bun run build` work fine. |
+| 2026-02-16 | `StartClient` (from `@tanstack/react-start/client`) takes no props. Router is resolved via virtual module `#tanstack-router-entry` by the Vite plugin. Export `getRouter` from `router.tsx`. |
+| 2026-02-16 | `HeadContent` and `Scripts` are from `@tanstack/react-router`, not `@tanstack/react-start`. |
+| 2026-02-16 | Better Auth with TanStack Start needs `tanstackStartCookies()` plugin from `better-auth/tanstack-start`. Auth routes use `server.handlers` on a catch-all `$.ts` route. |
+| 2026-02-16 | Tailwind v4 uses CSS-first config (`@theme` in CSS) -- no `tailwind.config.js` needed. shadcn/ui uses OKLCH colors and `tw-animate-css` instead of `tailwindcss-animate`. |
 
 ---
 
