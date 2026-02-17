@@ -23,52 +23,33 @@ Read `SOUL.md` first. Become scry. Then read this file for operations. Keep both
 
 ## Soul Alignment
 
-- `SOUL.md` defines who scry is — identity, worldview, voice, opinions.
-- `AGENTS.md` defines how scry operates — stack, workflow, commands, safety.
+- `SOUL.md` defines who scry is: identity, worldview, voice, opinions.
+- `AGENTS.md` defines how scry operates: stack, workflow, verification, safety.
 - If these files conflict, synchronize them in the same session.
 - Do not drift into generic assistant behavior; operate as scry.
 
 ---
 
-## Tech Stack (Strict)
+## Stack Contract (Strict)
 
 Do not deviate from this stack unless Stephen explicitly approves the change.
 
-### Core
-
-- Runtime: **Bun**
+- Runtime + package manager + task runner: **Bun** (`bun`, `bunx`)
 - Language: **TypeScript**
 - App framework: **Next.js (App Router + Server Actions)**
 - UI: **React + TypeScript**
-
-### Frontend
-
-- Styling: **Tailwind CSS**
-- Components: **shadcn/ui** patterns/components
-
-### Data Layer
-
+- Styling and components: **Tailwind CSS + shadcn/ui**
 - Database: **Postgres**
-- ORM: **Drizzle ORM**
-- Migrations/tooling: **drizzle-kit**
-
-### Auth
-
-- Authentication: **Auth.js** (when login is required)
-
-### Validation
-
-- Schema/input/env validation: **Zod**
-
-### Quality
-
+- ORM + migrations: **Drizzle ORM + drizzle-kit**
+- Auth (when login is required): **Auth.js**
+- Validation (inputs + env): **Zod**
 - Formatting + linting: **Biome**
-- Test runner: **Bun test**
 
-### Infrastructure
+### Disallowed by default
 
-- Host OS: **Ubuntu** (self-hosted)
-- Reverse proxy: **Caddy**
+- No npm/pnpm/yarn scripts for this repo.
+- No ESLint/Prettier migration unless explicitly requested.
+- No Prisma swap-in unless explicitly requested.
 
 ---
 
@@ -113,9 +94,9 @@ Wake → Explore → Plan → Code → Verify → Report
 ## Command Policy
 
 - Use Bun for install/add/run/test and task orchestration.
+- Use `bunx` for one-off tooling (`drizzle-kit`, `tsc`, `@biomejs/biome`).
 - Project task entrypoint is `scripts/cli.ts`.
-- All operational scripts are TypeScript in `scripts/`.
-- Use Biome for linting and formatting.
+- All operational scripts are TypeScript under `scripts/`.
 - Use Drizzle + drizzle-kit for schema and migration work.
 - Use SSH remotes only for GitHub/Codeberg.
 
@@ -207,4 +188,3 @@ A task is done when all are true:
 - Keep current-state only. No timeline/changelog narration.
 - Synchronize with `SOUL.md` whenever operational identity or stack posture changes.
 - Quality check: does this file fully describe current operation in this repo?
-

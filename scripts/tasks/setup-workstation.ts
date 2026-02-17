@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join, resolve } from "node:path";
+import { basename, join, resolve } from "node:path";
 import {
   commandExists,
   hasEnv,
@@ -8,6 +8,7 @@ import {
   logStep,
   runOrThrow,
 } from "../common";
+import { MANAGED_PROJECTS } from "../projects.config";
 
 const FALLBACK_REPOS = [
   "scryai",
@@ -33,6 +34,11 @@ function unique(items: string[]): string[] {
       items.map((item) => item.trim()).filter((item) => item.length > 0),
     ),
   ];
+}
+
+function repoNameFromPath(path: string): string {
+  const normalized = path.trim().replace(/\/+$/, "");
+  return basename(normalized);
 }
 
 function parseReposFromIndex(markdown: string): string[] {
@@ -73,7 +79,11 @@ export function setupWorkstation(): void {
   const anchorRepo = process.env.GITHUB_ANCHOR_REPO ?? "scryai";
   const profileRepo = process.env.GITHUB_PROFILE_REPO ?? "dunamismax";
   const reposIndexPath = join(githubRoot, profileRepo, "REPOS.md");
-  const managedProjectRepos: string[] = [];
+  const managedProjectRepos = unique(
+    MANAGED_PROJECTS.map((project) => repoNameFromPath(project.path)).filter(
+      (repo) => repo.length > 0,
+    ),
+  );
 
   const localOnly = hasEnv("LOCAL_ONLY");
   const useFallback = hasEnv("USE_FALLBACK");

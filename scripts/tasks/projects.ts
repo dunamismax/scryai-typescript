@@ -1,7 +1,9 @@
 import { hasEnv, isGitRepo, logStep, runOrThrow } from "../common";
 import { MANAGED_PROJECTS } from "../projects.config";
 
-const optional = hasEnv("OPTIONAL");
+function optionalMode(): boolean {
+  return hasEnv("OPTIONAL");
+}
 
 function requireProjectRepo(name: string, path: string): void {
   if (isGitRepo(path)) {
@@ -9,7 +11,7 @@ function requireProjectRepo(name: string, path: string): void {
   }
 
   const message = `missing: ${name} (${path})`;
-  if (optional) {
+  if (optionalMode()) {
     console.log(`skip: ${message}`);
     return;
   }
