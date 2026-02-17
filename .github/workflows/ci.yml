@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  root-quality:
+  quality:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -15,14 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          ruby-version: "3.3"
-          bundler-cache: true
+          bun-version: latest
 
-      - name: Lint (RuboCop)
-        run: bundle exec rubocop
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
-      - name: Root doctor
-        run: bundle exec rake scry:doctor
+      - name: Lint
+        run: bun run lint
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Tests
+        run: bun test
+
+      - name: Doctor
+        run: bun run scry:doctor

@@ -1,5 +1,15 @@
 services:
-  toolbox:
-    image: alpine:3.21
+  postgres:
+    image: postgres:17-alpine
     restart: unless-stopped
-    command: ["sh", "-lc", "sleep infinity"]
+    env_file:
+      - ./.env
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-scryai}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

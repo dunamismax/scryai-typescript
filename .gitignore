@@ -1,3 +1,14 @@
+# Bun / Node
+node_modules/
+.bun/
+.bundle/
+vendor/
+
+# Next.js
+.next/
+out/
+tsconfig.tsbuildinfo
+
 # Environment & secrets
 .env
 .env.*
@@ -9,6 +20,15 @@ credentials.json
 service-account*.json
 **/secrets/
 
+# Logs
+*.log
+
+# Build output
+dist/
+coverage/
+artifacts/
+tmp/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -19,22 +39,6 @@ Thumbs.db
 *.swp
 *.swo
 *~
-
-# Logs
-*.log
-
-# Ruby
-/.bundle/
-vendor/bundle/
-*.gem
-.ruby-version
-.ruby-gemset
-
-# Build output
-.output/
-artifacts/
-tmp/
-log/
 
 # Infra data
 infra/data/

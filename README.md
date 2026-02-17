@@ -1,127 +1,86 @@
 # scryai
 
-Canonical home-base repository for **scry** and Stephen (`dunamismax`): identity, operating contracts, workstation bootstrap, and cross-repo orchestration.
+Canonical Bun-first TypeScript workspace for **scry** and Stephen (`dunamismax`): identity + operations contracts, workstation bootstrap automation, and a Next.js App Router control-plane baseline.
 
-This repo is intentionally **not** a product app monorepo. Product apps live in dedicated sibling repositories under `~/github`.
+## Stack Baseline
 
-Exception: `web-template/` is a local **reference Rails application** used to codify and demonstrate current best-practice full-stack Rails patterns for the scry stack. It is a template and exemplar, not a product deployment target.
+- Bun
+- Next.js (App Router + Server Actions)
+- React + TypeScript
+- Tailwind + shadcn/ui
+- Postgres + Drizzle + drizzle-kit
+- Auth.js (when login is needed)
+- Zod (inputs + env)
+- Biome (format + lint)
 
 ## What Lives Here
 
 - Identity + operations contracts: `SOUL.md`, `AGENTS.md`
-- Root orchestration tasks: `lib/tasks/`
-- Shared infrastructure notes: `infra/` (optional manifests, not required by the core stack)
-- Durable operational docs: `docs/`
+- Bun TypeScript operations CLI: `scripts/`
+- Next.js app surface: `app/`
+- Shared modules/components: `lib/`, `components/`
+- Durable docs: `docs/`
+- Local infra manifests: `infra/`
 - Encrypted SSH continuity artifacts: `vault/ssh/`
-- Full-stack reference application scaffold: `web-template/`
-
-## Stack Baseline
-
-The application stack baseline for managed projects is:
-
-- Ruby 3.2+ with Rails 8 (The One Person Framework)
-- SQLite + ActiveRecord
-- ActiveJob with `:async` (in-process background jobs)
-- Rails cache via `:memory_store` (or `:file_store`)
-- Devise + Pundit for authentication and authorization
-- Hotwire (Turbo + Stimulus) for frontend
-- Tailwind CSS for styling
-- Minitest for testing
-- RuboCop for linting/formatting
-- Bundler for dependency management
-- Ubuntu self-hosting with Caddy reverse proxy
 
 ## Prerequisites
 
-- `ruby` (3.2+)
-- `bundler`
-- `git`
-- `ssh`
-- `curl`
+- Bun
+- Git
+- SSH
+- Docker (for local Postgres via compose)
 
 ## Quick Start
 
-Run from `~/github/scryai`:
-
 ```bash
-bundle install
-bundle exec rake scry:bootstrap
-bundle exec rake scry:doctor
+bun install
+bun run scry:bootstrap
+bun run scry:doctor
+bun run dev
 ```
 
-## New Machine Bootstrap
+## Local Infra
 
 ```bash
-mkdir -p ~/github
-cd ~/github
-git clone git@github.com:dunamismax/scryai.git
-cd scryai
-bundle install
-
-# optional if encrypted SSH backup exists
-export SCRY_SSH_BACKUP_PASSPHRASE='use-a-long-unique-passphrase'
-bundle exec rake scry:setup:ssh_restore
-
-bundle exec rake scry:setup:workstation
-bundle exec rake scry:bootstrap
+cp infra/.env.example infra/.env
+docker compose -f infra/docker-compose.yml up -d
 ```
 
-`setup:workstation` guarantees:
-- `~/github/scryai` bootstrap anchor is present first
-- `~/github/dunamismax` profile repo is present second
-- repositories parsed from `~/github/dunamismax/REPOS.md` are cloned/fetched
-- if parsing yields zero repos, the command fails fast by default
-- `USE_FALLBACK=1` enables fallback discovery-only mode (no fallback remote mutations)
-- dual `origin` push URLs are enforced (GitHub + Codeberg)
-
-## Root Commands
+Set app envs in `.env`:
 
 ```bash
-# setup / health
-bundle exec rake scry:bootstrap
-bundle exec rake scry:setup:workstation
-bundle exec rake scry:setup:ssh_backup
-bundle exec rake scry:setup:ssh_restore
-bundle exec rake scry:setup:storage
-bundle exec rake scry:doctor
-
-# managed projects
-bundle exec rake scry:projects:list
-bundle exec rake scry:projects:doctor
-bundle exec rake scry:projects:install
-bundle exec rake scry:projects:verify
-
-# root quality gates
-bundle exec rubocop
-bundle exec rake test
+cp .env.example .env
 ```
 
-## CI/CD Scope (This Repo)
+## Operations Commands
 
-`/home/sawyer/github/scryai` CI validates root orchestration/docs/tasks only.
+```bash
+bun run scry:bootstrap
+bun run scry:setup:workstation
+bun run scry:setup:ssh_backup
+bun run scry:setup:ssh_restore
+bun run scry:setup:storage
+bun run scry:projects:list
+bun run scry:projects:doctor
+bun run scry:projects:install
+bun run scry:projects:verify
+```
 
-Product app CI runs in their own repositories.
+## Quality Gates
 
-## Repository Layout
+```bash
+bun run lint
+bun run typecheck
+bun test
+bun run scry:doctor
+```
 
-| Path | Purpose |
-|---|---|
-| `lib/tasks/` | Orchestration, setup, and verification Rake tasks. |
-| `lib/scry/` | Shared Ruby modules (helpers, project config). |
-| `infra/` | Self-hostable local infrastructure manifests. |
-| `docs/` | Durable operations docs. |
-| `vault/ssh/` | Encrypted SSH continuity artifacts. |
-| `web-template/` | Canonical full-stack Rails reference/template app for this stack. |
-| `SOUL.md` | Identity source of truth for scry. |
-| `AGENTS.md` | Operational source of truth for scry. |
+## Database Commands
 
-## Documentation Links
-
-- Runtime operations: [`AGENTS.md`](AGENTS.md)
-- Identity and voice: [`SOUL.md`](SOUL.md)
-- Local docs ownership: [`docs/README.md`](docs/README.md)
-- Web template intent and scope: [`docs/web-template.md`](docs/web-template.md)
-- SSH continuity docs: [`vault/ssh/README.md`](vault/ssh/README.md)
+```bash
+bun run db:generate
+bun run db:migrate
+```
 
 ## License
 
