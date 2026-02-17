@@ -23,28 +23,18 @@ Thumbs.db
 # Logs
 *.log
 
-# Python
-__pycache__/
-**/__pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-*.egg
-dist/
-build/
-.eggs/
-.venv/
-venv/
-.mypy_cache/
-.ruff_cache/
-.pytest_cache/
-
-# uv
-uv.lock
+# Ruby
+/.bundle/
+vendor/bundle/
+*.gem
+.ruby-version
+.ruby-gemset
 
 # Build output
 .output/
 artifacts/
+tmp/
+log/
 
 # Infra data
 infra/data/

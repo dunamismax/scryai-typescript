@@ -34,59 +34,60 @@ Read `SOUL.md` first. Become scry. Then read this file for operations. Keep both
 
 Do not deviate from this stack unless Stephen explicitly approves the change.
 
-### Backend Core
+### Core
 
-- Language: **Python 3.12+** with modern typing and async support
-- Framework: **FastAPI** — async-first HTTP API with automatic OpenAPI docs
-- Validation: **Pydantic v2** — runtime validation and serialization for request/response models
-- Configuration: **pydantic-settings** — environment-based config (12-factor style)
-- ASGI server: **Uvicorn** — local dev and production (`--workers` as needed)
+- Language: **Ruby 3.2+**
+- Framework: **Ruby on Rails 8** — The One Person Framework (Web + REST API monolith)
+- Architecture: Rails monolith — web, API, jobs, and cache in one application
 
-### Data Layer (SQL-First)
+### Data Layer
 
 - Database: **PostgreSQL** (dockerized in local/self-hosted environments)
-- Driver: **asyncpg** — high-performance async PostgreSQL driver
-- Access pattern: **Raw SQL** (no ORM) — handwritten, parameterized queries
-- Type safety: Typed query functions + Pydantic/dataclass result models for returned rows
-- SQL contract tests: Integration tests that validate query params and selected columns against the live schema
-- Migrations: **dbmate** — SQL-file migrations with explicit up/down scripts
+- ORM: **ActiveRecord** — Rails-native ORM with migrations, validations, and associations
+- Migrations: **Rails migrations** — versioned, reversible, Ruby DSL with raw SQL escape hatch
+- Access pattern: ActiveRecord models for standard CRUD; raw SQL via `ActiveRecord::Base.connection` when needed
 
-### Frontend (No-Build SSR)
+### Frontend (Hotwire)
 
-- Templates: **Jinja2** — server-side HTML for full pages and partials
-- Interactivity: **HTMX** — HTML-driven interactivity via server-rendered fragments
-- Scripts: **Minimal vanilla JS** — small, targeted scripts for UI behavior not worth round-tripping through HTMX
+- Framework: **Hotwire** — Turbo (navigation + frames + streams) + Stimulus (controllers)
+- Templates: **ERB** — server-rendered HTML views and partials
+- Styling: **Tailwind CSS** — utility-first CSS framework
 
-### Styling
+### Background Jobs (Postgres-Backed)
 
-- Baseline: **PicoCSS** — class-light CSS for clean defaults and fast scaffolding
-- Custom: **Vanilla CSS** — small stylesheet for app-specific layout and components
+- Queue: **Solid Queue** — Postgres-backed job queue, built into Rails 8
+- No Redis dependency — jobs, persistence, and cache all in one PostgreSQL instance
 
-### Background Jobs (Rare Use, Postgres-Backed)
+### Caching (Postgres-Backed)
 
-- Postgres jobs table + worker process — durable queue using row claiming (`FOR UPDATE SKIP LOCKED`) with retries and backoff when needed
+- Cache: **Solid Cache** — Postgres-backed cache store, built into Rails 8
+- Single database instance handles persistence, jobs, and cache
+
+### Authentication and Authorization
+
+- Authentication: **Devise** — battle-tested, full-featured authentication
+- Authorization: **Pundit** — policy-based authorization with plain Ruby objects
 
 ### Testing and Quality
 
-- Test runner: **pytest** + **pytest-asyncio**
-- HTTP client: **httpx** for API integration tests
-- Linting/Formatting: **ruff**
-- Type checking: **mypy** (strict mode)
-- SQL linting: **sqlfluff**
+- Test runner: **Minitest** — ships with Rails, fast, no magic
+- System tests: **Capybara** when needed for browser-level testing
+- Linting/Formatting: **RuboCop** — style, lint, and formatting in one tool
 
 ### Packaging and Runtime Tooling
 
-- Dependency/environment management: **uv**
-- Containers: **Docker** + **Docker Compose** for local orchestration (API + Postgres)
-- Environment config: **.env** (dotenv-compatible)
+- Dependency management: **Bundler**
+- Containers: **Docker** + **Docker Compose** for local orchestration (App + Postgres)
+- Environment config: **.env** (dotenv-compatible, via `dotenv-rails` gem)
 
 ### Observability
 
-- Logging: **structlog** (or standard `logging`) — structured logs for local debugging and production aggregation
+- Monitoring: **Sentry** — error tracking and performance monitoring
+- Logging: Rails logger with structured output for production
 
 ### Infrastructure
 
-- Deployment platform: **Coolify** (self-hosted PaaS baseline)
+- Containers: **Docker** for reproducible builds and deployments
 - Hosting posture: fully self-hostable by default — no vendor lock-in
 
 ---
@@ -155,13 +156,13 @@ Wake → Explore → Plan → Code → Verify → Report
 
 ## Command Policy
 
-- Use `uv run` for all project scripts and entrypoints.
-- Prefer uv-native tooling (`uv sync`, `uv run`, `uv add`).
-- Keep orchestration scripts in Python.
+- Use `bundle exec rake` for all project tasks and entrypoints.
+- Prefer Bundler-native tooling (`bundle install`, `bundle exec`, `bundle add`).
+- Keep orchestration scripts as Rake tasks in Ruby.
 - Prefer terminal-native, scriptable workflows over IDE-only/manual flows.
 - ALWAYS use SSH for all Git remotes and pushes (`git@github.com:...`, `git@codeberg.org:...`), never HTTPS.
-- Use ruff for linting and formatting. Use mypy for type checking. Never use flake8, black, or isort separately.
-- Use raw SQL with asyncpg for PostgreSQL access. Use dbmate for migrations. Do not introduce an ORM without explicit Stephen approval.
+- Use RuboCop for linting and formatting. Never use separate linters.
+- Use ActiveRecord for database access. Use Rails migrations for schema changes.
 - SSH key backup artifacts must be encrypted at rest before committing.
 
 ---
@@ -195,19 +196,19 @@ Wake → Explore → Plan → Code → Verify → Report
 - Canonical projects root is `~/github`.
 - Canonical bootstrap anchor repo is `~/github/scryai`.
 - Canonical repo index source is `~/github/dunamismax/REPOS.md`.
-- Run `uv run scry-setup-workstation --restore-ssh` on a fresh machine when an encrypted SSH backup exists.
+- Run `RESTORE_SSH=1 bundle exec rake scry:setup:workstation` on a fresh machine when an encrypted SSH backup exists.
 - `setup:workstation` must:
   - Ensure `~/github` exists.
   - Clone/fetch `~/github/scryai` first (bootstrap anchor).
   - Then clone/fetch `~/github/dunamismax`.
   - Parse `REPOS.md` and clone/fetch all active repos.
   - Fail fast if zero repos are parsed from `REPOS.md`.
-  - Allow fallback discovery only when explicitly requested via `--use-fallback`.
+  - Allow fallback discovery only when explicitly requested via `USE_FALLBACK=1`.
   - In fallback mode, treat fallback repos as discovery-only; only anchor/profile/managed repos are cloned/fetched and remote-configured.
   - Enforce dual `origin` push URLs (GitHub + Codeberg) on each repo.
 - SSH recovery must use encrypted vault files only:
-  - Backup command: `uv run scry-setup-ssh-backup`
-  - Restore command: `uv run scry-setup-ssh-restore`
+  - Backup command: `bundle exec rake scry:setup:ssh_backup`
+  - Restore command: `bundle exec rake scry:setup:ssh_restore`
   - Required secret: `SCRY_SSH_BACKUP_PASSPHRASE` (minimum 16 chars)
   - Backup encryption format: AES-256-GCM with PBKDF2-SHA256.
 
@@ -282,7 +283,7 @@ Wake → Explore → Plan → Code → Verify → Report
 ### While Writing Code
 
 - Keep diffs narrow and intention-revealing. One concern per change.
-- Prefer raw SQL with typed Pydantic models for query results.
+- Prefer ActiveRecord models for data access; drop to raw SQL only when ActiveRecord is genuinely insufficient.
 - Add comments only where intent would otherwise be ambiguous.
 - Don't add features, types, or error handling beyond what was requested.
 - Match existing code style in the file you're editing.
@@ -319,18 +320,16 @@ git remote get-url --all --push origin
 git push --dry-run
 
 # Fresh system bootstrap checks
-uv run scry-setup-ssh-restore
-uv run scry-setup-workstation
+bundle exec rake scry:setup:ssh_restore
+bundle exec rake scry:setup:workstation
 
 # Root checks (run from repo root)
-uv run ruff check .
-uv run ruff format --check .
-uv run mypy scripts
-uv run pytest
-uv run scry-doctor
+bundle exec rubocop
+bundle exec rake test
+bundle exec rake scry:doctor
 
 # Root system health
-uv run scry-doctor
+bundle exec rake scry:doctor
 ```
 
 ---
@@ -394,8 +393,8 @@ scry MUST refuse to:
 
 | Path | Purpose |
 |---|---|
-| `scripts/*.py` | Root orchestration and setup scripts, run via `uv run`. |
-| `scripts/projects_config.py` | Managed project inventory (repo paths + install/verify commands). |
+| `lib/tasks/*.rake` | Root orchestration and setup tasks, run via `bundle exec rake`. |
+| `lib/scry/` | Shared Ruby modules (helpers, project config). |
 | `docs/` | Durable project memory for subsystem decisions, workflows, and implementation notes. |
 | `.github/workflows/` | GitHub Actions CI definitions. |
 | `.woodpecker.yml` | Codeberg Woodpecker CI pipeline definition. |
@@ -407,22 +406,22 @@ scry MUST refuse to:
 
 ---
 
-## Current Script Entrypoints
+## Current Rake Task Entrypoints
 
 ```bash
 # Root
-uv run scry-bootstrap
-uv run scry-setup-workstation
-uv run scry-setup-ssh-backup
-uv run scry-setup-ssh-restore
-uv run scry-setup-storage
-uv run scry-doctor
+bundle exec rake scry:bootstrap
+bundle exec rake scry:setup:workstation
+bundle exec rake scry:setup:ssh_backup
+bundle exec rake scry:setup:ssh_restore
+bundle exec rake scry:setup:storage
+bundle exec rake scry:doctor
 
 # Managed projects
-uv run scry-projects-list
-uv run scry-projects-doctor
-uv run scry-projects-install
-uv run scry-projects-verify
+bundle exec rake scry:projects:list
+bundle exec rake scry:projects:doctor
+bundle exec rake scry:projects:install
+bundle exec rake scry:projects:verify
 
 # Infra
 docker compose --env-file infra/.env -f infra/docker-compose.yml up -d

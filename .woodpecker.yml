@@ -5,11 +5,9 @@ when:
 
 steps:
   root_quality:
-    image: python:3.12-slim
+    image: ruby:3.3-slim
     commands:
-      - pip install uv
-      - uv sync
-      - uv run ruff check .
-      - uv run ruff format --check .
-      - uv run mypy scripts
-      - uv run doctor
+      - gem install bundler
+      - bundle install
+      - bundle exec rubocop
+      - bundle exec rake scry:doctor

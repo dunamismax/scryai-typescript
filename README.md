@@ -7,7 +7,7 @@ This repo is intentionally **not** an app monorepo. Product apps live in dedicat
 ## What Lives Here
 
 - Identity + operations contracts: `SOUL.md`, `AGENTS.md`
-- Root orchestration scripts: `scripts/`
+- Root orchestration tasks: `lib/tasks/`
 - Shared local infrastructure: `infra/` (PostgreSQL via Docker Compose)
 - Durable operational docs: `docs/`
 - Encrypted SSH continuity artifacts: `vault/ssh/`
@@ -16,36 +16,36 @@ This repo is intentionally **not** an app monorepo. Product apps live in dedicat
 
 The application stack baseline for managed projects is:
 
-- Python 3.12+ with FastAPI
-- PostgreSQL (Dockerized) + asyncpg + raw SQL (no ORM)
-- dbmate for SQL migrations
-- Pydantic v2 for validation and serialization
-- Jinja2 + HTMX for frontend (no-build SSR)
-- PicoCSS + vanilla CSS for styling
-- pytest + httpx for testing
-- ruff for linting/formatting, mypy for type checking
-- uv for dependency and environment management
-- Docker + Docker Compose for local orchestration
-- Coolify for self-hosted push-to-deploy operations
+- Ruby 3.2+ with Rails 8 (The One Person Framework)
+- PostgreSQL (Dockerized) + ActiveRecord
+- Solid Queue (Postgres-backed background jobs)
+- Solid Cache (Postgres-backed caching)
+- Devise + Pundit for authentication and authorization
+- Hotwire (Turbo + Stimulus) for frontend
+- Tailwind CSS for styling
+- Minitest for testing
+- RuboCop for linting/formatting
+- Bundler for dependency management
+- Docker for infrastructure
+- Sentry for monitoring
 
 ## Prerequisites
 
-- `python` (3.12+)
-- `uv`
+- `ruby` (3.2+)
+- `bundler`
 - `docker` + `docker compose`
 - `git`
 - `ssh`
 - `curl`
-- `tar`
 
 ## Quick Start
 
 Run from `~/github/scryai`:
 
 ```bash
-uv sync
-uv run scry-bootstrap
-uv run scry-doctor
+bundle install
+bundle exec rake scry:bootstrap
+bundle exec rake scry:doctor
 ```
 
 ## New Machine Bootstrap
@@ -55,14 +55,14 @@ mkdir -p ~/github
 cd ~/github
 git clone git@github.com:dunamismax/scryai.git
 cd scryai
-uv sync
+bundle install
 
 # optional if encrypted SSH backup exists
 export SCRY_SSH_BACKUP_PASSPHRASE='use-a-long-unique-passphrase'
-uv run scry-setup-ssh-restore
+bundle exec rake scry:setup:ssh_restore
 
-uv run scry-setup-workstation
-uv run scry-bootstrap
+bundle exec rake scry:setup:workstation
+bundle exec rake scry:bootstrap
 ```
 
 `setup:workstation` guarantees:
@@ -70,25 +70,25 @@ uv run scry-bootstrap
 - `~/github/dunamismax` profile repo is present second
 - repositories parsed from `~/github/dunamismax/REPOS.md` are cloned/fetched
 - if parsing yields zero repos, the command fails fast by default
-- `--use-fallback` enables fallback discovery-only mode (no fallback remote mutations)
+- `USE_FALLBACK=1` enables fallback discovery-only mode (no fallback remote mutations)
 - dual `origin` push URLs are enforced (GitHub + Codeberg)
 
 ## Root Commands
 
 ```bash
 # setup / health
-uv run scry-bootstrap
-uv run scry-setup-workstation
-uv run scry-setup-ssh-backup
-uv run scry-setup-ssh-restore
-uv run scry-setup-storage
-uv run scry-doctor
+bundle exec rake scry:bootstrap
+bundle exec rake scry:setup:workstation
+bundle exec rake scry:setup:ssh_backup
+bundle exec rake scry:setup:ssh_restore
+bundle exec rake scry:setup:storage
+bundle exec rake scry:doctor
 
 # managed projects
-uv run scry-projects-list
-uv run scry-projects-doctor
-uv run scry-projects-install
-uv run scry-projects-verify
+bundle exec rake scry:projects:list
+bundle exec rake scry:projects:doctor
+bundle exec rake scry:projects:install
+bundle exec rake scry:projects:verify
 
 # infra
 docker compose --env-file infra/.env -f infra/docker-compose.yml up -d
@@ -96,15 +96,13 @@ docker compose --env-file infra/.env -f infra/docker-compose.yml down
 docker compose --env-file infra/.env -f infra/docker-compose.yml logs -f
 
 # root quality gates
-uv run ruff check .
-uv run ruff format --check .
-uv run mypy scripts
-uv run pytest
+bundle exec rubocop
+bundle exec rake test
 ```
 
 ## CI/CD Scope (This Repo)
 
-`/home/sawyer/github/scryai` CI validates root orchestration/docs/scripts only.
+`/home/sawyer/github/scryai` CI validates root orchestration/docs/tasks only.
 
 Product app CI runs in their own repositories.
 
@@ -112,8 +110,8 @@ Product app CI runs in their own repositories.
 
 | Path | Purpose |
 |---|---|
-| `scripts/` | Orchestration, setup, and verification scripts. |
-| `scripts/projects_config.py` | Managed project inventory and command policy. |
+| `lib/tasks/` | Orchestration, setup, and verification Rake tasks. |
+| `lib/scry/` | Shared Ruby modules (helpers, project config). |
 | `infra/` | Self-hostable local infrastructure manifests. |
 | `docs/` | Durable operations docs. |
 | `vault/ssh/` | Encrypted SSH continuity artifacts. |
