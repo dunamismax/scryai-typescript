@@ -25,8 +25,8 @@ function ensureManagedProjectDeps(): void {
 }
 
 function setupInfra(): void {
-  logStep("Configuring MinIO + Postgres + Caddy defaults");
-  runOrThrow(["bun", "run", "setup:minio"]);
+  logStep("Configuring SeaweedFS + Postgres + Caddy defaults");
+  runOrThrow(["bun", "run", "setup:storage"]);
 }
 
 function setupZig(): void {

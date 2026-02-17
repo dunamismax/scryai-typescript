@@ -4,8 +4,8 @@ import {
   existsSync,
   lstatSync,
   mkdtempSync,
-  readFileSync,
   readdirSync,
+  readFileSync,
   readlinkSync,
   renameSync,
   rmSync,
@@ -31,7 +31,6 @@ const kdfDigest = "sha256";
 const keyLengthBytes = 32;
 const saltLengthBytes = 16;
 const ivLengthBytes = 12;
-const authTagLengthBytes = 16;
 const encryptedFormatMagic = Buffer.from("SCRYSSH2", "ascii");
 
 type SourceSnapshot = {

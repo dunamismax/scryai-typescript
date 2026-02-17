@@ -8,7 +8,7 @@ This repo is intentionally **not** an app monorepo. Product apps live in dedicat
 
 - Identity + operations contracts: `SOUL.md`, `AGENTS.md`
 - Root orchestration scripts: `scripts/`
-- Shared local infrastructure: `infra/` (PostgreSQL + MinIO + Caddy)
+- Shared local infrastructure: `infra/` (PostgreSQL 18 + SeaweedFS S3 + Caddy)
 - Durable operational docs: `docs/`
 - Encrypted SSH continuity artifacts: `vault/ssh/`
 
@@ -82,7 +82,7 @@ bun run bootstrap
 bun run setup:workstation
 bun run setup:ssh:backup
 bun run setup:ssh:restore
-bun run setup:minio
+bun run setup:storage
 bun run setup:zig
 bun run doctor
 
@@ -136,6 +136,7 @@ Performance and Lighthouse quality gates are owned by each product repo (not `sc
 - Runtime operations: [`AGENTS.md`](AGENTS.md)
 - Identity and voice: [`SOUL.md`](SOUL.md)
 - Local docs ownership: [`docs/README.md`](docs/README.md)
+- Stack refresh record: [`docs/tech-stack-refresh-2026-02-17.md`](docs/tech-stack-refresh-2026-02-17.md)
 - SSH continuity docs: [`vault/ssh/README.md`](vault/ssh/README.md)
 
 ## License

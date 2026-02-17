@@ -1,4 +1,4 @@
-import { type DecipherGCM, createDecipheriv, pbkdf2Sync } from "node:crypto";
+import { createDecipheriv, type DecipherGCM, pbkdf2Sync } from "node:crypto";
 import {
   chmodSync,
   cpSync,
@@ -6,8 +6,8 @@ import {
   lstatSync,
   mkdirSync,
   mkdtempSync,
-  readFileSync,
   readdirSync,
+  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs";

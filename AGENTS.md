@@ -36,8 +36,8 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 
 ### App Framework (Full Stack)
 
-- Framework: **Astro 5** (stable baseline)
-- Upgrade posture: move to **Astro 6** after GA (beta announced **January 27, 2026**)
+- Framework: **Astro 5** (latest stable 5.x on `main`)
+- Upgrade posture: keep `main` on latest **Astro 5.x**; run an **Astro 6 pilot lane** and promote only after GA + verification gates
 - Rendering model: **`output: "server"`** + selective prerendering for public pages
 - Server adapter: **`@astrojs/node`** with `mode: "standalone"`
 - Build tool: **Vite**
@@ -49,22 +49,28 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 
 ### Runtime and Tooling
 
-- Runtime: **Bun** for tooling/scripts, **Node.js 22 LTS** for Astro production servers
+- Runtime: **Bun** for tooling/scripts, **Node.js 24 LTS** for Astro production servers
 - Language: **TypeScript**
 - Linting/Formatting: **Biome**
 
 ### Data Layer
 
-- Database: **PostgreSQL** with `pgvector` and `pgcrypto`
+- Database: **PostgreSQL 18** with `pgvector` and `pgcrypto`
 - Driver: **postgres.js**
 - Access pattern: SQL-first template literals — no ORM
 - Migrations: plain `.sql` files
 
 ### Storage and Services
 
-- Object storage: **MinIO** (S3-compatible)
+- Object storage: **SeaweedFS** (S3-compatible API)
 - Auth: **Better Auth**
 - Background jobs: **pg-boss**
+
+### Storage Policy
+
+- MinIO OSS upstream is archived/unmaintained as of **February 13, 2026**; do not adopt it for new environments.
+- Default storage baseline is SeaweedFS S3 API in local and self-hosted stacks.
+- AIStor is an explicit opt-in only when Stephen requests enterprise MinIO compatibility.
 
 ### Infrastructure
 
@@ -140,7 +146,7 @@ Wake → Explore → Plan → Code → Verify → Report
 
 - Use `bun run` for all project scripts.
 - Prefer Bun-native tooling (`bun install`, `bun test`, `bunx`).
-- Use Node.js 22 LTS for Astro production server execution.
+- Use Node.js 24 LTS for Astro production server execution.
 - Do not introduce non-TypeScript orchestration scripts.
 - Prefer terminal-native, scriptable workflows over IDE-only/manual flows.
 - ALWAYS use SSH for all Git remotes and pushes (`git@github.com:...`, `git@codeberg.org:...`), never HTTPS.
@@ -415,7 +421,7 @@ bun run bootstrap
 bun run setup:workstation
 bun run setup:ssh:backup
 bun run setup:ssh:restore
-bun run setup:minio
+bun run setup:storage
 bun run setup:zig
 bun run infra:up
 bun run infra:down

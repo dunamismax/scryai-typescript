@@ -5,7 +5,8 @@ import { ensureDir, logStep, runOrThrow } from "./lib";
 const repoRoot = resolve(import.meta.dir, "..");
 const envExamplePath = resolve(repoRoot, "infra/.env.example");
 const envPath = resolve(repoRoot, "infra/.env");
-const minioDataDir = resolve(repoRoot, "infra/data/minio");
+const storageDataDir = resolve(repoRoot, "infra/data/seaweedfs");
+const legacyMinioDataDir = resolve(repoRoot, "infra/data/minio");
 
 function ensureEnvFile(): void {
   logStep("Ensuring infra env file");
@@ -18,9 +19,13 @@ function ensureEnvFile(): void {
 }
 
 function ensureDataDirs(): void {
-  logStep("Ensuring MinIO data directory");
-  ensureDir(minioDataDir);
-  console.log(`ready: ${minioDataDir}`);
+  logStep("Ensuring SeaweedFS data directory");
+  ensureDir(storageDataDir);
+  console.log(`ready: ${storageDataDir}`);
+
+  if (existsSync(legacyMinioDataDir)) {
+    console.log(`note: legacy MinIO data directory still present: ${legacyMinioDataDir}`);
+  }
 }
 
 function showComposeHint(): void {

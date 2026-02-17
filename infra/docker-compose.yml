@@ -1,6 +1,6 @@
 services:
   db:
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:pg18
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -15,43 +15,27 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  minio:
-    image: minio/minio:latest
+  object-storage:
+    image: chrislusf/seaweedfs:latest
     restart: unless-stopped
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    command: server /data --console-address ":${MINIO_CONSOLE_PORT}"
+    command:
+      - server
+      - -dir=/data
+      - -ip=object-storage
+      - -s3
+      - -s3.port=8333
     ports:
-      - "${MINIO_API_PORT}:9000"
-      - "${MINIO_CONSOLE_PORT}:9001"
+      - "${STORAGE_S3_PORT}:8333"
+      - "${STORAGE_MASTER_PORT}:9333"
+      - "${STORAGE_FILER_PORT}:8888"
     volumes:
-      - ./data/minio:/data
-
-  minio-init:
-    image: minio/mc:latest
-    depends_on:
-      - minio
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-      MINIO_DEFAULT_BUCKET: ${MINIO_DEFAULT_BUCKET}
-    entrypoint: >
-      /bin/sh -c "
-      set -e;
-      until /usr/bin/mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}; do
-        sleep 2;
-      done;
-      /usr/bin/mc mb --ignore-existing local/$${MINIO_DEFAULT_BUCKET};
-      /usr/bin/mc anonymous set private local/$${MINIO_DEFAULT_BUCKET};
-      "
-    restart: "no"
+      - ./data/seaweedfs:/data
 
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
     depends_on:
-      - minio
+      - object-storage
       - db
     ports:
       - "${CADDY_HTTP_PORT}:80"
