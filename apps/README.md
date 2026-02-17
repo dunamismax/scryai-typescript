@@ -12,3 +12,4 @@ All product applications live under `apps/`.
 ## Current Apps
 
 - `bedrock-template` — full-stack secure Qwik + Qwik City starter template (Bun, Tailwind v4, Better Auth, postgres.js, MinIO, pg-boss)
+- `astro-blog-template` — Astro-based blog starter template (MDX/Markdown, search, RSS, sitemap, PWA, dynamic OG images)

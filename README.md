@@ -15,7 +15,8 @@ This README is the entrypoint for the entire repo. It tells you how to run share
 
 | Project | Type | Path | Docs |
 |---|---|---|---|
-| bedrock-template | Performance-first full-stack website template (dark default + theme toggle) | `apps/bedrock-template` | [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md) |
+| bedrock-template | Performance-first full-stack Qwik City template (dark default + theme toggle) | `apps/bedrock-template` | [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md) |
+| astro-blog-template | Astro-based blog starter template with MDX/search/RSS/sitemap/PWA | `apps/astro-blog-template` | [`apps/astro-blog-template/README.md`](apps/astro-blog-template/README.md) |
 
 App index: [`apps/README.md`](apps/README.md)
 
@@ -35,6 +36,9 @@ All projects in this repo are expected to follow this baseline unless explicitly
 - Jobs: pg-boss
 - Object storage: MinIO
 - Reverse proxy: Caddy
+
+Explicit exception:
+- `apps/astro-blog-template` intentionally runs on Astro and keeps Astro-native tooling.
 
 ## Repository Layout
 
@@ -180,6 +184,7 @@ Pipelines run on push/pull-request and execute:
 
 - Root quality gates (`lint`, `typecheck`, `test`)
 - App quality gates for `apps/bedrock-template` (`lint`, `typecheck`, `test`, `build`)
+- App quality gates for `apps/astro-blog-template` (`lint`, `typecheck`, `build`)
 - Lighthouse audits in **mobile** + **desktop** modes
 - Lighthouse assertions for LCP/CLS/TBT + category scores
 - Lighthouse regression checks vs baseline commit when available
@@ -222,6 +227,7 @@ Caddy baseline config is in [`infra/Caddyfile`](infra/Caddyfile).
 - Identity contract: [`SOUL.md`](SOUL.md)
 - Apps index: [`apps/README.md`](apps/README.md)
 - bedrock-template docs: [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md)
+- astro-blog-template docs: [`apps/astro-blog-template/README.md`](apps/astro-blog-template/README.md)
 - Performance CI docs: [`docs/performance/README.md`](docs/performance/README.md)
 
 ## Troubleshooting

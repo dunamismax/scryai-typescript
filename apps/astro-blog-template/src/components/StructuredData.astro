@@ -1,0 +1,89 @@
+---
+import { SITE, SOCIALS } from "@/config";
+
+export interface Props {
+  type: "BlogPosting" | "Person" | "WebSite";
+  data: any;
+}
+
+const { type, data } = Astro.props;
+const siteUrl = new URL(SITE.website).origin;
+const authorUrl = new URL("/about", siteUrl).toString();
+const fallbackImage = new URL(`/${SITE.ogImage}`, siteUrl).toString();
+const socialProfiles = SOCIALS.filter(
+  social => social.active && !social.href.startsWith("mailto:")
+).map(social => social.href);
+
+const toAbsoluteUrl = (value?: string) => {
+  if (!value) return fallbackImage;
+  try {
+    return new URL(value).toString();
+  } catch {
+    return new URL(value.startsWith("/") ? value : `/${value}`, siteUrl).toString();
+  }
+};
+
+let structuredData = {};
+
+if (type === "BlogPosting") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: data.title,
+    description: data.description,
+    author: {
+      "@type": "Person",
+      name: data.author || SITE.author,
+      url: authorUrl,
+    },
+    datePublished: data.pubDatetime.toISOString(),
+    dateModified: data.modDatetime?.toISOString() || data.pubDatetime.toISOString(),
+    publisher: {
+      "@type": "Organization",
+      name: SITE.title,
+      logo: {
+        "@type": "ImageObject",
+        url: fallbackImage,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": data.url,
+    },
+    image: toAbsoluteUrl(data.ogImage),
+    articleSection: data.tags?.[0] || "Blog",
+    keywords: data.tags?.join(", ") || "",
+    wordCount: data.wordCount,
+    timeRequired: data.readingTime,
+  };
+} else if (type === "Person") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: SITE.author,
+    url: siteUrl,
+    image: fallbackImage,
+    sameAs: socialProfiles,
+    description: SITE.desc,
+  };
+} else if (type === "WebSite") {
+  structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.title,
+    url: siteUrl,
+    description: SITE.desc,
+    author: {
+      "@type": "Person",
+      name: SITE.author,
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${siteUrl}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

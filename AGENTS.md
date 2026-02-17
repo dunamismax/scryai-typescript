@@ -2,7 +2,7 @@
 
 > Runtime operations source of truth for this repository. Operational identity is **scry**.
 > This file defines *what scry does and how*. For identity and soul, see `SOUL.md`.
-> Living document. Last major refresh: 2026-02-16.
+> Living document. Last major refresh: 2026-02-17.
 
 ---
 
@@ -33,6 +33,11 @@ Read `SOUL.md` first. Become scry. Then read this file for operations. Keep both
 ## Tech Stack (Strict)
 
 Do not deviate from this stack unless Stephen explicitly approves the change.
+
+### Explicit Exception
+
+- `apps/astro-blog-template` is intentionally Astro-based and follows the upstream Astro stack for that app.
+- Keep root/other apps on the Qwik baseline unless Stephen approves additional exceptions.
 
 ### App Framework (Full Stack)
 
@@ -98,12 +103,28 @@ Wake → Explore → Plan → Code → Verify → Report
 
 ---
 
+## Inference-Speed Operating Mode
+
+- Optimize for the real bottlenecks: inference latency and hard thinking, not ceremony.
+- Default to a tight loop: **prompt → execute → verify → refine**.
+- Start new capabilities as CLI-first when possible, then layer UI once behavior is proven.
+- Use queueing for follow-up ideas, but keep one primary in-focus task.
+- Let deep-read phases happen on large refactors before edits begin; this often reduces rework.
+- Treat compaction as normal on long runs; re-verify critical paths after major compaction steps.
+- Prefer iterative evolution over one-shot grand design: ship, touch, refine.
+- Default to linear evolution on `main`; use worktrees only when isolation is genuinely needed.
+- Serialize tasks that touch the same files; parallelize only clearly disjoint surfaces.
+
+---
+
 ## Runtime Contract
 
 - Default behavior: execute, do not stall in analysis paralysis.
 - Start with local repo context, then web/Context7 docs when needed.
+- Keep prompts short and high-signal. Use concrete artifacts (logs, screenshots, failing output) over long narration.
 - Make assumptions explicit when constraints are unclear.
 - Prefer the smallest reliable change that satisfies the task.
+- Bias toward verifiable workflows. If a loop can be closed by CLI checks, do that first.
 - Report concrete verification results, not generic "should work."
 - Be resourceful before asking: inspect code, docs, and logs first.
 - Fresh context for each major task. Don't carry stale state across unrelated work.
@@ -115,6 +136,7 @@ Wake → Explore → Plan → Code → Verify → Report
 - Use `bun run` for all project scripts.
 - Prefer Bun-native tooling (`bun install`, `bun test`, `bunx`).
 - Do not introduce non-TypeScript orchestration scripts.
+- Prefer terminal-native, scriptable workflows over IDE-only/manual flows.
 - ALWAYS use SSH for all Git remotes and pushes (`git@github.com:...`, `git@codeberg.org:...`), never HTTPS.
 - Use Biome for linting and formatting, never ESLint or Prettier.
 - SSH key backup artifacts must be encrypted at rest before committing.
@@ -210,6 +232,14 @@ Wake → Explore → Plan → Code → Verify → Report
 - Parallelize independent work. Serialize dependent work.
 - When blocked, investigate root cause before asking for help.
 
+### 6) Dependency and Ecosystem Selection
+
+- Spend design effort on ecosystem and dependency choice before coding.
+- Prefer well-maintained dependencies with clear release cadence and healthy issue response.
+- Check peer dependency stability and compatibility before adopting a library.
+- Prefer widely-used tooling with strong documentation and broad model familiarity.
+- Avoid introducing niche dependencies unless they solve a real, current problem.
+
 ---
 
 ## Agentic Coding Tips and Tricks
@@ -219,6 +249,8 @@ Wake → Explore → Plan → Code → Verify → Report
 - Read before writing. Always inspect current patterns and adjacent files first.
 - Understand the existing architecture before proposing changes.
 - Check if the problem is already solved elsewhere in the codebase.
+- Check sibling repos in `~/github` for proven patterns worth reusing.
+- Read relevant `docs/` pages before editing subsystems with existing design notes.
 
 ### While Writing Code
 
@@ -234,6 +266,8 @@ Wake → Explore → Plan → Code → Verify → Report
 - Run verification commands before claiming done.
 - Review your own diff. Would this pass code review?
 - Check that docs and scripts still reflect reality.
+- If a new durable pattern was introduced, document it in the local `docs/` tree.
+- If a reusable improvement emerged, propagate it across applicable sibling repos deliberately.
 
 ### Anti-Patterns to Avoid
 
@@ -242,6 +276,7 @@ Wake → Explore → Plan → Code → Verify → Report
 - Don't create helpers or utilities for one-time operations.
 - Don't design for hypothetical future requirements.
 - Don't add backwards-compatibility shims when you can just change the code.
+- Don't default to checkpoint churn; prefer forward iterative edits unless rollback is required.
 - Don't narrate what you're about to do — just do it.
 - Don't produce filler output to seem productive.
 
@@ -279,6 +314,13 @@ bun run lint
 bun run format
 bun run typecheck
 bun run test
+bun run build
+
+cd ../..
+cd apps/astro-blog-template
+bun run lint
+bun run format
+bun run typecheck
 bun run build
 ```
 
@@ -347,6 +389,7 @@ scry MUST refuse to:
 | `apps/<app-name>/` | One app per directory. |
 | `scripts/*.ts` | Root orchestration and setup scripts, run via `bun run`. |
 | `apps/<app-name>/scripts/*.ts` | App-local orchestration scripts (migrations, workers, seeders), run via app `bun run` scripts. |
+| `docs/` | Durable project memory for subsystem decisions, workflows, and implementation notes. |
 | `.github/workflows/` | GitHub Actions CI definitions. |
 | `.woodpecker.yml` | Codeberg Woodpecker CI pipeline definition. |
 | `docs/performance/` | Lighthouse thresholds and performance CI docs. |
@@ -391,6 +434,15 @@ bun run test
 bun run db:migrate
 bun run db:seed
 bun run worker
+
+# apps/astro-blog-template
+cd apps/astro-blog-template
+bun run dev
+bun run build
+bun run preview
+bun run typecheck
+bun run lint
+bun run format
 ```
 
 ---

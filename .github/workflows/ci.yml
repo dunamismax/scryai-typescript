@@ -33,6 +33,8 @@ jobs:
         run: |
           cd apps/bedrock-template
           bun install --frozen-lockfile
+          cd ../astro-blog-template
+          bun install --frozen-lockfile
 
       - name: Root quality gates
         run: bun run ci:root
@@ -44,7 +46,7 @@ jobs:
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
-          bun run perf:lighthouse -- --skip-build --output artifacts/lighthouse/head.json
+          bun run perf:lighthouse -- --app-dir apps/bedrock-template --skip-build --output artifacts/lighthouse/head.json
 
       - name: Compute baseline commit
         id: baseline
@@ -77,9 +79,11 @@ jobs:
           bun install --frozen-lockfile
           cd apps/bedrock-template
           bun install --frozen-lockfile
+          cd ../astro-blog-template
+          bun install --frozen-lockfile
           cd "${BASE_DIR}"
 
-          bun run perf:lighthouse -- --output "${GITHUB_WORKSPACE}/artifacts/lighthouse/base.json"
+          bun run perf:lighthouse -- --app-dir apps/bedrock-template --output "${GITHUB_WORKSPACE}/artifacts/lighthouse/base.json"
 
       - name: Assert Lighthouse thresholds + deltas
         if: steps.baseline.outputs.base_sha != ''
