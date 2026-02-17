@@ -307,6 +307,8 @@ bun run format
 bun run typecheck
 bun run test
 bun run ci
+bun run projects:doctor
+bun run projects:verify
 bun run perf:lighthouse
 bun run perf:lighthouse:assert -- --report artifacts/lighthouse/current.json
 
@@ -314,13 +316,11 @@ bun run perf:lighthouse:assert -- --report artifacts/lighthouse/current.json
 bun run doctor
 bun run check:agent-docs
 
-# App checks (run from app directory)
-# Primary full-stack Astro template app (fresh scaffold baseline)
-cd apps/astro-web-template
+# Project checks (run from each project repo)
+cd ~/github/astro-web-template
 bun run build
 
-cd ../..
-cd apps/astro-blog-template
+cd ../astro-blog-template
 bun run lint
 bun run format
 bun run typecheck
@@ -388,10 +388,8 @@ scry MUST refuse to:
 
 | Path | Purpose |
 |---|---|
-| `apps/` | Monorepo applications root. |
-| `apps/<app-name>/` | One app per directory. |
 | `scripts/*.ts` | Root orchestration and setup scripts, run via `bun run`. |
-| `apps/<app-name>/scripts/*.ts` | App-local orchestration scripts (migrations, workers, seeders), run via app `bun run` scripts. |
+| `scripts/projects-config.ts` | Managed project inventory (repo paths + install/verify commands). |
 | `docs/` | Durable project memory for subsystem decisions, workflows, and implementation notes. |
 | `.github/workflows/` | GitHub Actions CI definitions. |
 | `.woodpecker.yml` | Codeberg Woodpecker CI pipeline definition. |
@@ -419,20 +417,24 @@ bun run infra:down
 bun run infra:logs
 bun run doctor
 bun run check:agent-docs
+bun run projects:list
+bun run projects:doctor
+bun run projects:install
+bun run projects:verify
 bun run ci:root
-bun run ci:app
+bun run ci:projects
 bun run ci
 bun run perf:lighthouse
 bun run perf:lighthouse:assert -- --report artifacts/lighthouse/current.json
 
-# apps/astro-web-template (fresh `npm create astro@latest` scaffold baseline)
-cd apps/astro-web-template
+# ~/github/astro-web-template (fresh `npm create astro@latest` scaffold baseline)
+cd ~/github/astro-web-template
 bun run dev
 bun run build
 bun run preview
 
-# apps/astro-blog-template
-cd apps/astro-blog-template
+# ~/github/astro-blog-template
+cd ~/github/astro-blog-template
 bun run dev
 bun run build
 bun run preview

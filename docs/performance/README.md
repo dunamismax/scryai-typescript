@@ -1,6 +1,6 @@
 # Performance CI
 
-Lighthouse quality gates run against `apps/astro-web-template` in both **mobile** and **desktop** modes.
+Lighthouse quality gates from `scryai` run against `~/github/astro-web-template` by default in both **mobile** and **desktop** modes.
 
 ## Metrics gated
 
@@ -11,7 +11,7 @@ Lighthouse quality gates run against `apps/astro-web-template` in both **mobile*
 
 ## Local run
 
-From repo root:
+From `scryai` repo root:
 
 ```bash
 # Build + run Lighthouse mobile + desktop (3 runs each)
@@ -22,6 +22,12 @@ bun run perf:lighthouse:assert -- --report artifacts/lighthouse/current.json
 
 # Assert thresholds and deltas vs baseline report
 bun run perf:lighthouse:assert -- --report artifacts/lighthouse/head.json --baseline artifacts/lighthouse/base.json
+```
+
+Override target project path explicitly:
+
+```bash
+bun run perf:lighthouse -- --app-dir ~/github/astro-web-template
 ```
 
 Lighthouse requires a local Chrome/Chromium executable.

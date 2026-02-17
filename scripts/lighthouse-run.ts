@@ -58,6 +58,11 @@ const browserPathCandidates = [
   "/usr/bin/chromium-browser",
   "/snap/bin/chromium",
 ] as const;
+const home = process.env.HOME ?? "/home/sawyer";
+const githubRoot = process.env.GITHUB_ROOT
+  ? resolve(process.env.GITHUB_ROOT)
+  : resolve(home, "github");
+const defaultAppDir = resolve(githubRoot, "astro-web-template");
 
 function parseArgs(argv: string[]): CliOptions {
   const values = new Map<string, string>();
@@ -85,7 +90,7 @@ function parseArgs(argv: string[]): CliOptions {
     flags.add(key);
   }
 
-  const appDir = resolve(values.get("app-dir") ?? "apps/astro-web-template");
+  const appDir = resolve(values.get("app-dir") ?? defaultAppDir);
   const output = resolve(values.get("output") ?? "artifacts/lighthouse/current.json");
   const port = Number(values.get("port") ?? "4173");
   const runs = Number(values.get("runs") ?? "3");

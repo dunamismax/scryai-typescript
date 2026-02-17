@@ -10,11 +10,14 @@ const githubRoot = process.env.GITHUB_ROOT
 const owner = process.env.GITHUB_OWNER ?? "dunamismax";
 const anchorRepo = process.env.GITHUB_ANCHOR_REPO ?? "scryai";
 const profileRepo = process.env.GITHUB_PROFILE_REPO ?? "dunamismax";
+const managedProjectRepos = ["astro-web-template", "astro-blog-template"];
 const reposIndexPath = resolve(githubRoot, profileRepo, "REPOS.md");
 const localOnly = process.argv.includes("--local-only");
 const fallbackRepos = [
   "scryai",
   "dunamismax",
+  "astro-web-template",
+  "astro-blog-template",
   "BereanAI",
   "TALLstack",
   "c-from-the-ground-up",
@@ -204,6 +207,7 @@ function loadRepoList(): string[] {
   const repos = uniqueOrdered([
     anchorRepo,
     profileRepo,
+    ...managedProjectRepos,
     ...(usingFallback ? fallbackRepos : parsedFromIndex),
   ]);
 

@@ -1,8 +1,8 @@
-import { existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { commandExists, logStep, runOrThrow } from "./lib";
 
 const requiredTools = ["bun", "docker", "git", "curl", "tar"];
+const scriptRepoRoot = resolve(import.meta.dir, "..");
 
 function checkPrereqs(): void {
   logStep("Checking prerequisites");
@@ -19,26 +19,9 @@ function ensureDeps(): void {
   runOrThrow(["bun", "install"]);
 }
 
-function ensureAppDeps(): void {
-  const appsRoot = resolve(import.meta.dir, "..", "apps");
-  if (!existsSync(appsRoot)) {
-    return;
-  }
-
-  const apps = readdirSync(appsRoot, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .filter((name) => existsSync(resolve(appsRoot, name, "package.json")));
-
-  if (apps.length === 0) {
-    return;
-  }
-
-  logStep("Installing app dependencies");
-  for (const app of apps) {
-    console.log(`app: ${app}`);
-    runOrThrow(["bun", "install"], { cwd: resolve(appsRoot, app) });
-  }
+function ensureManagedProjectDeps(): void {
+  logStep("Installing managed project dependencies");
+  runOrThrow(["bun", "run", "projects:install"], { cwd: scriptRepoRoot });
 }
 
 function setupInfra(): void {
@@ -62,7 +45,7 @@ function printSummary(): void {
 
 checkPrereqs();
 ensureDeps();
-ensureAppDeps();
+ensureManagedProjectDeps();
 setupInfra();
 setupZig();
 printSummary();
