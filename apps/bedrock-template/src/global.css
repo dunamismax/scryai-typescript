@@ -1,7 +1,11 @@
+@import "@fontsource-variable/space-grotesk/wght.css";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "@fontsource/ibm-plex-sans/latin-500.css";
+@import "@fontsource/ibm-plex-sans/latin-600.css";
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Space Grotesk", "IBM Plex Sans", ui-sans-serif, sans-serif;
+  --font-sans: "Space Grotesk Variable", "IBM Plex Sans", ui-sans-serif, sans-serif;
   --color-canvas: #f8fafc;
 }
 

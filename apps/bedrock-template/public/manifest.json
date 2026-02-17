@@ -1,9 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "qwik-project-name",
-  "short_name": "Welcome to Qwik",
-  "start_url": ".",
+  "name": "bedrock-template",
+  "short_name": "Bedrock",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#fff",
-  "description": "A Qwik project app."
+  "background_color": "#f8fafc",
+  "theme_color": "#0f172a",
+  "description": "Production-first Qwik full-stack starter with auth, RBAC, and self-hosted infrastructure."
 }

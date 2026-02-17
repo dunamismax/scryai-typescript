@@ -1,5 +1,5 @@
 import { component$, Slot } from "@builder.io/qwik";
-import type { DocumentHead, RequestHandler } from "@builder.io/qwik-city";
+import type { RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 
 import { SiteNav } from "~/components/site-nav";
@@ -12,6 +12,8 @@ export const onRequest: RequestHandler = async (event) => {
   for (const [header, value] of Object.entries(securityHeaders)) {
     event.headers.set(header, value);
   }
+
+  event.cacheControl({ noCache: true });
 
   await event.next();
 };
@@ -40,18 +42,3 @@ export default component$(() => {
     </>
   );
 });
-
-export const head: DocumentHead = {
-  links: [
-    { rel: "preconnect", href: "https://fonts.googleapis.com" },
-    {
-      rel: "preconnect",
-      href: "https://fonts.gstatic.com",
-      crossorigin: "anonymous",
-    },
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap",
-    },
-  ],
-};

@@ -1,6 +1,10 @@
 import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import type { DocumentHead, RequestHandler } from "@builder.io/qwik-city";
 import { Link } from "@builder.io/qwik-city";
+
+export const onGet: RequestHandler = async ({ cacheControl }) => {
+  cacheControl({ public: true, maxAge: 60, staleWhileRevalidate: 300 });
+};
 
 const pillars = [
   {
@@ -39,6 +43,7 @@ export default component$(() => {
           <Link
             class="inline-flex h-10 items-center justify-center rounded-md bg-slate-900 px-4 text-sm font-medium text-white transition hover:bg-slate-700"
             href="/auth/sign-up"
+            prefetch="js"
           >
             Start with an account
           </Link>
