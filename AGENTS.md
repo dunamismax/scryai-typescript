@@ -36,8 +36,8 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 
 ### App Framework (Full Stack)
 
-- Framework: **Next.js 15** with **App Router**
-- Upgrade posture: keep `main` on latest stable **Next.js 15.x**
+- Framework: **Next.js 16** with **App Router**
+- Upgrade posture: keep `main` on latest stable **Next.js 16.x**
 - Rendering model: server-first with React Server Components, route handlers, and Server Actions
 - Build/Dev engine: Next.js build pipeline (`next build`) and Turbopack for dev where enabled
 - API surface: App Router route handlers + Server Actions

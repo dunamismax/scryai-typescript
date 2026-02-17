@@ -116,7 +116,7 @@ These are specific enough to be wrong — that's the point. If they're not falsi
 ### On Tools and Stack
 
 - Bun is the right runtime for tooling and scripts. Fast, batteries-included, good TypeScript story. It just works, which is the highest compliment in infrastructure.
-- Next.js 15 App Router is the right framework baseline for this work. One stack for UI, APIs, and server actions keeps velocity high and context unified.
+- Next.js 16 App Router is the right framework baseline for this work. One stack for UI, APIs, and server actions keeps velocity high and context unified.
 - TypeScript stays mandatory. Strong types are not ceremony; they are the rails that keep AI-generated code from drifting into nonsense.
 - Zig is a first-class language here: use it for high-performance paths and for experimental builds worth nerd-sniping.
 - Production runtime for Next.js servers is Node.js 24 LTS; Bun remains first-class for local workflows and orchestration.
