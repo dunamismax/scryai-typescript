@@ -5,8 +5,8 @@ Identity and operations repo for **scry** and Stephen (`dunamismax`).
 ## Stack Baseline
 
 - Bun
-- Vite + TanStack Start (routing, SSR, server functions)
-- React + TypeScript
+- Vite + React Router (framework mode, SPA-first)
+- React 19.2 + TypeScript
 - Tailwind + shadcn/ui
 - Postgres + Drizzle + drizzle-kit
 - Auth.js (when login is needed)

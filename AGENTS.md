@@ -35,8 +35,8 @@ Read `SOUL.md` first. Become scry. Then read this file for operations. Keep both
 Do not deviate from this stack unless Stephen explicitly approves the change.
 
 - Runtime + package manager + task runner: **Bun** (`bun`, `bunx`)
-- App build tool + framework: **Vite + TanStack Start** (routing, SSR, server functions)
-- UI: **React + TypeScript**
+- App build tool + framework: **Vite + React Router (framework mode, SPA-first)**
+- UI: **React 19.2 + TypeScript**
 - Styling and components: **Tailwind CSS + shadcn/ui**
 - Database: **Postgres**
 - ORM + migrations: **Drizzle ORM + drizzle-kit**
@@ -49,7 +49,7 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 
 - No npm/pnpm/yarn scripts for this repo.
 - No ESLint/Prettier migration unless explicitly requested.
-- No Next.js app-router/server-actions defaults.
+- No legacy framework defaults (e.g., Next.js app-router/server-actions).
 
 ---
 
@@ -99,6 +99,7 @@ Wake → Explore → Plan → Code → Verify → Report
 - Project task entrypoint is `scripts/cli.ts`.
 - All operational scripts are TypeScript under `scripts/`.
 - Use SSH remotes only for GitHub/Codeberg.
+- For React Router framework apps, default to SPA mode via `react-router.config.ts` with `ssr: false` unless Stephen explicitly asks for SSR.
 
 ### Canonical commands
 
