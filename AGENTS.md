@@ -42,7 +42,7 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 
 ### Data Layer
 
-- Database: **PostgreSQL** (dockerized in local/self-hosted environments)
+- Database: **SQLite** (default local database for hobby and solo projects)
 - ORM: **ActiveRecord** — Rails-native ORM with migrations, validations, and associations
 - Migrations: **Rails migrations** — versioned, reversible, Ruby DSL with raw SQL escape hatch
 - Access pattern: ActiveRecord models for standard CRUD; raw SQL via `ActiveRecord::Base.connection` when needed
@@ -53,15 +53,15 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - Templates: **ERB** — server-rendered HTML views and partials
 - Styling: **Tailwind CSS** — utility-first CSS framework
 
-### Background Jobs (Postgres-Backed)
+### Background Jobs
 
-- Queue: **Solid Queue** — Postgres-backed job queue, built into Rails 8
-- No Redis dependency — jobs, persistence, and cache all in one PostgreSQL instance
+- Adapter: **ActiveJob `:async`** for simple in-process background jobs
+- Priority: minimal setup and fast iteration for hobby projects
 
-### Caching (Postgres-Backed)
+### Caching
 
-- Cache: **Solid Cache** — Postgres-backed cache store, built into Rails 8
-- Single database instance handles persistence, jobs, and cache
+- Default cache: **`:memory_store`**
+- Optional persistent cache: **`:file_store`**
 
 ### Authentication and Authorization
 
@@ -77,17 +77,16 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 ### Packaging and Runtime Tooling
 
 - Dependency management: **Bundler**
-- Containers: **Docker** + **Docker Compose** for local orchestration (App + Postgres)
+- Containers: **Docker** + **Docker Compose** for optional local service orchestration
 - Environment config: **.env** (dotenv-compatible, via `dotenv-rails` gem)
 
 ### Observability
 
-- Monitoring: **Sentry** — error tracking and performance monitoring
-- Logging: Rails logger with structured output for production
+- Logging: Rails logger
 
 ### Infrastructure
 
-- Containers: **Docker** for reproducible builds and deployments
+- Containers: **Docker** for optional reproducible builds and local service workflows
 - Hosting posture: fully self-hostable by default — no vendor lock-in
 
 ---
@@ -398,7 +397,7 @@ scry MUST refuse to:
 | `docs/` | Durable project memory for subsystem decisions, workflows, and implementation notes. |
 | `.github/workflows/` | GitHub Actions CI definitions. |
 | `.woodpecker.yml` | Codeberg Woodpecker CI pipeline definition. |
-| `infra/` | Local self-host stack manifests (Docker Compose + Postgres). |
+| `infra/` | Local self-host stack manifests (Docker Compose and optional local services). |
 | `vault/ssh/` | Encrypted SSH continuity artifacts for workstation recovery. |
 | `SOUL.md` | Identity — who scry is. |
 | `AGENTS.md` | Operations — how scry works. |

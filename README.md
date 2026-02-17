@@ -8,7 +8,7 @@ This repo is intentionally **not** an app monorepo. Product apps live in dedicat
 
 - Identity + operations contracts: `SOUL.md`, `AGENTS.md`
 - Root orchestration tasks: `lib/tasks/`
-- Shared local infrastructure: `infra/` (PostgreSQL via Docker Compose)
+- Shared local infrastructure: `infra/` (optional local services via Docker Compose)
 - Durable operational docs: `docs/`
 - Encrypted SSH continuity artifacts: `vault/ssh/`
 
@@ -17,23 +17,22 @@ This repo is intentionally **not** an app monorepo. Product apps live in dedicat
 The application stack baseline for managed projects is:
 
 - Ruby 3.2+ with Rails 8 (The One Person Framework)
-- PostgreSQL (Dockerized) + ActiveRecord
-- Solid Queue (Postgres-backed background jobs)
-- Solid Cache (Postgres-backed caching)
+- SQLite + ActiveRecord
+- ActiveJob with `:async` (in-process background jobs)
+- Rails cache via `:memory_store` (or `:file_store`)
 - Devise + Pundit for authentication and authorization
 - Hotwire (Turbo + Stimulus) for frontend
 - Tailwind CSS for styling
 - Minitest for testing
 - RuboCop for linting/formatting
 - Bundler for dependency management
-- Docker for infrastructure
-- Sentry for monitoring
+- Docker for optional local services
 
 ## Prerequisites
 
 - `ruby` (3.2+)
 - `bundler`
-- `docker` + `docker compose`
+- `docker` + `docker compose` (optional)
 - `git`
 - `ssh`
 - `curl`

@@ -3,7 +3,7 @@
 require 'scry/helpers'
 
 REPO_ROOT = File.expand_path('../..', __dir__)
-REQUIRED_TOOLS = %w[ruby bundler docker git curl].freeze
+REQUIRED_TOOLS = %w[ruby bundler git curl].freeze
 
 namespace :scry do
   desc 'Bootstrap root dependencies, managed projects, and infrastructure'
@@ -23,7 +23,7 @@ namespace :scry do
     log_step 'Installing managed project dependencies'
     run_or_throw(%w[bundle exec rake scry:projects:install], cwd: REPO_ROOT)
 
-    log_step 'Configuring PostgreSQL defaults'
+    log_step 'Preparing local storage defaults'
     run_or_throw(%w[bundle exec rake scry:setup:storage], cwd: REPO_ROOT)
 
     log_step 'Bootstrap complete'
