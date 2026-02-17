@@ -1,0 +1,11 @@
+one:
+  name: Owner Project
+  summary: Core project for owner.
+  status: 1
+  user: one
+
+two:
+  name: Other Project
+  summary: Private project owned by another user.
+  status: 0
+  user: two

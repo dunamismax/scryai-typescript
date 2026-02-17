@@ -1,0 +1,46 @@
+<% content_for :title, "Dashboard" %>
+
+<div class="space-y-8">
+  <header class="space-y-2">
+    <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Build with boring power</h1>
+    <p class="text-slate-600">Rails 8 monolith reference with Hotwire, Devise, Pundit, ActiveJob, and SQLite.</p>
+  </header>
+
+  <section class="grid gap-4 sm:grid-cols-3">
+    <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-sm font-medium text-slate-500">Projects</p>
+      <p class="mt-2 text-3xl font-semibold text-slate-900"><%= @snapshot[:total_projects] %></p>
+    </article>
+    <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-sm font-medium text-slate-500">Active</p>
+      <p class="mt-2 text-3xl font-semibold text-emerald-700"><%= @snapshot[:active_projects] %></p>
+    </article>
+    <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-sm font-medium text-slate-500">Archived</p>
+      <p class="mt-2 text-3xl font-semibold text-slate-700"><%= @snapshot[:archived_projects] %></p>
+    </article>
+  </section>
+
+  <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-slate-900">Recent projects</h2>
+      <%= link_to "All projects", projects_path, class: "text-sm font-medium text-sky-700 hover:text-sky-600" %>
+    </div>
+
+    <% if @projects.any? %>
+      <ul class="mt-4 space-y-3">
+        <% @projects.each do |project| %>
+          <li class="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3">
+            <div>
+              <p class="font-medium text-slate-900"><%= link_to project.name, project_path(project), class: "hover:text-sky-700" %></p>
+              <p class="text-sm text-slate-500"><%= project.status.humanize %> • updated <%= time_ago_in_words(project.updated_at) %> ago</p>
+            </div>
+            <%= link_to "Edit", edit_project_path(project), class: "text-sm font-medium text-slate-600 hover:text-slate-900" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-4 text-sm text-slate-500">No projects yet. Create one to exercise the template flow.</p>
+    <% end %>
+  </section>
+</div>

@@ -1,0 +1,35 @@
+<%= form_with(model: project, class: "space-y-4") do |form| %>
+  <% if project.errors.any? %>
+    <div class="rounded-md border border-rose-200 bg-rose-50 px-4 py-3">
+      <h2 class="text-sm font-medium text-rose-800"><%= pluralize(project.errors.count, "error") %> blocked this save:</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-rose-700">
+        <% project.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, class: "mb-1 block text-sm font-medium text-slate-700" %>
+    <%= form.text_field :name, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+  </div>
+
+  <div>
+    <%= form.label :summary, class: "mb-1 block text-sm font-medium text-slate-700" %>
+    <%= form.text_area :summary, rows: 4, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+  </div>
+
+  <div>
+    <%= form.label :status, class: "mb-1 block text-sm font-medium text-slate-700" %>
+    <%= form.select :status,
+      Project.statuses.keys.map { |key| [key.humanize, key] },
+      {},
+      class: "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm" %>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <%= form.submit class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700" %>
+    <%= link_to "Cancel", projects_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
+  </div>
+<% end %>

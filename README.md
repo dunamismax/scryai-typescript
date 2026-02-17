@@ -2,7 +2,9 @@
 
 Canonical home-base repository for **scry** and Stephen (`dunamismax`): identity, operating contracts, workstation bootstrap, and cross-repo orchestration.
 
-This repo is intentionally **not** an app monorepo. Product apps live in dedicated sibling repositories under `~/github`.
+This repo is intentionally **not** a product app monorepo. Product apps live in dedicated sibling repositories under `~/github`.
+
+Exception: `web-template/` is a local **reference Rails application** used to codify and demonstrate current best-practice full-stack Rails patterns for the scry stack. It is a template and exemplar, not a product deployment target.
 
 ## What Lives Here
 
@@ -11,6 +13,7 @@ This repo is intentionally **not** an app monorepo. Product apps live in dedicat
 - Shared infrastructure notes: `infra/` (optional manifests, not required by the core stack)
 - Durable operational docs: `docs/`
 - Encrypted SSH continuity artifacts: `vault/ssh/`
+- Full-stack reference application scaffold: `web-template/`
 
 ## Stack Baseline
 
@@ -108,6 +111,7 @@ Product app CI runs in their own repositories.
 | `infra/` | Self-hostable local infrastructure manifests. |
 | `docs/` | Durable operations docs. |
 | `vault/ssh/` | Encrypted SSH continuity artifacts. |
+| `web-template/` | Canonical full-stack Rails reference/template app for this stack. |
 | `SOUL.md` | Identity source of truth for scry. |
 | `AGENTS.md` | Operational source of truth for scry. |
 
@@ -116,6 +120,7 @@ Product app CI runs in their own repositories.
 - Runtime operations: [`AGENTS.md`](AGENTS.md)
 - Identity and voice: [`SOUL.md`](SOUL.md)
 - Local docs ownership: [`docs/README.md`](docs/README.md)
+- Web template intent and scope: [`docs/web-template.md`](docs/web-template.md)
 - SSH continuity docs: [`vault/ssh/README.md`](vault/ssh/README.md)
 
 ## License

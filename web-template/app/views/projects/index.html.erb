@@ -1,0 +1,30 @@
+<% content_for :title, "Projects" %>
+
+<section class="space-y-6">
+  <header class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-900">Projects</h1>
+      <p class="text-sm text-slate-600">Policy-scoped to the signed-in user.</p>
+    </div>
+    <%= link_to "New project", new_project_path, class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700" %>
+  </header>
+
+  <%= form_with url: projects_path, method: :get, class: "max-w-sm", data: { controller: "autosubmit" } do |form| %>
+    <%= form.label :status, "Status", class: "mb-1 block text-sm font-medium text-slate-700" %>
+    <%= form.select :status,
+      options_for_select([["All", nil]] + Project.statuses.keys.map { |key| [key.humanize, key] }, @status),
+      {},
+      class: "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm",
+      data: { action: "change->autosubmit#submit" } %>
+  <% end %>
+
+  <div class="space-y-3" id="projects">
+    <% if @projects.any? %>
+      <% @projects.each do |project| %>
+        <%= render project %>
+      <% end %>
+    <% else %>
+      <p class="rounded-lg border border-slate-200 bg-white px-4 py-6 text-sm text-slate-500">No projects found for this filter.</p>
+    <% end %>
+  </div>
+</section>

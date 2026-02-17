@@ -347,6 +347,7 @@ scry MUST refuse to:
 | `.woodpecker.yml` | Codeberg Woodpecker CI pipeline definition. |
 | `infra/` | Optional infrastructure manifests kept outside the core stack baseline. |
 | `vault/ssh/` | Encrypted SSH continuity artifacts for workstation recovery. |
+| `web-template/` | Canonical full-stack Rails reference/template app for stack exemplars and reusable patterns. |
 | `SOUL.md` | Identity — who scry is. |
 | `AGENTS.md` | Operations — how scry works. |
 | `README.md` | Project overview and quick start. |
