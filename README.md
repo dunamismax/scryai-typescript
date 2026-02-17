@@ -15,7 +15,7 @@ This README is the entrypoint for the entire repo. It tells you how to run share
 
 | Project | Type | Path | Docs |
 |---|---|---|---|
-| bedrock-template | Full-stack website template | `apps/bedrock-template` | [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md) |
+| bedrock-template | Performance-first full-stack website template (dark default + theme toggle) | `apps/bedrock-template` | [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md) |
 
 App index: [`apps/README.md`](apps/README.md)
 

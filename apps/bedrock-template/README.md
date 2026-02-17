@@ -16,13 +16,16 @@ Production-ready Qwik City starter for the scry stack:
 - Email/password auth with Better Auth mounted at `/api/auth/*`
 - Protected routes and RBAC (`member`, `manager`, `admin`)
 - Admin user management (role + account activation)
+- Dark mode by default with persisted dark/light toggle in top-right nav
+- Reusable high-contrast UI primitives (`surface`, `btn`, `input`, data-table styles)
 - Security defaults: CSP, strict headers, same-origin mutation checks
-- Route-level `cacheControl` headers (public caching on landing, no-cache on auth pages)
+- Route-level `cacheControl` headers (public cached landing, no-cache on dynamic/auth pages)
 - Auth form rate limiting with Zod schema validation
 - MinIO upload flow with asset metadata table
 - pg-boss worker scaffold and queue publishing example
 - SQL-first data access with `postgres.js`
 - Self-hosted fonts — zero external CDN requests for font loading
+- Reduced-motion handling and low-cost reveal transitions for smoother navigation feel
 - Server build minification enabled for production
 
 ## Quick Start

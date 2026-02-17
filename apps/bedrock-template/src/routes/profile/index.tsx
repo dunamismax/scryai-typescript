@@ -70,23 +70,21 @@ export default component$(() => {
 
   return (
     <AppShell isAdmin={loader.value.user.role === "admin"}>
-      <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section class="surface p-6 reveal">
         <h1 class="text-xl font-semibold">Profile</h1>
-        <p class="mt-1 text-sm text-slate-600">Update account identity fields.</p>
+        <p class="muted mt-1 text-sm">Update account identity fields.</p>
 
         {loc.url.searchParams.get("updated") === "1" ? (
-          <p class="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-            Profile updated.
-          </p>
+          <p class="notice notice-success mt-4">Profile updated.</p>
         ) : null}
 
         <Form action={action} class="mt-6 max-w-md space-y-4">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="name">
+            <label class="field-label" for="name">
               Name
             </label>
             <input
-              class="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+              class="input"
               id="name"
               name="name"
               required
@@ -95,25 +93,15 @@ export default component$(() => {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="email">
+            <label class="field-label" for="email">
               Email
             </label>
-            <input
-              class="h-10 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm"
-              disabled
-              id="email"
-              type="email"
-              value={loader.value.user.email}
-            />
+            <input class="input" disabled id="email" type="email" value={loader.value.user.email} />
           </div>
 
-          {action.value?.error ? <p class="text-sm text-red-600">{action.value.error}</p> : null}
+          {action.value?.error ? <p class="notice notice-error">{action.value.error}</p> : null}
 
-          <button
-            class="inline-flex h-10 items-center justify-center rounded-md bg-slate-900 px-4 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
-            disabled={action.isRunning}
-            type="submit"
-          >
+          <button class="btn btn-primary" disabled={action.isRunning} type="submit">
             {action.isRunning ? "Saving..." : "Save profile"}
           </button>
         </Form>

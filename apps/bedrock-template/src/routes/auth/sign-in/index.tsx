@@ -82,23 +82,22 @@ export default component$(() => {
   const action = useSignInAction();
 
   return (
-    <main id="main-content" class="mx-auto max-w-md px-4 py-14 sm:px-0">
-      <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 class="text-xl font-semibold text-slate-900">Sign in</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Use your account to access dashboard and admin routes.
-        </p>
+    <main class="mx-auto max-w-md px-4 py-14 sm:px-0" id="main-content">
+      <section class="surface reveal p-6">
+        <p class="eyebrow">Welcome back</p>
+        <h1 class="mt-2 text-xl font-semibold">Sign in</h1>
+        <p class="muted mt-1 text-sm">Use your account to access dashboard and admin routes.</p>
 
         <Form action={action} class="mt-6 space-y-4">
-          <input type="hidden" name="next" value={loader.value.next} />
+          <input name="next" type="hidden" value={loader.value.next} />
 
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="email">
+            <label class="field-label" for="email">
               Email
             </label>
             <input
               autoComplete="email"
-              class="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+              class="input"
               id="email"
               name="email"
               required
@@ -108,12 +107,12 @@ export default component$(() => {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="password">
+            <label class="field-label" for="password">
               Password
             </label>
             <input
               autoComplete="current-password"
-              class="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+              class="input"
               id="password"
               name="password"
               required
@@ -121,20 +120,16 @@ export default component$(() => {
             />
           </div>
 
-          {action.value?.error ? <p class="text-sm text-red-600">{action.value.error}</p> : null}
+          {action.value?.error ? <p class="notice notice-error">{action.value.error}</p> : null}
 
-          <button
-            class="inline-flex h-10 w-full items-center justify-center rounded-md bg-slate-900 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
-            disabled={action.isRunning}
-            type="submit"
-          >
+          <button class="btn btn-primary h-10 w-full" disabled={action.isRunning} type="submit">
             {action.isRunning ? "Signing in..." : "Sign in"}
           </button>
         </Form>
 
-        <p class="mt-4 text-sm text-slate-600">
+        <p class="muted mt-4 text-sm">
           Need an account?{" "}
-          <Link class="text-sky-700 hover:underline" href="/auth/sign-up">
+          <Link class="inline-link" href="/auth/sign-up" prefetch="js">
             Create one
           </Link>
           .

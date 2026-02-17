@@ -4,7 +4,7 @@
   "short_name": "Bedrock",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#0f172a",
-  "description": "Production-first Qwik full-stack starter with auth, RBAC, and self-hosted infrastructure."
+  "background_color": "#060a13",
+  "theme_color": "#060a13",
+  "description": "Performance-first Qwik full-stack starter with auth, RBAC, and self-hosted infrastructure."
 }

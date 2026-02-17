@@ -10,7 +10,9 @@ export const RouterHead = component$(() => {
     <>
       <title>{head.title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="theme-color" content="#0f172a" />
+      <meta name="color-scheme" content="dark light" />
+      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#060a13" />
+      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f7ff" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <link rel="canonical" href={canonicalUrl} />

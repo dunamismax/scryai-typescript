@@ -88,21 +88,20 @@ export default component$(() => {
   const action = useSignUpAction();
 
   return (
-    <main id="main-content" class="mx-auto max-w-md px-4 py-14 sm:px-0">
-      <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 class="text-xl font-semibold text-slate-900">Create account</h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Includes baseline security policy and role defaults.
-        </p>
+    <main class="mx-auto max-w-md px-4 py-14 sm:px-0" id="main-content">
+      <section class="surface reveal p-6">
+        <p class="eyebrow">Start fast</p>
+        <h1 class="mt-2 text-xl font-semibold">Create account</h1>
+        <p class="muted mt-1 text-sm">Includes baseline security policy and role defaults.</p>
 
         <Form action={action} class="mt-6 space-y-4">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="name">
+            <label class="field-label" for="name">
               Full name
             </label>
             <input
               autoComplete="name"
-              class="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+              class="input"
               id="name"
               name="name"
               required
@@ -111,12 +110,12 @@ export default component$(() => {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="email">
+            <label class="field-label" for="email">
               Email
             </label>
             <input
               autoComplete="email"
-              class="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+              class="input"
               id="email"
               name="email"
               required
@@ -126,12 +125,12 @@ export default component$(() => {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700" for="password">
+            <label class="field-label" for="password">
               Password
             </label>
             <input
               autoComplete="new-password"
-              class="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+              class="input"
               id="password"
               name="password"
               required
@@ -139,20 +138,16 @@ export default component$(() => {
             />
           </div>
 
-          {action.value?.error ? <p class="text-sm text-red-600">{action.value.error}</p> : null}
+          {action.value?.error ? <p class="notice notice-error">{action.value.error}</p> : null}
 
-          <button
-            class="inline-flex h-10 w-full items-center justify-center rounded-md bg-slate-900 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
-            disabled={action.isRunning}
-            type="submit"
-          >
+          <button class="btn btn-primary h-10 w-full" disabled={action.isRunning} type="submit">
             {action.isRunning ? "Creating account..." : "Create account"}
           </button>
         </Form>
 
-        <p class="mt-4 text-sm text-slate-600">
+        <p class="muted mt-4 text-sm">
           Already have an account?{" "}
-          <Link class="text-sky-700 hover:underline" href="/auth/sign-in">
+          <Link class="inline-link" href="/auth/sign-in" prefetch="js">
             Sign in
           </Link>
           .

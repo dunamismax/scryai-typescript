@@ -36,17 +36,15 @@ export default component$(() => {
   return (
     <AppShell isAdmin={dashboard.value.user.role === "admin"}>
       <div class="space-y-6">
-        <div>
+        <div class="reveal">
           <h1 class="text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p class="mt-1 text-sm text-slate-600">
+          <p class="muted mt-1 text-sm">
             Signed in as <strong>{dashboard.value.user.email}</strong>
           </p>
         </div>
 
         {loc.url.searchParams.get("uploaded") === "1" ? (
-          <p class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-            Upload completed.
-          </p>
+          <p class="notice notice-success reveal">Upload completed.</p>
         ) : null}
 
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -60,9 +58,9 @@ export default component$(() => {
           ) : null}
         </div>
 
-        <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="surface defer-section p-6 reveal reveal-2">
           <h2 class="text-lg font-semibold">Upload file to MinIO</h2>
-          <p class="mt-1 text-sm text-slate-600">Stored under your account namespace.</p>
+          <p class="muted mt-1 text-sm">Stored under your account namespace.</p>
 
           <form
             action="/api/upload"
@@ -70,35 +68,27 @@ export default component$(() => {
             enctype="multipart/form-data"
             method="post"
           >
-            <input
-              class="block w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-700"
-              name="file"
-              required
-              type="file"
-            />
-            <button
-              class="inline-flex h-10 items-center justify-center rounded-md bg-slate-900 px-4 text-sm font-medium text-white transition hover:bg-slate-700"
-              type="submit"
-            >
+            <input class="file-input" name="file" required type="file" />
+            <button class="btn btn-primary" type="submit">
               Upload
             </button>
           </form>
-          <p class="mt-2 text-xs text-slate-500">
+          <p class="muted mt-2 text-xs">
             Default max size is 10 MB. Configure with `MAX_UPLOAD_BYTES`.
           </p>
         </section>
 
-        <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="surface defer-section p-6 reveal reveal-3">
           <h2 class="text-lg font-semibold">Recent uploads</h2>
-          <p class="mt-1 text-sm text-slate-600">Latest objects you uploaded.</p>
+          <p class="muted mt-1 text-sm">Latest objects you uploaded.</p>
 
           {dashboard.value.assets.length === 0 ? (
-            <p class="mt-4 text-sm text-slate-500">No uploads yet.</p>
+            <p class="muted mt-4 text-sm">No uploads yet.</p>
           ) : (
             <div class="mt-4 overflow-auto">
-              <table class="w-full min-w-[640px] border-collapse text-sm">
+              <table class="data-table text-sm">
                 <thead>
-                  <tr class="border-b border-slate-200 text-left text-slate-500">
+                  <tr>
                     <th class="pb-2 font-medium">File</th>
                     <th class="pb-2 font-medium">Type</th>
                     <th class="pb-2 font-medium">Size</th>
@@ -107,11 +97,11 @@ export default component$(() => {
                 </thead>
                 <tbody>
                   {dashboard.value.assets.map((asset) => (
-                    <tr key={asset.id} class="border-b border-slate-100">
-                      <td class="py-2 font-medium text-slate-800">{asset.originalFileName}</td>
-                      <td class="py-2 text-slate-600">{asset.contentType}</td>
-                      <td class="py-2 text-slate-600">{formatBytes(asset.sizeBytes)}</td>
-                      <td class="max-w-[220px] truncate py-2 text-xs text-slate-500">
+                    <tr key={asset.id}>
+                      <td class="py-2 font-medium">{asset.originalFileName}</td>
+                      <td class="table-cell-subtle py-2">{asset.contentType}</td>
+                      <td class="table-cell-subtle py-2">{formatBytes(asset.sizeBytes)}</td>
+                      <td class="table-cell-subtle max-w-[220px] truncate py-2 text-xs">
                         {asset.objectKey}
                       </td>
                     </tr>
@@ -123,7 +113,7 @@ export default component$(() => {
         </section>
 
         <div class="text-sm">
-          <Link class="text-sky-700 hover:underline" href="/settings">
+          <Link class="inline-link" href="/settings" prefetch="js">
             Open settings and jobs
           </Link>
         </div>
@@ -139,9 +129,9 @@ type StatCardProps = {
 
 const StatCard = component$<StatCardProps>(({ label, value }) => {
   return (
-    <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-sm text-slate-500">{label}</p>
-      <p class="mt-1 text-2xl font-semibold text-slate-900">{value}</p>
+    <article class="kpi-card reveal">
+      <p class="kpi-label">{label}</p>
+      <p class="kpi-value">{value}</p>
     </article>
   );
 });

@@ -61,43 +61,37 @@ export default component$(() => {
   return (
     <AppShell isAdmin={loader.value.user.role === "admin"}>
       <div class="space-y-6">
-        <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="surface p-6 reveal">
           <h1 class="text-xl font-semibold">Runtime configuration</h1>
-          <p class="mt-1 text-sm text-slate-600">Values from environment and infra wiring.</p>
+          <p class="muted mt-1 text-sm">Values from environment and infra wiring.</p>
 
-          <div class="mt-4 space-y-2 text-sm text-slate-700">
+          <div class="muted mt-4 space-y-2 text-sm">
             <p>
-              <strong>Jobs enabled:</strong> {loader.value.jobsEnabled ? "yes" : "no"}
+              <strong class="text-[var(--fg)]">Jobs enabled:</strong>{" "}
+              {loader.value.jobsEnabled ? "yes" : "no"}
             </p>
             <p>
-              <strong>MinIO bucket:</strong> {loader.value.minioBucket}
+              <strong class="text-[var(--fg)]">MinIO bucket:</strong> {loader.value.minioBucket}
             </p>
             <p>
-              <strong>Max upload bytes:</strong> {loader.value.maxUploadBytes}
+              <strong class="text-[var(--fg)]">Max upload bytes:</strong>{" "}
+              {loader.value.maxUploadBytes}
             </p>
           </div>
         </section>
 
-        <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section class="surface p-6 reveal reveal-2">
           <h2 class="text-lg font-semibold">Background jobs</h2>
-          <p class="mt-1 text-sm text-slate-600">
-            Queue a sample pg-boss job to validate worker plumbing.
-          </p>
+          <p class="muted mt-1 text-sm">Queue a sample pg-boss job to validate worker plumbing.</p>
 
           <Form action={action} class="mt-4">
             <input name="intent" type="hidden" value="enqueue-demo" />
-            <button
-              class="inline-flex h-10 items-center justify-center rounded-md bg-slate-900 px-4 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
-              disabled={action.isRunning}
-              type="submit"
-            >
+            <button class="btn btn-primary" disabled={action.isRunning} type="submit">
               {action.isRunning ? "Queueing..." : "Queue demo job"}
             </button>
           </Form>
 
-          {action.value?.message ? (
-            <p class="mt-3 text-sm text-slate-600">{action.value.message}</p>
-          ) : null}
+          {action.value?.message ? <p class="muted mt-3 text-sm">{action.value.message}</p> : null}
         </section>
       </div>
     </AppShell>

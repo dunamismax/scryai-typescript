@@ -97,14 +97,16 @@ export default component$(() => {
 
   return (
     <AppShell isAdmin={loader.value.isAdmin}>
-      <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section class="surface p-6 reveal">
         <h1 class="text-xl font-semibold">User management</h1>
-        <p class="mt-1 text-sm text-slate-600">Manage roles and account activation flags.</p>
+        <p class="muted mt-1 text-sm">Manage roles and account activation flags.</p>
+
+        {action.value?.error ? <p class="notice notice-error mt-4">{action.value.error}</p> : null}
 
         <div class="mt-5 overflow-auto">
-          <table class="w-full min-w-[760px] border-collapse text-sm">
+          <table class="data-table min-w-[760px] text-sm">
             <thead>
-              <tr class="border-b border-slate-200 text-left text-slate-500">
+              <tr>
                 <th class="pb-2 font-medium">Name</th>
                 <th class="pb-2 font-medium">Email</th>
                 <th class="pb-2 font-medium">Role</th>
@@ -114,31 +116,24 @@ export default component$(() => {
             </thead>
             <tbody>
               {loader.value.users.map((user) => (
-                <tr key={user.id} class="border-b border-slate-100 align-top">
-                  <td class="py-3 text-slate-800">{user.name}</td>
-                  <td class="py-3 text-slate-600">{user.email}</td>
-                  <td class="py-3 text-slate-600">{user.role}</td>
-                  <td class="py-3 text-slate-600">{user.isActive ? "active" : "disabled"}</td>
+                <tr key={user.id} class="align-top">
+                  <td class="py-3">{user.name}</td>
+                  <td class="table-cell-subtle py-3">{user.email}</td>
+                  <td class="table-cell-subtle py-3">{user.role}</td>
+                  <td class="table-cell-subtle py-3">{user.isActive ? "active" : "disabled"}</td>
                   <td class="py-3">
                     <div class="flex flex-col gap-2 sm:flex-row">
                       <Form action={action} class="flex items-center gap-2">
                         <input name="intent" type="hidden" value="set-role" />
                         <input name="userId" type="hidden" value={user.id} />
-                        <select
-                          class="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm"
-                          name="role"
-                          value={user.role}
-                        >
+                        <select class="select h-9" name="role" value={user.role}>
                           {roles.map((role) => (
                             <option key={role} value={role}>
                               {role}
                             </option>
                           ))}
                         </select>
-                        <button
-                          class="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-                          type="submit"
-                        >
+                        <button class="btn btn-secondary h-9" type="submit">
                           Save
                         </button>
                       </Form>
@@ -152,9 +147,8 @@ export default component$(() => {
                           value={user.isActive ? "false" : "true"}
                         />
                         <button
-                          class="inline-flex h-9 items-center justify-center rounded-md px-3 text-sm font-medium text-white transition hover:opacity-90"
+                          class={`btn h-9 ${user.isActive ? "btn-danger" : "btn-secondary"}`}
                           type="submit"
-                          style={{ background: user.isActive ? "#b91c1c" : "#475569" }}
                         >
                           {user.isActive ? "Disable" : "Enable"}
                         </button>

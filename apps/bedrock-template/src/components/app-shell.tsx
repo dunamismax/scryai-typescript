@@ -26,24 +26,24 @@ export const AppShell = component$<AppShellProps>(({ isAdmin }) => {
 
   return (
     <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[220px_1fr] lg:px-8">
-      <aside class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+      <aside class="surface p-3">
         <nav class="space-y-1">
           {visibleItems.map((item) => (
             <Link
               key={item.href}
               class={cn(
-                "flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100",
-                loc.url.pathname.startsWith(item.href) &&
-                  "bg-slate-900 text-white hover:bg-slate-900",
+                "nav-item flex items-center gap-2 px-3 py-2",
+                loc.url.pathname.startsWith(item.href) && "nav-item-active",
               )}
               href={item.href}
+              prefetch="js"
             >
               {item.label}
             </Link>
           ))}
         </nav>
       </aside>
-      <main id="main-content">
+      <main class="reveal" id="main-content">
         <Slot />
       </main>
     </div>
