@@ -29,7 +29,6 @@ The orchestrator tracks these projects via `scripts/projects-config.ts`.
 - `ssh`
 - `curl`
 - `tar`
-- `openssl` (optional, only for restoring legacy SSH backup archives)
 - `zig` (bootstrap can install/configure this path)
 
 ## Quick Start

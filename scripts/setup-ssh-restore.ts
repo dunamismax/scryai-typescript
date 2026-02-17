@@ -34,7 +34,6 @@ const saltLengthBytes = 16;
 const ivLengthBytes = 12;
 const authTagLengthBytes = 16;
 const encryptedFormatMagic = Buffer.from("SCRYSSH2", "ascii");
-const legacyOpenSslMagic = Buffer.from("Salted__", "ascii");
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -59,49 +58,14 @@ function ensurePrereqs(): void {
       "Set SCRY_SSH_BACKUP_PASSPHRASE with at least 16 characters before restoring backups.",
     );
   }
-
-  if (isLegacyOpenSslArchive(encryptedBackupFile) && !commandExists("openssl")) {
-    throw new Error(
-      `Legacy backup detected at ${encryptedBackupFile}, but openssl is not installed. Install openssl or re-create backup with the current setup:ssh:backup command.`,
-    );
-  }
 }
 
 function deriveKey(salt: Buffer): Buffer {
   return pbkdf2Sync(passphrase, salt, kdfIterations, keyLengthBytes, kdfDigest);
 }
 
-function isLegacyOpenSslArchive(path: string): boolean {
-  const payload = readFileSync(path);
-  if (payload.length < legacyOpenSslMagic.length) {
-    return false;
-  }
-  return payload.subarray(0, legacyOpenSslMagic.length).equals(legacyOpenSslMagic);
-}
-
 function decryptArchiveToTar(encryptedPath: string, tarPath: string): void {
   const payload = readFileSync(encryptedPath);
-  if (payload.length >= legacyOpenSslMagic.length) {
-    const magic = payload.subarray(0, legacyOpenSslMagic.length);
-    if (magic.equals(legacyOpenSslMagic)) {
-      runOrThrow([
-        "openssl",
-        "enc",
-        "-d",
-        "-aes-256-cbc",
-        "-pbkdf2",
-        "-iter",
-        `${kdfIterations}`,
-        "-in",
-        encryptedPath,
-        "-out",
-        tarPath,
-        "-pass",
-        "env:SCRY_SSH_BACKUP_PASSPHRASE",
-      ]);
-      return;
-    }
-  }
 
   const minimumLength =
     encryptedFormatMagic.length + saltLengthBytes + ivLengthBytes + authTagLengthBytes + 1;

@@ -2,7 +2,7 @@
 
 > Runtime operations source of truth for this repository. Operational identity is **scry**.
 > This file defines *what scry does and how*. For identity and soul, see `SOUL.md`.
-> Living document. Last major refresh: 2026-02-17.
+> Living document. Keep this file current-state only.
 
 ---
 
@@ -139,6 +139,13 @@ Wake → Explore → Plan → Code → Verify → Report
 - Be resourceful before asking: inspect code, docs, and logs first.
 - Fresh context for each major task. Don't carry stale state across unrelated work.
 
+### Current-State Documentation Policy
+
+- This repository is not a changelog.
+- Keep docs focused on current behavior and current stack only.
+- Do not add migration narratives, historical timelines, or "what changed from before" notes.
+- If historical context is needed, use git history instead of in-repo documentation.
+
 ---
 
 ## Command Policy
@@ -198,7 +205,6 @@ Wake → Explore → Plan → Code → Verify → Report
   - Restore command: `bun run setup:ssh:restore`
   - Required secret: `SCRY_SSH_BACKUP_PASSPHRASE` (minimum 16 chars)
   - Backup encryption format: AES-256-GCM with PBKDF2-SHA256.
-  - Restore supports legacy OpenSSL-CBC archives created by earlier script versions.
 
 ---
 
