@@ -34,21 +34,22 @@ Read `SOUL.md` first. Become scry. Then read this file for operations. Keep both
 
 Do not deviate from this stack unless Stephen explicitly approves the change.
 
-### Explicit Exception
-
-- `apps/astro-blog-template` is intentionally Astro-based and follows the upstream Astro stack for that app.
-- Keep root/other apps on the Qwik baseline unless Stephen approves additional exceptions.
-
 ### App Framework (Full Stack)
 
-- Framework: **Qwik + Qwik City**
-- Server adapter: **`Bun.serve`** via Qwik City Bun adapter (`@builder.io/qwik-city/adapters/bun/vite`)
+- Framework: **Astro 5** (stable baseline)
+- Upgrade posture: move to **Astro 6** after GA (beta announced **January 27, 2026**)
+- Rendering model: **`output: "server"`** + selective prerendering for public pages
+- Server adapter: **`@astrojs/node`** with `mode: "standalone"`
 - Build tool: **Vite**
-- Styling/UI: **Tailwind CSS v4** + **Qwik-native UI components/primitives**
+- Server primitives: **Astro Actions + Sessions + Middleware**
+- Styling/UI: **Tailwind CSS v4** + **`@tailwindcss/vite`** + **`@tailwindcss/typography`**
+- UI strategy: Astro-first components; islands only when needed
+- Hydration defaults: `client:visible`, `client:media`, `client:idle`
+- Fonts: self-hosted by default
 
 ### Runtime and Tooling
 
-- Runtime: **Bun**
+- Runtime: **Bun** for tooling/scripts, **Node.js 22 LTS** for Astro production servers
 - Language: **TypeScript**
 - Linting/Formatting: **Biome**
 
@@ -72,6 +73,10 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 
 ### Performance Lane
 
+- Astro image pipeline: **`astro:assets`** by default
+- Personalization surface: **server islands** first
+- Prefetch strategy: **`viewport`** as default
+- Third-party scripts: strict isolation and explicit allowlist only
 - **Zig** for compute-heavy hot paths only. Benchmark first, then move targeted logic.
 
 ---
@@ -135,6 +140,7 @@ Wake → Explore → Plan → Code → Verify → Report
 
 - Use `bun run` for all project scripts.
 - Prefer Bun-native tooling (`bun install`, `bun test`, `bunx`).
+- Use Node.js 22 LTS for Astro production server execution.
 - Do not introduce non-TypeScript orchestration scripts.
 - Prefer terminal-native, scriptable workflows over IDE-only/manual flows.
 - ALWAYS use SSH for all Git remotes and pushes (`git@github.com:...`, `git@codeberg.org:...`), never HTTPS.
@@ -309,11 +315,8 @@ bun run doctor
 bun run check:agent-docs
 
 # App checks (run from app directory)
-cd apps/bedrock-template
-bun run lint
-bun run format
-bun run typecheck
-bun run test
+# Primary full-stack Astro template app (fresh scaffold baseline)
+cd apps/astro-web-template
 bun run build
 
 cd ../..
@@ -422,18 +425,11 @@ bun run ci
 bun run perf:lighthouse
 bun run perf:lighthouse:assert -- --report artifacts/lighthouse/current.json
 
-# apps/bedrock-template
-cd apps/bedrock-template
+# apps/astro-web-template (fresh `npm create astro@latest` scaffold baseline)
+cd apps/astro-web-template
 bun run dev
 bun run build
-bun run serve
-bun run typecheck
-bun run lint
-bun run format
-bun run test
-bun run db:migrate
-bun run db:seed
-bun run worker
+bun run preview
 
 # apps/astro-blog-template
 cd apps/astro-blog-template

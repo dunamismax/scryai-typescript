@@ -1,6 +1,8 @@
 # Performance CI
 
-This repo enforces Lighthouse quality gates for `apps/bedrock-template` in both **mobile** and **desktop** modes.
+Lighthouse quality gates are in active migration to `apps/astro-web-template` as the new full-stack template app is rebuilt.
+
+Current automation still references the previous `apps/bedrock-template` path and will be updated in the rebuild phase.
 
 ## Metrics gated
 

@@ -90,10 +90,11 @@ These are specific enough to be wrong — that's the point.
 
 ### On Tools and Stack
 
-- Bun is the right runtime for this work. Fast, batteries-included, good TypeScript story.
-- Qwik + Qwik City is the right framework choice. Resumable by design, server-first routing, minimal client JS.
-- Explicit owner directives can carve out app-level stack exceptions; when that happens, document the exception clearly and run it rigorously.
-- Tailwind is the right styling baseline. Use Qwik-native UI primitives/components, not React-only UI kits.
+- Bun is the right runtime for tooling and scripts. Fast, batteries-included, good TypeScript story.
+- Astro is the right framework baseline for this work. Server-first by default, islands where interactivity is actually needed.
+- Astro 5 is the current stable target. Plan Astro 6 adoption after GA (beta announced January 27, 2026).
+- Production runtime for Astro servers is Node.js 22 LTS right now; Bun remains first-class for local workflows and orchestration.
+- Tailwind is the right styling baseline. Astro-first UI, selective islands, and self-hosted fonts by default.
 - PostgreSQL is the only database. pgvector for embeddings, pgcrypto for secrets, pg-boss for jobs.
 - Caddy for reverse proxy. Automatic HTTPS, simple config, just works.
 - MinIO for object storage. S3-compatible, self-hostable, no vendor lock-in.

@@ -15,7 +15,7 @@ This README is the entrypoint for the entire repo. It tells you how to run share
 
 | Project | Type | Path | Docs |
 |---|---|---|---|
-| bedrock-template | Performance-first full-stack Qwik City template (dark default + theme toggle) | `apps/bedrock-template` | [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md) |
+| astro-web-template | Fresh Astro starter scaffold (from `npm create astro@latest`) and target full-stack website template app | `apps/astro-web-template` | [`apps/astro-web-template/README.md`](apps/astro-web-template/README.md) |
 | astro-blog-template | Astro-based blog starter template with MDX/search/RSS/sitemap/PWA | `apps/astro-blog-template` | [`apps/astro-blog-template/README.md`](apps/astro-blog-template/README.md) |
 
 App index: [`apps/README.md`](apps/README.md)
@@ -24,10 +24,14 @@ App index: [`apps/README.md`](apps/README.md)
 
 All projects in this repo are expected to follow this baseline unless explicitly changed:
 
-- Framework: Qwik + Qwik City
-- Runtime: Bun (`Bun.serve` for production servers)
+- Framework: Astro 5 (upgrade to Astro 6 after GA; beta announced January 27, 2026)
+- Rendering: `output: "server"` + `@astrojs/node` adapter (`mode: "standalone"`) with selective prerendering of public routes
+- Runtime: Bun for tooling/scripts + Node.js 22 LTS for production server runtime
 - Build: Vite
-- UI: Qwik + Tailwind CSS v4 + Qwik-native component primitives
+- Server primitives: Astro Actions + Sessions + Middleware
+- UI: Astro-first components with selective islands and hydration defaults (`client:visible`, `client:media`, `client:idle`)
+- Styling: Tailwind CSS v4 + `@tailwindcss/vite` + `@tailwindcss/typography`
+- Fonts: self-hosted
 - Language: TypeScript
 - Lint/format: Biome
 - Database: PostgreSQL (`pgvector`, `pgcrypto`)
@@ -36,9 +40,7 @@ All projects in this repo are expected to follow this baseline unless explicitly
 - Jobs: pg-boss
 - Object storage: MinIO
 - Reverse proxy: Caddy
-
-Explicit exception:
-- `apps/astro-blog-template` intentionally runs on Astro and keeps Astro-native tooling.
+- Performance defaults: `astro:assets`, server islands for personalized widgets, prefetch strategy `viewport`, strict third-party script isolation
 
 ## Repository Layout
 
@@ -81,14 +83,12 @@ bun run infra:up
 3. Open app and follow its setup
 
 ```bash
-cd apps/bedrock-template
-cp .env.example .env
-bun run db:migrate
+cd apps/astro-web-template
 bun run dev
 ```
 
 For app-specific details, always use that app's README:
-[`apps/bedrock-template/README.md`](apps/bedrock-template/README.md)
+[`apps/astro-web-template/README.md`](apps/astro-web-template/README.md)
 
 ## New System Bootstrap
 
@@ -183,7 +183,7 @@ Automated CI runs on both:
 Pipelines run on push/pull-request and execute:
 
 - Root quality gates (`lint`, `typecheck`, `test`)
-- App quality gates for `apps/bedrock-template` (`lint`, `typecheck`, `test`, `build`)
+- App quality gates for the web template app (CI migration from previous `apps/bedrock-template` path to `apps/astro-web-template` is pending and will be completed during the rebuild session)
 - App quality gates for `apps/astro-blog-template` (`lint`, `typecheck`, `build`)
 - Lighthouse audits in **mobile** + **desktop** modes
 - Lighthouse assertions for LCP/CLS/TBT + category scores
@@ -193,19 +193,12 @@ Performance thresholds are defined in `docs/performance/lighthouse-thresholds.js
 
 ## App Commands
 
-Run these from inside an app directory (example: `apps/bedrock-template`):
+Run these from inside an app directory (example: `apps/astro-web-template`):
 
 ```bash
 bun run dev
 bun run build
-bun run serve
-bun run typecheck
-bun run lint
-bun run format
-bun run test
-bun run db:migrate
-bun run db:seed
-bun run worker
+bun run preview
 ```
 
 ## Infra Defaults
@@ -226,7 +219,7 @@ Caddy baseline config is in [`infra/Caddyfile`](infra/Caddyfile).
 - Operational contract: [`AGENTS.md`](AGENTS.md)
 - Identity contract: [`SOUL.md`](SOUL.md)
 - Apps index: [`apps/README.md`](apps/README.md)
-- bedrock-template docs: [`apps/bedrock-template/README.md`](apps/bedrock-template/README.md)
+- astro-web-template docs: [`apps/astro-web-template/README.md`](apps/astro-web-template/README.md)
 - astro-blog-template docs: [`apps/astro-blog-template/README.md`](apps/astro-blog-template/README.md)
 - Performance CI docs: [`docs/performance/README.md`](docs/performance/README.md)
 
