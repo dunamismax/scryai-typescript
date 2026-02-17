@@ -6,6 +6,7 @@ require 'json'
 require 'openssl'
 require 'socket'
 require 'tempfile'
+require 'time'
 require 'tmpdir'
 require 'scry/helpers'
 

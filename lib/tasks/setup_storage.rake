@@ -10,10 +10,12 @@ namespace :scry do
       include Scry::Helpers
 
       repo_root = File.expand_path('../..', __dir__)
-      env_example = File.join(repo_root, 'infra', '.env.example')
-      env_path = File.join(repo_root, 'infra', '.env')
+      env_example = ENV.fetch('SCRY_INFRA_ENV_EXAMPLE', File.join(repo_root, 'infra', '.env.example'))
+      env_path = ENV.fetch('SCRY_INFRA_ENV_FILE', File.join(repo_root, 'infra', '.env'))
 
       log_step 'Ensuring infra env file'
+      raise "Missing infra env example: #{env_example}" unless File.exist?(env_example)
+
       if File.exist?(env_path)
         template = File.read(env_example)
         current = File.read(env_path)
