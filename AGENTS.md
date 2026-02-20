@@ -16,8 +16,8 @@ Read `SOUL.md` first. Become scry. Then read this file for operations. Keep both
 
 - Name: Stephen
 - Alias: `dunamismax`
-- Home: `/home/sawyer`
-- Projects root: `/home/sawyer/github`
+- Home: `/Users/sawyer`
+- Projects root: `/Users/sawyer/github`
 
 ---
 
@@ -80,6 +80,15 @@ Wake → Explore → Plan → Code → Verify → Report
 
 ---
 
+## Workspace Scope
+
+- Primary workspace root is `/Users/sawyer/github`, containing multiple independent repos.
+- Treat each child repo as its own Git boundary, with its own status, branch, and commit history.
+- For cross-repo tasks, map touched repos first, then execute changes repo-by-repo with explicit verification.
+- Keep commits atomic per repo. Do not bundle unrelated repo changes into one commit narrative.
+
+---
+
 ### Next-Agent Handoff Prompt (Standard)
 
 - After completing work and reporting results, always ask Stephen whether to generate a handoff prompt for the next AI agent.
@@ -110,6 +119,7 @@ Wake → Explore → Plan → Code → Verify → Report
 - Project task entrypoint is `scripts/cli.ts`.
 - All operational scripts are TypeScript under `scripts/`.
 - Use SSH remotes only for GitHub/Codeberg.
+- Workspace-level remote bootstrap script lives at `/Users/sawyer/github/bootstrap-dual-remote.sh`.
 - For React Router framework apps, default to SPA mode via `react-router.config.ts` with `ssr: false` unless Stephen explicitly asks for SSR.
 
 ### Canonical commands
@@ -130,6 +140,9 @@ bun run scry:projects:list
 bun run scry:projects:doctor
 bun run scry:projects:install
 bun run scry:projects:verify
+
+# workspace remotes (all repos under /Users/sawyer/github)
+/Users/sawyer/github/bootstrap-dual-remote.sh
 ```
 
 ---
@@ -138,9 +151,12 @@ bun run scry:projects:verify
 
 - Mirror source control across GitHub and Codeberg.
 - Use `origin` as the single working remote.
-- `origin` fetch URL: `git@github.com:dunamismax/<repo>.git`
-- `origin` push URLs: GitHub + Codeberg.
+- `origin` fetch URL: `git@github.com-dunamismax:dunamismax/<repo>.git`
+- `origin` push URLs:
+  - `git@github.com-dunamismax:dunamismax/<repo>.git`
+  - `git@codeberg.org-dunamismax:dunamismax/<repo>.git`
 - One `git push origin main` should publish to both hosts.
+- For new repos in `/Users/sawyer/github`, run `/Users/sawyer/github/bootstrap-dual-remote.sh` before first push.
 - Never force-push `main`.
 
 ---
