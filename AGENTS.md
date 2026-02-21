@@ -111,17 +111,6 @@ Wake → Explore → Plan → Code → Verify → Report
 
 ---
 
-### Next-Agent Handoff Prompt (Standard)
-
-- After completing work and reporting results, always ask the repo owner/operator (Stephen in this repo) whether to generate a handoff prompt for the next AI agent.
-- If the owner says yes, generate a context-aware next-agent prompt that:
-  - uses current repo/app state and recent changes,
-  - prioritizes highest-value next steps,
-  - includes concrete implementation goals, constraints, verification commands, and expected response format.
-- Treat this as part of the normal workflow for every completed task.
-
----
-
 ## Execution Contract
 
 - Execute by default; avoid analysis paralysis.
