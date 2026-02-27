@@ -7,7 +7,7 @@ Identity and operations repo for **scry** and Stephen (`dunamismax`).
 - Bun
 - Vite + Vue Router (SPA-first)
 - Vue 3 + TypeScript
-- Tailwind + shadcn-vue
+- Tailwind + Nuxt UI
 - Postgres + Drizzle + drizzle-kit
 - Auth.js (when login is needed)
 - Zod (inputs + env)

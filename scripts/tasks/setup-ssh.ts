@@ -14,6 +14,7 @@ import {
   readdirSync,
   readFileSync,
   readlinkSync,
+  renameSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -87,13 +88,17 @@ function sourceSnapshot(root: string): {
 }
 
 function buildManagedBlock(
+  githubHostAlias: string,
+  githubHostName: string,
   githubIdentity: string,
+  codebergHostAlias: string,
+  codebergHostName: string,
   codebergIdentity: string,
 ): string {
-  const block = (host: string, identity: string) =>
+  const block = (hostAlias: string, hostName: string, identity: string) =>
     [
-      `Host ${host}`,
-      `  HostName ${host}`,
+      `Host ${hostAlias}`,
+      `  HostName ${hostName}`,
       "  User git",
       `  IdentityFile ${identity}`,
       "  IdentitiesOnly yes",
@@ -101,9 +106,9 @@ function buildManagedBlock(
 
   return [
     "# >>> scry managed git hosts >>>",
-    block("github.com", githubIdentity),
+    block(githubHostAlias, githubHostName, githubIdentity),
     "",
-    block("codeberg.org", codebergIdentity),
+    block(codebergHostAlias, codebergHostName, codebergIdentity),
     "# <<< scry managed git hosts <<<",
     "",
   ].join("\n");
@@ -232,12 +237,20 @@ export function setupSshRestore(): void {
   const passphrase = process.env.SCRY_SSH_BACKUP_PASSPHRASE ?? "";
   const home = process.env.HOME ?? homedir();
   const sshDir = join(home, ".ssh");
-  const sshConfig = join(sshDir, "config");
   const repoRoot = resolve(".");
+  const restoreStamp = `${Date.now()}`;
+  const stagedSshDir = join(home, `.ssh.scry-staged-${restoreStamp}`);
+  const backupSshDir = join(home, `.ssh.scry-backup-${restoreStamp}`);
 
   const encryptedFile =
     process.env.SCRY_SSH_BACKUP_FILE ??
     join(repoRoot, "vault", "ssh", "ssh-keys.tar.enc");
+  const githubHostAlias =
+    process.env.SCRY_GITHUB_HOST_ALIAS ?? "github.com-dunamismax";
+  const githubHostName = process.env.SCRY_GITHUB_HOSTNAME ?? "github.com";
+  const codebergHostAlias =
+    process.env.SCRY_CODEBERG_HOST_ALIAS ?? "codeberg.org-dunamismax";
+  const codebergHostName = process.env.SCRY_CODEBERG_HOSTNAME ?? "codeberg.org";
   const githubIdentity =
     process.env.SCRY_GITHUB_IDENTITY ?? "~/.ssh/id_ed25519";
   const codebergIdentity =
@@ -259,8 +272,11 @@ export function setupSshRestore(): void {
     );
   }
 
-  const tempDir = join(tmpdir(), `scry-ssh-restore-${Date.now()}`);
+  const tempDir = join(tmpdir(), `scry-ssh-restore-${restoreStamp}`);
   mkdirSync(tempDir, { recursive: true });
+  let stagedReady = false;
+  let backupCreated = false;
+  let restoreCommitted = false;
 
   try {
     const tempTar = join(tempDir, "ssh-keys.tar");
@@ -323,7 +339,7 @@ export function setupSshRestore(): void {
 
     writeFileSync(tempTar, plaintext);
 
-    logStep("Restoring ~/.ssh from decrypted archive");
+    logStep("Preparing staged ~/.ssh restore");
     mkdirSync(home, { recursive: true });
     mkdirSync(extractRoot, { recursive: true });
 
@@ -334,10 +350,11 @@ export function setupSshRestore(): void {
       throw new Error("Decrypted archive does not contain a .ssh directory.");
     }
 
-    rmSync(sshDir, { force: true, recursive: true });
-    cpSync(extractedSsh, sshDir, { recursive: true });
+    rmSync(stagedSshDir, { force: true, recursive: true });
+    cpSync(extractedSsh, stagedSshDir, { recursive: true });
+    stagedReady = true;
 
-    logStep("Normalizing ~/.ssh permissions");
+    logStep("Normalizing staged ~/.ssh permissions");
 
     const normalize = (path: string): void => {
       const stats = lstatSync(path);
@@ -363,16 +380,24 @@ export function setupSshRestore(): void {
       }
     };
 
-    normalize(sshDir);
+    normalize(stagedSshDir);
 
-    logStep("Ensuring managed Git host entries in ~/.ssh/config");
+    logStep("Ensuring managed Git host entries in staged ~/.ssh/config");
 
     const managedStart = "# >>> scry managed git hosts >>>";
     const managedEnd = "# <<< scry managed git hosts <<<";
-    const managedBlock = buildManagedBlock(githubIdentity, codebergIdentity);
+    const managedBlock = buildManagedBlock(
+      githubHostAlias,
+      githubHostName,
+      githubIdentity,
+      codebergHostAlias,
+      codebergHostName,
+      codebergIdentity,
+    );
+    const stagedSshConfig = join(stagedSshDir, "config");
 
-    const existing = existsSync(sshConfig)
-      ? readFileSync(sshConfig, "utf8").replaceAll("\r\n", "\n")
+    const existing = existsSync(stagedSshConfig)
+      ? readFileSync(stagedSshConfig, "utf8").replaceAll("\r\n", "\n")
       : "";
     const pattern = new RegExp(
       `${escapeRegExp(managedStart)}[\\s\\S]*?${escapeRegExp(managedEnd)}\\n?`,
@@ -385,16 +410,44 @@ export function setupSshRestore(): void {
         : `${managedBlock}\n${withoutManagedBlock}${withoutManagedBlock.endsWith("\n") ? "" : "\n"}`;
 
     if (nextConfig !== existing) {
-      writeFileSync(sshConfig, nextConfig, "utf8");
+      writeFileSync(stagedSshConfig, nextConfig, "utf8");
     }
 
-    chmodSync(sshConfig, 0o600);
+    chmodSync(stagedSshConfig, 0o600);
+
+    logStep("Atomically swapping staged restore into ~/.ssh");
+    if (existsSync(sshDir)) {
+      renameSync(sshDir, backupSshDir);
+      backupCreated = true;
+    }
+
+    try {
+      renameSync(stagedSshDir, sshDir);
+      stagedReady = false;
+      restoreCommitted = true;
+    } catch (error) {
+      if (backupCreated && !existsSync(sshDir) && existsSync(backupSshDir)) {
+        renameSync(backupSshDir, sshDir);
+      }
+      throw error;
+    }
+  } catch (error) {
+    if (backupCreated && !restoreCommitted && !existsSync(sshDir)) {
+      renameSync(backupSshDir, sshDir);
+    }
+    if (stagedReady && existsSync(stagedSshDir)) {
+      rmSync(stagedSshDir, { force: true, recursive: true });
+    }
+    throw error;
   } finally {
     rmSync(tempDir, { force: true, recursive: true });
   }
 
   logStep("SSH restore complete");
   console.log(`restored: ${sshDir}`);
-  console.log("next: ssh -T git@github.com");
-  console.log("next: ssh -T git@codeberg.org");
+  if (backupCreated) {
+    console.log(`backup: ${backupSshDir}`);
+  }
+  console.log(`next: ssh -T git@${githubHostAlias}`);
+  console.log(`next: ssh -T git@${codebergHostAlias}`);
 }

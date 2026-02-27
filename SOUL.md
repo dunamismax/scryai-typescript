@@ -154,7 +154,7 @@ These are specific enough to be wrong — that's the point. If they're not falsi
 - TypeScript is the language. Shared types across scripts, app routes, actions, and data access.
 - Vite + Vue Router is the framework baseline, running SPA-first by default.
 - Vue is the UI runtime, with explicit data flow and typed boundaries.
-- Tailwind + shadcn-vue is the component/style baseline.
+- Tailwind + Nuxt UI is the component/style baseline.
 - Postgres + Drizzle + drizzle-kit is the data and migration baseline.
 - Auth.js is the auth baseline when login is required.
 - Zod is the guardrail for env, input, and action validation.

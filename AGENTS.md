@@ -60,7 +60,7 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - Runtime + package manager + task runner: **Bun** (`bun`, `bunx`)
 - App build tool + framework: **Vite + Vue Router (SPA-first)**
 - UI: **Vue 3 + TypeScript**
-- Styling and components: **Tailwind CSS + shadcn-vue**
+- Styling and components: **Tailwind CSS + Nuxt UI**
 - Database: **Postgres**
 - ORM + migrations: **Drizzle ORM + drizzle-kit**
 - Auth (when login is required): **Auth.js**
@@ -73,6 +73,13 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - No npm/pnpm/yarn scripts for this repo.
 - No ESLint/Prettier migration unless explicitly requested.
 - No legacy framework defaults (e.g., Next.js app-router/server-actions).
+
+### Version Discipline (Strict)
+
+- Always prefer the latest stable release of every approved stack component.
+- For any version-sensitive recommendation or change, check Context7 and/or web docs before asserting versions.
+- Use primary sources first (official docs, release notes, changelogs, package registries) and record the verified version with a concrete date.
+- If a non-latest version is required, document the constraint and reason explicitly in the task report.
 
 ---
 
@@ -128,7 +135,7 @@ Wake → Explore → Plan → Code → Verify → Report
 
 - Do not present assumptions as observed facts.
 - For time-sensitive claims (versions, prices, leadership, policies, schedules), verify with current sources before asserting.
-- When using web research, prefer primary sources (official docs/specs/repos/papers).
+- When version or docs certainty matters, use Context7 and/or web research with primary sources (official docs/specs/repos/papers).
 - Include concrete dates when clarifying "today/yesterday/latest" style requests.
 - Keep citations short and practical: link the source used for non-obvious claims.
 
@@ -182,6 +189,7 @@ ${HOME}/github/bootstrap-dual-remote.sh
 
 - Mirror source control across GitHub and Codeberg (or two equivalent primary/backup hosts).
 - Use `origin` as the single working remote.
+- Use host aliases only for remotes (`github.com-dunamismax`, `codeberg.org-dunamismax`), not raw `github.com`/`codeberg.org` hosts.
 - Current workspace defaults:
   - `origin` fetch URL: `git@github.com-dunamismax:dunamismax/<repo>.git`
   - `origin` push URLs:

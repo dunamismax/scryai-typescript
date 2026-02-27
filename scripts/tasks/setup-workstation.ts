@@ -76,6 +76,10 @@ export function setupWorkstation(): void {
   const scriptRepoRoot = resolve(".");
   const githubRoot = process.env.GITHUB_ROOT ?? join(home, "github");
   const owner = process.env.GITHUB_OWNER ?? "dunamismax";
+  const githubHostAlias =
+    process.env.GITHUB_HOST_ALIAS ?? `github.com-${owner}`;
+  const codebergHostAlias =
+    process.env.CODEBERG_HOST_ALIAS ?? `codeberg.org-${owner}`;
   const anchorRepo = process.env.GITHUB_ANCHOR_REPO ?? "scryai";
   const profileRepo = process.env.GITHUB_PROFILE_REPO ?? "dunamismax";
   const reposIndexPath = join(githubRoot, profileRepo, "REPOS.md");
@@ -90,8 +94,10 @@ export function setupWorkstation(): void {
   const restoreSsh = hasEnv("RESTORE_SSH");
 
   const repoDir = (repo: string) => join(githubRoot, repo);
-  const githubUrl = (repo: string) => `git@github.com:${owner}/${repo}.git`;
-  const codebergUrl = (repo: string) => `git@codeberg.org:${owner}/${repo}.git`;
+  const githubUrl = (repo: string) =>
+    `git@${githubHostAlias}:${owner}/${repo}.git`;
+  const codebergUrl = (repo: string) =>
+    `git@${codebergHostAlias}:${owner}/${repo}.git`;
 
   const cloneOrFetch = (repo: string) => {
     const target = repoDir(repo);
