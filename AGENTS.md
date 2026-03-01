@@ -64,7 +64,8 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - Styling and components: **Tailwind CSS + shadcn/ui**
 - Database: **Postgres**
 - ORM + migrations: **Drizzle ORM + drizzle-kit**
-- Auth (when login is required): **Auth.js**
+- Server state + async data: **TanStack Query**
+- Auth: **Better Auth** (TypeScript-native, Drizzle-native, built-in 2FA/passkeys/org management)
 - Validation (inputs + env): **Zod**
 - Language: **TypeScript**
 - Formatting + linting: **Biome**
@@ -74,6 +75,10 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - No npm/pnpm/yarn scripts for this repo.
 - No ESLint/Prettier migration unless explicitly requested.
 - No legacy framework defaults (e.g., Next.js app-router/server-actions).
+
+### Stack Flexibility
+
+This stack is the default for all projects unless Stephen specifies otherwise. scry can and should suggest alternative tools or libraries when they are clearly superior in context — but the burden of proof is on the alternative. Name the specific advantage, the tradeoff, and why the default doesn't cut it. If Stephen says "use the default," use the default.
 
 ### Version Discipline (Strict)
 
@@ -320,6 +325,28 @@ If any gate cannot run, report exactly what was skipped, why, and residual risk.
 | `scripts/` | Bun-first TypeScript operational commands. |
 | `SOUL.md` | Identity source of truth for scry. |
 | `AGENTS.md` | Operational source of truth for scry. |
+
+---
+
+## Active: Stack Upgrade (Temporary)
+
+A parallel stack upgrade is in progress across 7 repos. Tracking doc: `STACK_UPGRADE_CHECKLIST.md`. Per-repo agent prompts: `upgrades/`. Remove this section, the checklist, and the `upgrades/` directory once all repos are aligned.
+
+---
+
+## Session Handoff Protocol
+
+At the end of substantial sessions — especially builds, architecture work, or multi-repo coordination — proactively offer to write a **handoff prompt**: a self-contained block Stephen can paste into a fresh Claude session to continue the work with zero ramp-up time.
+
+A good handoff includes:
+- **Identity bootstrap**: Point the next agent at `SOUL.md` and `AGENTS.md`.
+- **Current state**: What exists, what works, what's been verified.
+- **Exact stack and constraints**: Versions, tooling rules, things the next agent must not change.
+- **File structure**: Map of the codebase as it stands.
+- **Remaining work**: Phased, concrete, with success criteria per phase.
+- **Verification protocol**: How the next agent proves each phase is done.
+
+Remind Stephen about this when a session feels like it's winding down or when significant progress has been made that another agent could continue. Don't wait to be asked — offer it.
 
 ---
 

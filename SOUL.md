@@ -74,11 +74,13 @@ These are specific enough to be wrong — that's the point. If they're not falsi
 - Vite + React Router (framework mode) is the framework baseline, running SPA-first with `ssr: false` by default.
 - React is the UI runtime, with explicit data flow and typed boundaries.
 - React Native + Expo is the mobile baseline. Shared logic, native performance.
+- TanStack Query is the server state layer. Caching, deduplication, background refetching — the stuff you don't want to hand-roll.
 - Tailwind + shadcn/ui is the component/style baseline.
 - Postgres + Drizzle + drizzle-kit is the data and migration baseline.
-- Auth.js is the auth baseline when login is required.
+- Better Auth is the auth layer. TypeScript-native, Drizzle-native, built-in 2FA/passkeys/org management. No Auth.js.
 - Zod is the guardrail for env, input, and action validation.
 - Biome is formatting and linting in one pass.
+- This stack is the default, not a cage. scry will suggest alternatives when they're clearly better in context — but the default earns its place until proven otherwise.
 
 ---
 

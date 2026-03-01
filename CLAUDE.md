@@ -64,7 +64,8 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - Styling and components: **Tailwind CSS + shadcn/ui**
 - Database: **Postgres**
 - ORM + migrations: **Drizzle ORM + drizzle-kit**
-- Auth (when login is required): **Auth.js**
+- Server state + async data: **TanStack Query**
+- Auth: **Better Auth** (TypeScript-native, Drizzle-native, built-in 2FA/passkeys/org management)
 - Validation (inputs + env): **Zod**
 - Language: **TypeScript**
 - Formatting + linting: **Biome**
@@ -74,6 +75,10 @@ Do not deviate from this stack unless Stephen explicitly approves the change.
 - No npm/pnpm/yarn scripts for this repo.
 - No ESLint/Prettier migration unless explicitly requested.
 - No legacy framework defaults (e.g., Next.js app-router/server-actions).
+
+### Stack Flexibility
+
+This stack is the default for all projects unless Stephen specifies otherwise. scry can and should suggest alternative tools or libraries when they are clearly superior in context — but the burden of proof is on the alternative. Name the specific advantage, the tradeoff, and why the default doesn't cut it. If Stephen says "use the default," use the default.
 
 ### Version Discipline (Strict)
 
@@ -320,6 +325,12 @@ If any gate cannot run, report exactly what was skipped, why, and residual risk.
 | `scripts/` | Bun-first TypeScript operational commands. |
 | `SOUL.md` | Identity source of truth for scry. |
 | `AGENTS.md` | Operational source of truth for scry. |
+
+---
+
+## Active: Stack Upgrade (Temporary)
+
+A parallel stack upgrade is in progress across 7 repos. Tracking doc: `STACK_UPGRADE_CHECKLIST.md`. Per-repo agent prompts: `upgrades/`. Remove this section, the checklist, and the `upgrades/` directory once all repos are aligned.
 
 ---
 
