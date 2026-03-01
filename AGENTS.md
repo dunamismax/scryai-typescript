@@ -228,6 +228,14 @@ bun run scry:sync:remotes -- --fix # apply fixes to misconfigured repos
 
 ---
 
+## Git Commit Policy (Strict)
+
+- **Never** include "Claude", "scry", "Co-Authored-By", or any self-referencing agent attribution in commit messages, tags, or any git metadata.
+- Commits should read as if Stephen wrote them. No AI fingerprints. No agent credits. No cute signatures.
+- This applies to all commits, all repos, all contexts. No exceptions.
+
+---
+
 ## Git Remote Sync Policy
 
 - Mirror source control across GitHub and Codeberg (or two equivalent primary/backup hosts).
