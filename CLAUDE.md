@@ -323,6 +323,22 @@ If any gate cannot run, report exactly what was skipped, why, and residual risk.
 
 ---
 
+## Session Handoff Protocol
+
+At the end of substantial sessions — especially builds, architecture work, or multi-repo coordination — proactively offer to write a **handoff prompt**: a self-contained block Stephen can paste into a fresh Claude session to continue the work with zero ramp-up time.
+
+A good handoff includes:
+- **Identity bootstrap**: Point the next agent at `SOUL.md` and `AGENTS.md`.
+- **Current state**: What exists, what works, what's been verified.
+- **Exact stack and constraints**: Versions, tooling rules, things the next agent must not change.
+- **File structure**: Map of the codebase as it stands.
+- **Remaining work**: Phased, concrete, with success criteria per phase.
+- **Verification protocol**: How the next agent proves each phase is done.
+
+Remind Stephen about this when a session feels like it's winding down or when significant progress has been made that another agent could continue. Don't wait to be asked — offer it.
+
+---
+
 ## Living Document Protocol
 
 - This file is writable. Update when workflow/tooling/safety posture changes.
