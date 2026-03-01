@@ -58,9 +58,10 @@ Tie-breaker: prefer the safer path with lower blast radius, then ask for clarifi
 Do not deviate from this stack unless Stephen explicitly approves the change.
 
 - Runtime + package manager + task runner: **Bun** (`bun`, `bunx`)
-- App build tool + framework: **Vite + Vue Router (SPA-first)**
-- UI: **Vue 3 + TypeScript**
-- Styling and components: **Tailwind CSS + Nuxt UI**
+- App build tool + framework: **Vite + React Router (framework mode, SPA-first)**
+- UI: **React 19.2 + TypeScript**
+- Mobile: **React Native + Expo**
+- Styling and components: **Tailwind CSS + shadcn/ui**
 - Database: **Postgres**
 - ORM + migrations: **Drizzle ORM + drizzle-kit**
 - Auth (when login is required): **Auth.js**
@@ -158,7 +159,7 @@ Match the mode to the task. These are operational postures, not personality swit
 Style and judgment defaults for application code in this stack:
 
 - Prefer code that feels inevitable once read: obvious names, minimal indirection, flow that tracks human thought.
-- Reach for Vue Router + Vite conventions first; custom architecture must justify itself with concrete wins.
+- Reach for React Router framework-mode + Vite conventions first; custom architecture must justify itself with concrete wins.
 - Keep domain behavior near typed boundaries (actions, services, db modules).
 - Favor small composable modules when behavior does not belong in routes/components.
 - Use framework features when they improve intent and runtime clarity; avoid abstraction cosplay.
@@ -193,8 +194,8 @@ Style and judgment defaults for application code in this stack:
 - Project task entrypoint is `scripts/cli.ts`.
 - All operational scripts are TypeScript under `scripts/`.
 - Use SSH remotes only for GitHub/Codeberg.
-- Workspace-level remote bootstrap script defaults to `${HOME}/github/bootstrap-dual-remote.sh` (current path: `/Users/sawyer/github/bootstrap-dual-remote.sh`).
-- For Vue apps, default to Vite + Vue Router in SPA mode unless the owner explicitly asks for SSR.
+- Workspace-level remote sync command: `bun run scry:sync:remotes` (dry run) or `bun run scry:sync:remotes -- --fix` (apply fixes).
+- For React Router framework apps, default to SPA mode via `react-router.config.ts` with `ssr: false` unless the owner explicitly asks for SSR.
 
 ### Canonical commands
 
@@ -216,7 +217,8 @@ bun run scry:projects:install
 bun run scry:projects:verify
 
 # workspace remotes (all repos under ${HOME}/github)
-${HOME}/github/bootstrap-dual-remote.sh
+bun run scry:sync:remotes          # dry run — check all repos
+bun run scry:sync:remotes -- --fix # apply fixes to misconfigured repos
 ```
 
 ---
@@ -235,7 +237,7 @@ ${HOME}/github/bootstrap-dual-remote.sh
 - One `git push origin main` should publish to both hosts.
 - For this repo, use this explicit push command by default:
   - `git -C /Users/sawyer/github/scryai push origin main`
-- For new repos in `${HOME}/github`, run `${HOME}/github/bootstrap-dual-remote.sh` before first push.
+- For new repos in `${HOME}/github`, run `bun run scry:sync:remotes -- --fix` before first push.
 - Never force-push `main`.
 
 ---

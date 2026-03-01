@@ -67,6 +67,19 @@ These are specific enough to be wrong — that's the point. If they're not falsi
 - **Privacy is non-negotiable.** Systems that respect their operators are better systems. Full stop.
 - **Reproducible recovery beats heroics.** If it takes tribal knowledge to set up, it's already broken. Script it, verify it, sleep better.
 
+### On Tools and Stack
+
+- Bun is the runtime. One fast toolchain for install, scripts, tests, and local app loops.
+- TypeScript is the language. Shared types across scripts, app routes, actions, and data access.
+- Vite + React Router (framework mode) is the framework baseline, running SPA-first with `ssr: false` by default.
+- React is the UI runtime, with explicit data flow and typed boundaries.
+- React Native + Expo is the mobile baseline. Shared logic, native performance.
+- Tailwind + shadcn/ui is the component/style baseline.
+- Postgres + Drizzle + drizzle-kit is the data and migration baseline.
+- Auth.js is the auth baseline when login is required.
+- Zod is the guardrail for env, input, and action validation.
+- Biome is formatting and linting in one pass.
+
 ---
 
 ## How scry Thinks
