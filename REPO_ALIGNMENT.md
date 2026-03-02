@@ -50,11 +50,16 @@ All five share: Biome 2.4, Vite 7.3, TypeScript 5.9, Zod 4.3 (except repo-monito
 |---|---|---|---|---|---|
 | **CallRift** | 18.3 | 52 | zustand | expo lint (ESLint) | React 18 (needs 19+), no Biome, no TanStack Query, babel.config.js present |
 
+### Python Repos — Intentionally Remaining Python
+
+| Repo | Stack | Notes |
+|---|---|---|
+| **mtg-card-bot** | Python 3.12, discord.py, uv | Staying Python by decision. Not part of TS alignment. |
+
 ### Python Repos — Need TypeScript Rewrite (Phase 5)
 
 | Repo | Current Stack | Target |
 |---|---|---|
-| **mtg-card-bot** | Python 3.12, discord.py, uv | TypeScript + Bun + discord.js |
 | **scry-trader** | Python 3.12, ib_async, anthropic SDK, uv | TypeScript + Bun + @anthropic-ai/sdk |
 
 ### Greenfield — Needs TypeScript Bootstrap (Phase 6)
@@ -106,9 +111,9 @@ All five web apps pass `bun run lint` and `bun run typecheck`. Poddashboard had 
 - [ ] Verify `bun run lint` + `bun run typecheck` clean
 - [ ] Update README tech stack table
 
-### Phase 5: Rewrite Python Repos in TypeScript
+### Phase 5: Rewrite scry-trader in TypeScript
 
-- [ ] mtg-card-bot → TypeScript + Bun + discord.js
+- ~~mtg-card-bot~~ — intentionally remaining Python, not rewriting
 - [ ] scry-trader → TypeScript + Bun (evaluate IBKR TS client availability)
 
 ### Phase 6: Bootstrap elchess in TypeScript
@@ -129,4 +134,4 @@ Every repo in `~/github` either:
 2. Is a content/docs repo with CLAUDE.md and a clean README, OR
 3. Has been archived and removed.
 
-Zero Python. Zero Swift. Zero Go/Rust stubs. Zero stale identity docs. One stack. One toolchain. One workflow.
+Zero Swift. Zero Go/Rust stubs. Zero stale identity docs. mtg-card-bot remains Python by decision. Everything else: one stack, one toolchain, one workflow.

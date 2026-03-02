@@ -59,60 +59,7 @@ After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 4 ch
 
 ---
 
-## Phase 5: Rewrite mtg-card-bot in TypeScript
-
-```
-Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md.
-
-Your task: rewrite mtg-card-bot from Python to TypeScript + Bun.
-
-Current state (~/github/mtg-card-bot):
-- Python Discord bot for Magic: The Gathering card lookups via Scryfall API
-- Features: prefix commands, bracket syntax [[Card Name]], random pulls, rules lookup, multi-card queries (semicolon-separated), rich embeds with prices/legality, per-user rate limiting, Scryfall API throttling
-- Files: manage_bot.py, mtg_card_bot/ package, pyproject.toml, uv.lock, LICENSE, README.md, CLAUDE.md
-
-Work to do:
-
-1. Remove all Python files: pyproject.toml, uv.lock, manage_bot.py, mtg_card_bot/ directory.
-
-2. Initialize TypeScript + Bun project:
-   - package.json with scripts: start, dev, lint, format, typecheck
-   - tsconfig.json (strict mode, ES2022, Bundler resolution, bun-types)
-   - biome.json (matching scryai-typescript: latest schema, space indent, recommended rules)
-
-3. Implement with discord.js:
-   - src/index.ts — bot entry point, client setup
-   - src/scryfall.ts — Scryfall API client with rate limiting (100ms between requests per their policy)
-   - src/commands/ — card lookup (prefix + bracket), random, rules
-   - src/embeds.ts — rich embed builder (card image, prices, legality, set info)
-   - src/rate-limit.ts — per-user cooldowns and duplicate suppression
-
-4. Use Zod for config/input validation. Config via environment variables (DISCORD_TOKEN, optional PREFIX).
-
-5. Update README.md: reflect TypeScript rewrite, keep feature list accurate, update prerequisites to Bun 1.3+.
-
-6. Verify: `bun run lint` and `bun run typecheck` pass.
-
-Constraints:
-- Preserve ALL existing bot features. This is a rewrite, not a reduction.
-- Commit as dunamismax. No AI attribution anywhere.
-- Force-push to main.
-- TypeScript strict mode. Bun runtime. Biome linting.
-
-Done when:
-- Zero Python files remain
-- All original features reimplemented
-- `bun run lint` passes
-- `bun run typecheck` passes
-- README updated
-- `bun run start` starts the bot (given DISCORD_TOKEN)
-
-After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 5 mtg-card-bot checkbox.
-```
-
----
-
-## Phase 5b: Rewrite scry-trader in TypeScript
+## Phase 5: Rewrite scry-trader in TypeScript
 
 ```
 Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md.
@@ -168,7 +115,7 @@ Done when:
 - README updated
 - `bun run src/cli.ts` works
 
-After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 5 scry-trader checkbox.
+After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 5 checkbox.
 ```
 
 ---
@@ -243,9 +190,10 @@ Active repos to add (all TypeScript + Bun, all under ~/github):
 4. repo-monitor
 5. open-video-downloader
 6. CallRift
-7. mtg-card-bot (assuming Phase 5 complete)
-8. scry-trader (assuming Phase 5b complete)
-9. elchess (assuming Phase 6 complete)
+7. scry-trader (assuming Phase 5 complete)
+8. elchess (assuming Phase 6 complete)
+
+Note: mtg-card-bot is intentionally remaining Python and is not tracked here.
 
 Work to do:
 
@@ -266,7 +214,7 @@ Constraints:
 - Force-push to main.
 
 Done when:
-- MANAGED_PROJECTS contains all 9 active repos
+- MANAGED_PROJECTS contains all 8 active TypeScript repos
 - `bun run scry:projects:doctor` reports status for every repo
 - `bun run lint` and `bun run typecheck` pass on scryai-typescript
 - REPO_ALIGNMENT.md Phase 7 marked complete
