@@ -118,10 +118,10 @@ Remove stale/wrong SOUL.md and AGENTS.md copies from repos (canonical source is 
 ### Phase 2: Archive Dead Repos
 Archive and remove repos with no code or that duplicate TypeScript work.
 
-- [ ] scryai-swift → archive on GitHub, delete local
-- [ ] scryai-gorust → archive on GitHub, delete local
-- [ ] elixir → archive on GitHub, delete local
-- [ ] espanol → archive on GitHub, delete local
+- [x] scryai-swift → deleted local, archived on GitHub + Codeberg
+- [x] scryai-gorust → deleted local, archived on GitHub + Codeberg
+- [x] elixir → deleted local, archived on GitHub + Codeberg
+- [x] espanol → deleted local, archived on GitHub + Codeberg
 
 ### Phase 3: Align Active Web Apps
 Ensure all web apps pass lint + typecheck with current Biome, have consistent tsconfig, and match the stack contract.
