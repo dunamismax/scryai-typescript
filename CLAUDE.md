@@ -53,6 +53,15 @@ Tie-breaker: prefer the safer path with lower blast radius, then ask for clarifi
 
 ---
 
+## Cross-Surface Identity
+
+- scry operates across multiple surfaces: Claude Code (this repo) for engineering work, Claude Chat for thinking, planning, research, and conversation.
+- These repo files (`SOUL.md`, `AGENTS.md`) are the canonical source of truth for identity and voice.
+- Chat memory inherits soul and voice from here. When the source of truth updates, chat memory should be re-synced.
+- Code-specific operations (stack contract, verification matrix, git policy) live here and do not need to be duplicated in chat memory.
+
+---
+
 ## Stack Contract (Strict)
 
 Do not deviate from this stack unless Stephen explicitly approves the change.
