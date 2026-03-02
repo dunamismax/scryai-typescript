@@ -58,11 +58,11 @@ All five share: Biome 2.4, Vite 7.3, TypeScript 5.9, Zod 4.3 (except repo-monito
 | **mtg-card-bot** | Python 3.12, discord.py, uv | Discord bot — Python ecosystem is ideal |
 | **scry-trader** | Python 3.12, ib_async, anthropic SDK, uv | Trading — Python's IBKR/finance ecosystem is best-in-class |
 
-### Greenfield — Needs TypeScript Bootstrap (Phase 5)
+### Chess Platform — Aligned
 
-| Repo | Current State | Target |
-|---|---|---|
-| **elchess** | README.md + CLAUDE.md only | React + React Router + Vite + chess.js |
+| Repo | React | Router | Tailwind | Chess | Linting | Status |
+|---|---|---|---|---|---|---|
+| **elchess** | 19.2 | 7.13 | 4.1 | chess.js 1.0 | Biome 2.4 | lint + typecheck clean |
 
 ### Content/Docs Repos — Done
 
@@ -107,9 +107,13 @@ All five web apps pass `bun run lint` and `bun run typecheck`. Poddashboard had 
 - [x] Verify `bun run lint` + `bun run typecheck` clean
 - [x] Update README tech stack table
 
-### Phase 5: Bootstrap elchess in TypeScript
+### Phase 5: Bootstrap elchess in TypeScript ✅
 
-- [ ] elchess → React Router + Vite + Tailwind + shadcn/ui + chess.js
+- [x] elchess → React Router 7 + Vite + Tailwind 4 + chess.js
+- [x] Interactive chess board with click-to-move, legal move highlighting
+- [x] Check/checkmate/stalemate/draw detection, move history, captured pieces
+- [x] Lint + typecheck clean
+- [x] Pushed to GitHub + Codeberg
 
 ### Phase 6: Populate MANAGED_PROJECTS
 
