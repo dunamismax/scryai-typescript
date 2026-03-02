@@ -99,21 +99,21 @@ Repos that have stale or wrong SOUL.md / AGENTS.md / CLAUDE.md:
 Add the standard CLAUDE.md (pointer to SOUL.md + AGENTS.md) to every repo that's staying.
 Remove stale/wrong SOUL.md and AGENTS.md copies from repos (canonical source is scryai-typescript / OpenClaw workspace — repos just get CLAUDE.md).
 
-- [ ] mylife-rpg
-- [ ] poddashboard
-- [ ] reactiveweb
-- [ ] repo-monitor
-- [ ] open-video-downloader
-- [ ] CallRift
-- [ ] mtg-card-bot
-- [ ] scry-trader
-- [ ] configs
-- [ ] dunamismax
-- [ ] images
-- [ ] Sawyer-Visual-Media
-- [ ] work
-- [ ] elchess
-- [ ] Remove stale SOUL.md/AGENTS.md/CLAUDE.md from: scryai-swift, scryai-gorust, elixir, espanol, scry-trader
+- [x] mylife-rpg
+- [x] poddashboard
+- [x] reactiveweb
+- [x] repo-monitor
+- [x] open-video-downloader
+- [x] CallRift
+- [x] mtg-card-bot
+- [x] scry-trader
+- [x] configs
+- [x] dunamismax
+- [x] images
+- [x] Sawyer-Visual-Media
+- [x] work
+- [x] elchess
+- [x] Remove stale SOUL.md/AGENTS.md/CLAUDE.md from: scryai-swift, scryai-gorust, elixir, espanol, scry-trader
 
 ### Phase 2: Archive Dead Repos
 Archive and remove repos with no code or that duplicate TypeScript work.
