@@ -1,8 +1,9 @@
 # Repo Alignment Tracker
 
 > Unify all `dunamismax` repositories under one consistent standard.
-> Every repo gets: TypeScript + Bun, CLAUDE.md, Biome, clean README, dual SSH remotes.
-> Non-TS repos either get rewritten in TypeScript or archived.
+> Every repo gets: CLAUDE.md, clean README, dual SSH remotes.
+> TypeScript + Bun + Biome is the default stack. Python (or other languages) stay when they're the right tool.
+> Dead stubs get archived.
 
 ---
 
@@ -54,15 +55,10 @@ All five share: Biome 2.4, Vite 7.3, TypeScript 5.9, Zod 4.3 (except repo-monito
 
 | Repo | Stack | Notes |
 |---|---|---|
-| **mtg-card-bot** | Python 3.12, discord.py, uv | Staying Python by decision. Not part of TS alignment. |
+| **mtg-card-bot** | Python 3.12, discord.py, uv | Discord bot — Python ecosystem is ideal |
+| **scry-trader** | Python 3.12, ib_async, anthropic SDK, uv | Trading — Python's IBKR/finance ecosystem is best-in-class |
 
-### Python Repos — Need TypeScript Rewrite (Phase 5)
-
-| Repo | Current Stack | Target |
-|---|---|---|
-| **scry-trader** | Python 3.12, ib_async, anthropic SDK, uv | TypeScript + Bun + @anthropic-ai/sdk |
-
-### Greenfield — Needs TypeScript Bootstrap (Phase 6)
+### Greenfield — Needs TypeScript Bootstrap (Phase 5)
 
 | Repo | Current State | Target |
 |---|---|---|
@@ -111,16 +107,11 @@ All five web apps pass `bun run lint` and `bun run typecheck`. Poddashboard had 
 - [x] Verify `bun run lint` + `bun run typecheck` clean
 - [x] Update README tech stack table
 
-### Phase 5: Rewrite scry-trader in TypeScript
-
-- ~~mtg-card-bot~~ — intentionally remaining Python, not rewriting
-- [ ] scry-trader → TypeScript + Bun (evaluate IBKR TS client availability)
-
-### Phase 6: Bootstrap elchess in TypeScript
+### Phase 5: Bootstrap elchess in TypeScript
 
 - [ ] elchess → React Router + Vite + Tailwind + shadcn/ui + chess.js
 
-### Phase 7: Populate MANAGED_PROJECTS
+### Phase 6: Populate MANAGED_PROJECTS
 
 - [ ] Add all active TypeScript repos to `projects.config.ts`
 - [ ] Verify `bun run scry:projects:doctor` reports on all repos
@@ -131,7 +122,8 @@ All five web apps pass `bun run lint` and `bun run typecheck`. Poddashboard had 
 
 Every repo in `~/github` either:
 1. Is TypeScript + Bun + Biome with CLAUDE.md and passing lint/typecheck, OR
-2. Is a content/docs repo with CLAUDE.md and a clean README, OR
-3. Has been archived and removed.
+2. Is Python (or another language) because it's genuinely the right tool, with CLAUDE.md and clean project setup, OR
+3. Is a content/docs repo with CLAUDE.md and a clean README, OR
+4. Has been archived and removed.
 
-Zero Swift. Zero Go/Rust stubs. Zero stale identity docs. mtg-card-bot remains Python by decision. Everything else: one stack, one toolchain, one workflow.
+Zero stale identity docs. Zero wrong-tool-for-the-job compromises. TypeScript is the default; Python (and others) earn their place when the ecosystem demands it.

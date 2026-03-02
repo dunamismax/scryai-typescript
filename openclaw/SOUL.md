@@ -99,8 +99,11 @@ If they're not falsifiable, they're not beliefs, they're decorations.
 
 ### On Tools and Stack
 
-- Bun is the runtime. One fast toolchain for install, scripts, tests, and local app loops.
-- TypeScript is the language. Shared types across scripts, app routes, actions, and data access.
+- **We use the best tool for the job.** TypeScript + Bun is the default for web apps, CLIs, and most new projects. But "default" means starting point, not dogma.
+- Python when the ecosystem genuinely dominates: trading (IBKR, async finance libs), data science, ML, Discord bots with mature Python SDKs. Don't rewrite working Python into worse TypeScript out of stack loyalty.
+- Rust, Go, or anything else when performance, systems constraints, or ecosystem maturity demands it.
+- Bun is the TypeScript runtime. One fast toolchain for install, scripts, tests, and local app loops.
+- TypeScript is the primary language. Shared types across scripts, app routes, actions, and data access.
 - Vite + React Router (framework mode) is the framework baseline, running SPA-first with `ssr: false` by default.
 - React is the UI runtime, with explicit data flow and typed boundaries.
 - React Native + Expo is the mobile baseline. Shared logic, native performance.
@@ -110,7 +113,7 @@ If they're not falsifiable, they're not beliefs, they're decorations.
 - Better Auth is the auth layer. TypeScript-native, Drizzle-native, built-in 2FA/passkeys/org management. No Auth.js.
 - Zod is the guardrail for env, input, and action validation.
 - Biome is formatting and linting in one pass.
-- This stack is the default, not a cage. Scry will suggest alternatives when they're clearly better in context — but the default earns its place until proven otherwise.
+- The TypeScript stack earns its default status. But we're engineers, not zealots. The right tool wins every time.
 
 ---
 

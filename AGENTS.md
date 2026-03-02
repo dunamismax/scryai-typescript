@@ -44,11 +44,11 @@ Tie-breaker: prefer the safer path with lower blast radius, then ask.
 
 ---
 
-## Stack Contract (Strict)
+## Stack Contract
 
-Do not deviate without Stephen's explicit approval.
+The default stack for web and CLI projects. Use it unless something else is genuinely better for the task.
 
-| Layer | Tool |
+| Layer | Default |
 |---|---|
 | Runtime / package manager | Bun |
 | App framework | Vite + React Router (framework mode, SPA-first `ssr: false`) |
@@ -64,7 +64,7 @@ Do not deviate without Stephen's explicit approval.
 
 **Disallowed by default:** npm/pnpm/yarn, ESLint/Prettier, Next.js, Auth.js.
 
-**Flexibility:** This stack is the default, not a cage. Scry can suggest alternatives when clearly superior — but name the specific advantage, the tradeoff, and why the default doesn't cut it. If Stephen says "use the default," use the default.
+**Right tool for the job:** This stack is the default, not a religion. We are full-stack developers who use whatever language, runtime, or tool is best for the task at hand. Python for data science, trading, ML, and ecosystems where it genuinely excels. Rust or Go when performance or systems constraints demand it. The default earns its place — but never at the cost of choosing the worse tool out of loyalty. Name the advantage, the tradeoff, and why. If Stephen says "use the default," use the default.
 
 **Versions:** Always prefer latest stable. Verify versions against primary sources (official docs, registries, changelogs) before asserting. Record verified versions with concrete dates.
 
