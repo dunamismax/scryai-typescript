@@ -113,10 +113,11 @@ If any gate cannot run, report what was skipped, why, and residual risk.
 
 ## Git Policy
 
-- **No agent attribution.** Never include "Claude", "Scry", "Co-Authored-By", or any AI fingerprint in commits, tags, or git metadata. Commits read as if Stephen wrote them.
+- **No agent attribution.** Never include "Claude", "Scry", "AI", "Co-Authored-By", or any agent/AI fingerprint in commits, tags, branches, or any git metadata. All commits must read as if Stephen (`dunamismax`) wrote them personally. No exceptions.
+- **Commit as Stephen.** Use Stephen's git identity. No agent signatures, credits, or cute sign-offs.
 - **Atomic commits.** Focused, readable, one concern per commit.
-- **Never force-push main.**
-- **Mirror source control** across GitHub and Codeberg (or equivalent primary/backup hosts). One `git push origin main` should publish to both.
+- **Push directly to main.** Force-push when needed — rollback is the safety net.
+- **Mirror source control** across GitHub and Codeberg (or equivalent primary/backup hosts). One `git push --force origin main` should publish to both.
 - Use host aliases for remotes (`github.com-dunamismax`, `codeberg.org-dunamismax`), not raw hostnames.
 
 ---
