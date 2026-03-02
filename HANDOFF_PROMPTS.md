@@ -1,47 +1,60 @@
 # Handoff Prompts
 
-> Copy-paste each phase prompt into a fresh coding agent session (Claude Code, Codex, etc.).
-> Execute phases in order. Each phase is self-contained.
-> After each phase, verify the done criteria before moving to the next.
+> Copy-paste each prompt into a fresh coding agent session (Claude Code, Codex, etc.).
+> Execute phases in order. Each is self-contained.
+> After each phase, verify done criteria before moving to the next.
 
 ---
 
 ## Phase 4: Align CallRift (Mobile)
 
 ```
-Read CLAUDE.md first, then SOUL.md and AGENTS.md in the scryai-typescript repo at ~/github/scryai-typescript for identity and operational rules.
+Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md. These define identity and operational rules.
 
 Your task: align the CallRift React Native app at ~/github/CallRift with our stack baseline.
 
 Current state:
-- React Native + Expo (SDK 52), React 18.3, TypeScript
-- Uses zustand for state management
-- Uses expo lint (ESLint under the hood)
-- No Biome, no CLAUDE.md (already added), no TanStack Query
-- babel.config.js present
-- bun.lock exists (already using Bun)
+- React Native 0.76.9 + Expo SDK 52, React 18.3.1, TypeScript
+- State management: zustand 5.0 (used for theme, preferences, SIP credentials, call state)
+- Linting: expo lint (ESLint under the hood) — no Biome
+- Navigation: expo-router 4.0 (file-based)
+- Icons: lucide-react-native
+- Secure storage: expo-secure-store
+- Babel config present (babel.config.js)
+- bun.lock exists, Bun is the package manager
+- CLAUDE.md already present
+- Dual SSH remotes (GitHub + Codeberg) already configured
 
 Work to do:
-1. Check the latest stable Expo SDK version. If SDK 52 supports React 19, upgrade React to 19+. If not, upgrade to the latest Expo SDK that does, then upgrade React. If React 19 is not yet supported by Expo, document that constraint and leave React at 18.3 — do NOT force an incompatible upgrade.
-2. Replace expo lint / ESLint with Biome. Remove all ESLint config and deps. Add @biomejs/biome as a devDependency. Create a biome.json matching the one in ~/github/scryai-typescript (latest schema, indentStyle: space, recommended rules, ignoreUnknown, exclude node_modules/.expo/dist). Update package.json lint script to use `bunx @biomejs/biome check .`.
-3. Evaluate zustand usage. If it's used for simple client-side UI state (theme, preferences), keep it. If it's used for server/async data fetching, replace those parts with TanStack Query. Add @tanstack/react-query if needed. Don't force TanStack Query where zustand is the right tool.
-4. Run `bun run lint` and `bun run typecheck` and fix any errors. Warnings are acceptable.
-5. Update the README.md tech stack table to reflect any changes made.
+
+1. Check the latest stable Expo SDK. If it supports React 19, upgrade Expo SDK + React together. If React 19 is not yet supported by the latest stable Expo SDK, document that and leave React at 18.3 — do NOT force an incompatible upgrade.
+
+2. Replace expo lint / ESLint with Biome:
+   - Remove all ESLint config files and deps
+   - Add @biomejs/biome as a devDependency
+   - Create biome.json: latest schema, indentStyle space, recommended rules, ignoreUnknown true, exclude node_modules/.expo/dist
+   - Update package.json lint script to `bunx @biomejs/biome check .`
+
+3. Evaluate zustand usage. It's currently used for client-side UI state (theme, preferences, SIP config, call state). This is appropriate for zustand — keep it. Only add TanStack Query if there's actual server/async data fetching that would benefit from caching and deduplication. Don't force the swap where zustand is the right tool.
+
+4. Run `bun run lint` and `bun run typecheck`. Fix errors. Warnings are acceptable.
+
+5. Update README.md tech stack table to reflect changes.
 
 Constraints:
-- Do NOT change any app functionality or UI.
-- Do NOT add SOUL.md or AGENTS.md to this repo (CLAUDE.md is already there).
-- Commit as dunamismax. No AI attribution anywhere. No "Claude", "Scry", "Co-Authored-By", or AI references in commits.
-- Push directly to main with force-push. Dual remotes (GitHub + Codeberg) are configured — one `git push --force origin main` hits both.
-- Keep commits atomic and focused.
+- Do NOT change app functionality or UI
+- Commit as dunamismax. No AI attribution. No "Claude", "Scry", "Co-Authored-By", or AI references in commits, anywhere
+- Force-push to main: `git push --force origin main` (hits both GitHub + Codeberg)
+- Atomic, focused commits
 
-Done criteria:
+Done when:
 - `bun run lint` passes (warnings OK, zero errors)
 - `bun run typecheck` passes
-- React version is latest compatible with current Expo SDK
-- Biome replaces ESLint entirely
-- No ESLint config or deps remain
-- README reflects current stack
+- Biome replaces ESLint entirely (zero ESLint config or deps remain)
+- React is latest version compatible with current Expo SDK
+- README reflects actual stack
+
+After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 4 checkboxes, commit and force-push scryai-typescript too.
 ```
 
 ---
@@ -49,43 +62,52 @@ Done criteria:
 ## Phase 5: Rewrite mtg-card-bot in TypeScript
 
 ```
-Read CLAUDE.md first, then SOUL.md and AGENTS.md in the scryai-typescript repo at ~/github/scryai-typescript for identity and operational rules.
+Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md.
 
-Your task: rewrite the mtg-card-bot Discord bot from Python to TypeScript + Bun.
+Your task: rewrite mtg-card-bot from Python to TypeScript + Bun.
 
-Current state:
-- Repo: ~/github/mtg-card-bot
-- Python Discord bot using the Scryfall API for Magic: The Gathering card lookups
-- Features: prefix commands, bracket syntax [[Card Name]], random pulls, rules lookup, rich embeds with prices/legality, rate limiting, Scryfall API throttling
-- Uses: Python 3.12+, uv package manager, discord.py
-- Has: manage_bot.py, mtg_card_bot/ package, pyproject.toml, uv.lock
+Current state (~/github/mtg-card-bot):
+- Python Discord bot for Magic: The Gathering card lookups via Scryfall API
+- Features: prefix commands, bracket syntax [[Card Name]], random pulls, rules lookup, multi-card queries (semicolon-separated), rich embeds with prices/legality, per-user rate limiting, Scryfall API throttling
+- Files: manage_bot.py, mtg_card_bot/ package, pyproject.toml, uv.lock, LICENSE, README.md, CLAUDE.md
 
 Work to do:
-1. Create a fresh TypeScript + Bun project in the same repo. Remove all Python files (pyproject.toml, uv.lock, manage_bot.py, mtg_card_bot/).
-2. Use discord.js as the Discord library. Add it as a dependency with `bun add discord.js`.
-3. Reimplement all existing features: card lookup (prefix + bracket syntax), random card, rules lookup, multi-card queries, rich embeds with prices/legality, per-user rate limiting, Scryfall API throttling.
-4. Use Zod for any input/config validation.
-5. Add Biome for linting/formatting (biome.json matching scryai-typescript).
-6. Structure: src/ directory with clean module separation. Entry point: src/index.ts.
-7. Add standard scripts to package.json: start, dev, lint, format, typecheck.
-8. Config via environment variables (DISCORD_TOKEN at minimum). Use .env support via Bun's built-in env loading.
-9. Update README.md to reflect the TypeScript rewrite. Keep the feature list accurate.
-10. Verify: `bun run lint` and `bun run typecheck` must pass.
+
+1. Remove all Python files: pyproject.toml, uv.lock, manage_bot.py, mtg_card_bot/ directory.
+
+2. Initialize TypeScript + Bun project:
+   - package.json with scripts: start, dev, lint, format, typecheck
+   - tsconfig.json (strict mode, ES2022, Bundler resolution, bun-types)
+   - biome.json (matching scryai-typescript: latest schema, space indent, recommended rules)
+
+3. Implement with discord.js:
+   - src/index.ts — bot entry point, client setup
+   - src/scryfall.ts — Scryfall API client with rate limiting (100ms between requests per their policy)
+   - src/commands/ — card lookup (prefix + bracket), random, rules
+   - src/embeds.ts — rich embed builder (card image, prices, legality, set info)
+   - src/rate-limit.ts — per-user cooldowns and duplicate suppression
+
+4. Use Zod for config/input validation. Config via environment variables (DISCORD_TOKEN, optional PREFIX).
+
+5. Update README.md: reflect TypeScript rewrite, keep feature list accurate, update prerequisites to Bun 1.3+.
+
+6. Verify: `bun run lint` and `bun run typecheck` pass.
 
 Constraints:
-- Preserve ALL existing bot functionality. This is a rewrite, not a reduction.
-- Do NOT add SOUL.md or AGENTS.md (CLAUDE.md is already there).
+- Preserve ALL existing bot features. This is a rewrite, not a reduction.
 - Commit as dunamismax. No AI attribution anywhere.
-- Push directly to main with force-push.
-- TypeScript strict mode. Bun runtime. Biome linting. No ESLint/Prettier.
+- Force-push to main.
+- TypeScript strict mode. Bun runtime. Biome linting.
 
-Done criteria:
+Done when:
 - Zero Python files remain
-- All original features reimplemented in TypeScript
+- All original features reimplemented
 - `bun run lint` passes
 - `bun run typecheck` passes
-- README is updated
-- Bot can start with `bun run start` (given DISCORD_TOKEN env var)
+- README updated
+- `bun run start` starts the bot (given DISCORD_TOKEN)
+
+After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 5 mtg-card-bot checkbox.
 ```
 
 ---
@@ -93,81 +115,112 @@ Done criteria:
 ## Phase 5b: Rewrite scry-trader in TypeScript
 
 ```
-Read CLAUDE.md first, then SOUL.md and AGENTS.md in the scryai-typescript repo at ~/github/scryai-typescript for identity and operational rules.
+Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md.
 
 Your task: rewrite scry-trader from Python to TypeScript + Bun.
 
-Current state:
-- Repo: ~/github/scry-trader
-- Python trading system using Interactive Brokers (ib_async) + Anthropic Claude for analysis
-- Modules: broker.py (IBKR connection), analyst.py (Claude analysis), risk.py (hard risk rules), journal.py (SQLite trade journal), models.py (Pydantic models), config.py (config.toml loader), cli.py (Click CLI)
-- Uses: Python 3.12+, uv, ib_async, anthropic SDK, pydantic, click, sqlite
+Current state (~/github/scry-trader):
+- Python trading system: Interactive Brokers (ib_async) + Anthropic Claude for analysis
+- Modules:
+  - broker.py — IBKR connection via ib_async (portfolio data, market data, order submission)
+  - analyst.py — Claude analysis engine (Anthropic SDK with tool_use for structured output)
+  - risk.py — hard risk rules (position limits, stop-loss requirements, daily loss circuit breakers)
+  - journal.py — SQLite trade journal (trades, portfolio snapshots, analysis history)
+  - models.py — Pydantic data models
+  - config.py — config.toml loader
+  - cli.py — Click CLI (commands: portfolio, watch, ask, analyze, buy, sell, risk, journal)
+  - prompts/ — system prompts and tool definitions for Claude
+- Files: src/scry_trader/, config.toml, data/, pyproject.toml, uv.lock, tests/, CLAUDE.md, README.md
 
 Work to do:
-1. Evaluate TypeScript IBKR client options. Check if @stoqey/ib or similar packages exist and are viable. If no mature TS IBKR client exists, document that finding and implement a clean abstraction layer that could be backed by a REST/WebSocket bridge to IBKR's API.
-2. Create a fresh TypeScript + Bun project in the same repo. Remove all Python files.
-3. Reimplement: IBKR connection/portfolio/orders, Claude analysis (using @anthropic-ai/sdk), risk rules, trade journal (use better-sqlite3 or bun:sqlite), config loading (from config.toml or switch to .env + Zod), CLI (use a lightweight TS CLI framework or plain Bun.argv parsing).
-4. Use Zod for all data models (replacing Pydantic).
-5. Add Biome, standard scripts, TypeScript strict mode.
-6. Structure: src/ directory. Entry point: src/cli.ts.
-7. Update README.md.
-8. Verify: `bun run lint` and `bun run typecheck` must pass.
+
+1. Research TypeScript IBKR client options. Check @stoqey/ib and alternatives. If no mature TS client exists, implement a clean abstraction layer over IBKR's Client Portal API (REST/WebSocket).
+
+2. Remove all Python files: pyproject.toml, uv.lock, src/scry_trader/, tests/.
+
+3. Initialize TypeScript + Bun project with standard config (tsconfig strict, biome.json, package.json with scripts).
+
+4. Reimplement all modules:
+   - src/broker.ts — IBKR connection, portfolio, market data, orders
+   - src/analyst.ts — Claude analysis (@anthropic-ai/sdk with tool_use)
+   - src/risk.ts — ALL risk rules preserved exactly (position limits, stop-loss, circuit breakers)
+   - src/journal.ts — SQLite journal (bun:sqlite)
+   - src/models.ts — Zod schemas replacing Pydantic models
+   - src/config.ts — config loading (.env + Zod, or keep config.toml with a TOML parser)
+   - src/cli.ts — CLI entry point with same commands
+   - src/prompts/ — system prompts and tool definitions
+
+5. Verify: `bun run lint` and `bun run typecheck` pass.
+
+6. Update README.md.
 
 Constraints:
-- Preserve all trading functionality. Risk rules are critical — do not simplify or skip any.
+- Risk rules are critical and non-negotiable. Preserve every rule exactly.
 - Commit as dunamismax. No AI attribution anywhere.
-- Push directly to main with force-push.
+- Force-push to main.
 
-Done criteria:
+Done when:
 - Zero Python files remain
 - All modules reimplemented in TypeScript
+- Risk rules preserved exactly
 - `bun run lint` passes
 - `bun run typecheck` passes
-- README is updated
-- CLI works with `bun run src/cli.ts`
+- README updated
+- `bun run src/cli.ts` works
+
+After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 5 scry-trader checkbox.
 ```
 
 ---
 
-## Phase 6: Rewrite elchess in TypeScript
+## Phase 6: Bootstrap elchess in TypeScript
 
 ```
-Read CLAUDE.md first, then SOUL.md and AGENTS.md in the scryai-typescript repo at ~/github/scryai-typescript for identity and operational rules.
+Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md.
 
-Your task: bootstrap the elchess repo as a TypeScript project.
+Your task: bootstrap elchess as a TypeScript web app.
 
-Current state:
-- Repo: ~/github/elchess
-- README.md describes a self-hostable chess platform (inspired by Lichess)
-- Currently has: README.md and CLAUDE.md only. No code.
-- Original plan was Elixir/Phoenix — we're restarting as TypeScript.
+Current state (~/github/elchess):
+- README.md describing a self-hostable chess platform (inspired by Lichess)
+- CLAUDE.md present
+- No code. Originally planned as Elixir/Phoenix — restarting as TypeScript.
 
 Work to do:
-1. Initialize a Bun + TypeScript project: package.json, tsconfig.json, biome.json.
-2. Set up a React Router (framework mode, SPA-first with ssr: false) frontend with Vite, Tailwind CSS, shadcn/ui.
-3. Create the initial app structure:
-   - Landing page with project description
-   - Game board component (8x8 chess board rendering with pieces)
-   - Basic game state management using chess.js (or equivalent TS chess library) for move validation
-   - WebSocket-ready architecture (define the message protocol, stub the connection layer)
-4. Add TanStack Query for any future server state needs.
-5. Standard scripts: dev, build, lint, format, typecheck.
-6. Update README.md: change "Elixir/Phoenix/LiveView" references to the actual TypeScript stack. Keep the vision and feature descriptions but make the tech stack accurate.
-7. Verify: `bun run lint` and `bun run typecheck` must pass. `bun run dev` should start the dev server and render the board.
+
+1. Initialize Bun + TypeScript project: package.json, tsconfig.json (strict), biome.json.
+
+2. Set up React Router 7 (framework mode, SPA-first with `ssr: false` in react-router.config.ts) + Vite + Tailwind CSS 4 + shadcn/ui.
+
+3. Build the initial app:
+   - Landing/home page with project description
+   - Game board component — 8x8 grid, piece rendering with SVG or Unicode, click-to-select and click-to-move interaction
+   - Game state powered by chess.js (or equivalent TS chess library) for move validation, check/checkmate detection
+   - WebSocket-ready architecture: define a message protocol type (e.g., GameMessage with move/join/resign variants), stub a connection hook that can be wired to a real server later
+   - Clean route structure: / (landing), /play (local game against yourself)
+
+4. Add TanStack Query (wired up with QueryClientProvider, ready for future server state).
+
+5. Standard scripts: dev, build, start, lint, format, typecheck.
+
+6. Update README.md: replace all Elixir/Phoenix/LiveView/BEAM references with the actual TypeScript stack. Keep the vision, project name, and feature aspirations — just make the tech accurate.
+
+7. Verify: `bun run lint` and `bun run typecheck` pass. `bun run dev` serves the app and renders a playable board.
 
 Constraints:
-- This is a foundation, not a finished product. Build the skeleton right so future work can iterate.
-- SPA-first (ssr: false in react-router.config.ts).
+- This is a foundation. Build the skeleton right so it's easy to iterate on.
+- SPA-first (`ssr: false`).
 - Commit as dunamismax. No AI attribution anywhere.
-- Push directly to main with force-push.
+- Force-push to main.
 
-Done criteria:
-- Working React app with chess board rendering
-- chess.js (or equivalent) integrated for move validation
+Done when:
+- Working React app with interactive chess board
+- chess.js integrated for move validation
 - `bun run lint` passes
 - `bun run typecheck` passes
 - `bun run dev` serves the app
 - README reflects TypeScript stack
+
+After completing: update ~/github/scryai-typescript/REPO_ALIGNMENT.md Phase 6 checkbox.
 ```
 
 ---
@@ -175,41 +228,46 @@ Done criteria:
 ## Phase 7: Populate MANAGED_PROJECTS
 
 ```
-Read CLAUDE.md first, then SOUL.md and AGENTS.md in the scryai-typescript repo at ~/github/scryai-typescript for identity and operational rules.
+Read ~/github/scryai-typescript/SOUL.md first, then ~/github/scryai-typescript/AGENTS.md.
 
-Your task: populate the MANAGED_PROJECTS array in ~/github/scryai-typescript/scripts/projects.config.ts so that `bun run scry:projects:doctor` tracks all active repositories.
+Your task: populate MANAGED_PROJECTS in ~/github/scryai-typescript so `bun run scry:projects:doctor` tracks all active repos.
 
 Current state:
-- projects.config.ts exports an empty MANAGED_PROJECTS array
-- The ManagedProject type is defined in common.ts: { name, path, installCommand, verifyCommands }
+- ~/github/scryai-typescript/scripts/projects.config.ts exports an empty MANAGED_PROJECTS array
+- ManagedProject type (in common.ts): { name: string, path: string, installCommand: string[], verifyCommands: string[][] }
 
-Active repos to add (all under ~/github):
-- mylife-rpg (path: /Users/sawyer/github/mylife-rpg, install: bun install, verify: bun run lint + bun run typecheck)
-- poddashboard (same pattern)
-- reactiveweb (same pattern)
-- repo-monitor (same pattern)
-- open-video-downloader (same pattern)
-- CallRift (same pattern)
-- mtg-card-bot (same pattern — assuming Phase 5 is complete and it's TypeScript now)
-- scry-trader (same pattern — assuming Phase 5b is complete)
-- elchess (same pattern — assuming Phase 6 is complete)
+Active repos to add (all TypeScript + Bun, all under ~/github):
+1. mylife-rpg
+2. poddashboard
+3. reactiveweb
+4. repo-monitor
+5. open-video-downloader
+6. CallRift
+7. mtg-card-bot (assuming Phase 5 complete)
+8. scry-trader (assuming Phase 5b complete)
+9. elchess (assuming Phase 6 complete)
 
 Work to do:
-1. Populate MANAGED_PROJECTS with all active TypeScript repos listed above.
-2. Use $HOME/github/<name> pattern for paths (resolve with process.env.HOME or os.homedir()).
-3. Install command: ["bun", "install"] for all.
-4. Verify commands: [["bun", "run", "lint"], ["bun", "run", "typecheck"]] for all.
-5. Run `bun run scry:projects:doctor` and verify it reports on all repos.
-6. Run `bun run lint && bun run typecheck` on scryai-typescript itself.
-7. Update REPO_ALIGNMENT.md: mark Phase 7 checkboxes as done.
+
+1. Edit projects.config.ts. Use `join(homedir(), "github", "<name>")` for paths (import homedir from "node:os", join from "node:path").
+
+2. For each repo:
+   - installCommand: ["bun", "install"]
+   - verifyCommands: [["bun", "run", "lint"], ["bun", "run", "typecheck"]]
+
+3. Run `bun run scry:projects:doctor` — verify it reports on all repos.
+
+4. Run `bun run lint && bun run typecheck` on scryai-typescript itself.
+
+5. Mark Phase 7 checkboxes done in REPO_ALIGNMENT.md.
 
 Constraints:
 - Commit as dunamismax. No AI attribution anywhere.
-- Push directly to main with force-push.
+- Force-push to main.
 
-Done criteria:
-- MANAGED_PROJECTS contains all active TypeScript repos
+Done when:
+- MANAGED_PROJECTS contains all 9 active repos
 - `bun run scry:projects:doctor` reports status for every repo
 - `bun run lint` and `bun run typecheck` pass on scryai-typescript
-- REPO_ALIGNMENT.md Phase 7 is marked complete
+- REPO_ALIGNMENT.md Phase 7 marked complete
 ```

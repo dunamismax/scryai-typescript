@@ -1,161 +1,123 @@
 # Repo Alignment Tracker
 
-> Track the work to unify all `dunamismax` repositories under one consistent standard.
-> Every repo gets: TypeScript + Bun, unified identity docs, Biome, clean README, dual remotes.
+> Unify all `dunamismax` repositories under one consistent standard.
+> Every repo gets: TypeScript + Bun, CLAUDE.md, Biome, clean README, dual SSH remotes.
 > Non-TS repos either get rewritten in TypeScript or archived.
 
 ---
 
 ## The Standard
 
-Per `SOUL.md` and `AGENTS.md`, every active repo must:
+Per `SOUL.md` and `AGENTS.md`, every active code repo must have:
 
-- [ ] **Language:** TypeScript (strict mode)
-- [ ] **Runtime:** Bun (bun.lock, no package-lock.json or yarn.lock)
-- [ ] **Linting/Formatting:** Biome (no ESLint, no Prettier)
-- [ ] **Identity docs:** CLAUDE.md pointing to SOUL.md + AGENTS.md (code agent bootstrap)
-- [ ] **No AI attribution:** Zero references to Claude/Anthropic/AI in commits, docs, or metadata
-- [ ] **Dual remotes:** GitHub + Codeberg via host aliases
-- [ ] **README:** Accurate, current, reflects what the repo actually does
-- [ ] **Git hygiene:** Clean history, main branch, atomic commits
+- **Language:** TypeScript (strict mode)
+- **Runtime:** Bun (bun.lock, no package-lock.json or yarn.lock)
+- **Linting/Formatting:** Biome (no ESLint, no Prettier)
+- **Identity docs:** CLAUDE.md pointing to scryai-typescript for SOUL.md + AGENTS.md
+- **No AI attribution:** Zero references to Claude/Anthropic/AI in commits, docs, or metadata
+- **Dual remotes:** GitHub + Codeberg via SSH host aliases
+- **README:** Accurate, current, reflects what the repo actually does
 
-For web apps specifically:
-- [ ] React 19+ / React Router (framework mode, SPA-first)
-- [ ] Tailwind CSS + shadcn/ui
-- [ ] TanStack Query (server state)
-- [ ] Drizzle ORM + Postgres (if DB needed)
-- [ ] Better Auth (if auth needed, no Auth.js)
-- [ ] Zod (validation)
+For web apps: React 19+ / React Router 7 (framework mode, SPA-first) / Tailwind 4 / shadcn/ui / TanStack Query / Drizzle + Postgres (if DB) / Better Auth (if auth) / Zod.
 
-For mobile apps:
-- [ ] React Native + Expo
-- [ ] TypeScript strict
-- [ ] Biome (replacing expo lint/eslint)
+For mobile apps: React Native + Expo / TypeScript strict / Biome.
 
 ---
 
-## Current State by Repo
+## Repo Inventory (current as of Phase 3 completion)
 
-### Tier 1 — Active TypeScript Apps (need alignment fixes)
+### Active TypeScript Web Apps — Aligned
 
-| Repo | Biome | CLAUDE.md | React 19 | TanStack Query | shadcn/ui | Bun Lock | Deviations |
-|---|---|---|---|---|---|---|---|
-| **mylife-rpg** | yes | MISSING | 19.2 | yes | yes | yes | No CLAUDE.md |
-| **poddashboard** | yes | MISSING | 19.2 | yes | no | yes | No CLAUDE.md, no shadcn/ui |
-| **reactiveweb** | yes | MISSING | 19.2 | yes | yes | yes | No CLAUDE.md |
-| **repo-monitor** | yes | MISSING | 19.2 | yes | yes | yes | No CLAUDE.md, no backend/DB yet |
-| **open-video-downloader** | yes | MISSING | 19.2 | yes | yes | yes | No CLAUDE.md |
-| **scryai-typescript** | yes | yes | n/a (CLI) | n/a | n/a | yes | Aligned |
+| Repo | React | Router | Tailwind | shadcn/ui | TanStack Query | DB | Auth | Backend | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| **mylife-rpg** | 19.2 | 7.13 | 4.2 | yes | yes | Postgres + Drizzle (pg) | none | react-router-serve | lint + typecheck clean |
+| **poddashboard** | 19.2 | 7.13 | 4.2 | no | yes | Postgres + Drizzle (pg) | Better Auth | separate Bun backend (concurrently) | lint + typecheck clean |
+| **reactiveweb** | 19.2 | 7.13 | 4.2 | yes | yes | Postgres + Drizzle (postgres.js) | Better Auth | Hono | lint + typecheck clean |
+| **repo-monitor** | 19.2 | 7.13 | 4.2 | yes | yes | none | none | separate Bun server | lint warnings (a11y), typecheck clean |
+| **open-video-downloader** | 19.2 | 7.13 | 4.2 | yes | yes | none | none | Hono (concurrently) | lint + typecheck clean |
 
-### Tier 2 — Mobile App (needs stack alignment)
+All five share: Biome 2.4, Vite 7.3, TypeScript 5.9, Zod 4.3 (except repo-monitor), CLAUDE.md present, dual remotes configured.
 
-| Repo | Deviations |
+### Ops CLI — Aligned
+
+| Repo | Status |
 |---|---|
-| **CallRift** | React 18.3 (needs 19+), no Biome (uses expo lint/eslint), no CLAUDE.md, zustand instead of TanStack Query, Expo SDK 52 (check latest), no Tailwind/NativeWind, babel.config.js still present |
+| **scryai-typescript** | Fully aligned. Biome, TypeScript, Bun, CLAUDE.md, dual remotes, OpenClaw sync. |
 
-### Tier 3 — Non-TypeScript (need full rewrite or archive)
+### Mobile App — Needs Alignment (Phase 4)
 
-| Repo | Current Lang | Decision | Notes |
-|---|---|---|---|
-| **scry-trader** | Python (uv) | **REWRITE** | Trading bot with IBKR + Claude. Rewrite in TypeScript + Bun. |
-| **mtg-card-bot** | Python (uv) | **REWRITE** | Discord bot. Rewrite in TypeScript + Bun + discord.js. |
-| **elchess** | Elixir (planned) | **REWRITE** | Chess platform. README-only, no code yet. Restart as TypeScript. |
-| **scryai-swift** | Swift | **ARCHIVE** | Duplicate of scryai-typescript. Archive and delete. |
-| **scryai-gorust** | None (empty) | **ARCHIVE** | Just SOUL.md + CLAUDE.md. No code. Delete. |
-| **espanol** | Python (1 file) | **ARCHIVE** | Spanish tutor experiment. Tiny. Archive. |
-| **elixir** | None (empty) | **ARCHIVE** | Just SOUL.md + CLAUDE.md. No code. Delete. |
-| **configs** | Shell scripts | **KEEP** | Dotfile backups. Not a code project — just config files. Add CLAUDE.md. |
+| Repo | React | Expo SDK | State | Linting | Issues |
+|---|---|---|---|---|---|
+| **CallRift** | 18.3 | 52 | zustand | expo lint (ESLint) | React 18 (needs 19+), no Biome, no TanStack Query, babel.config.js present |
 
-### Tier 4 — Content/Docs (light touch)
+### Python Repos — Need TypeScript Rewrite (Phase 5)
 
-| Repo | Needs |
+| Repo | Current Stack | Target |
+|---|---|---|
+| **mtg-card-bot** | Python 3.12, discord.py, uv | TypeScript + Bun + discord.js |
+| **scry-trader** | Python 3.12, ib_async, anthropic SDK, uv | TypeScript + Bun + @anthropic-ai/sdk |
+
+### Greenfield — Needs TypeScript Bootstrap (Phase 6)
+
+| Repo | Current State | Target |
+|---|---|---|
+| **elchess** | README.md + CLAUDE.md only | React + React Router + Vite + chess.js |
+
+### Content/Docs Repos — Done
+
+| Repo | Purpose | Status |
+|---|---|---|
+| **dunamismax** | GitHub profile README | CLAUDE.md added, dual remotes |
+| **images** | Asset repo | CLAUDE.md added, dual remotes |
+| **Sawyer-Visual-Media** | Business site submodules | CLAUDE.md added, dual remotes |
+| **work** | Work desktop sync | CLAUDE.md added, dual remotes |
+| **configs** | Dotfile backups (shell scripts, not a code project) | CLAUDE.md added, dual remotes |
+
+### Archived — Deleted Locally, Preserved on GitHub + Codeberg
+
+| Repo | Reason |
 |---|---|
-| **dunamismax** | GitHub profile README. Add CLAUDE.md. Update if stale. |
-| **images** | Asset repo. Add CLAUDE.md. |
-| **Sawyer-Visual-Media** | Business site submodules. Add CLAUDE.md. |
-| **work** | Work desktop sync target. Add CLAUDE.md. |
-
----
-
-## Identity Doc Deviations
-
-Repos that have stale or wrong SOUL.md / AGENTS.md / CLAUDE.md:
-
-| Repo | Issue |
-|---|---|
-| scryai-swift | Has old SOUL.md (lowercase "scry", stale content) + old AGENTS.md |
-| scryai-gorust | Has old SOUL.md (references CLAUDE.md not AGENTS.md) + old CLAUDE.md |
-| elixir | Has old SOUL.md + old CLAUDE.md |
-| espanol | Has SOUL.md for different identity ("alma", Spanish tutor) |
-| scry-trader | Has old CLAUDE.md only |
-| All Tier 1 apps | Missing CLAUDE.md entirely |
-| All Tier 4 repos | Missing CLAUDE.md entirely |
+| **scryai-swift** | Duplicate of scryai-typescript in Swift |
+| **scryai-gorust** | Empty stub (just SOUL.md + CLAUDE.md) |
+| **elixir** | Empty stub |
+| **espanol** | Tiny Python experiment with different identity |
 
 ---
 
 ## Phases
 
-### Phase 1: Add CLAUDE.md to All Active Repos
-Add the standard CLAUDE.md (pointer to SOUL.md + AGENTS.md) to every repo that's staying.
-Remove stale/wrong SOUL.md and AGENTS.md copies from repos (canonical source is scryai-typescript / OpenClaw workspace — repos just get CLAUDE.md).
+### Phase 1: CLAUDE.md + Identity Cleanup ✅
 
-- [x] mylife-rpg
-- [x] poddashboard
-- [x] reactiveweb
-- [x] repo-monitor
-- [x] open-video-downloader
-- [x] CallRift
-- [x] mtg-card-bot
-- [x] scry-trader
-- [x] configs
-- [x] dunamismax
-- [x] images
-- [x] Sawyer-Visual-Media
-- [x] work
-- [x] elchess
-- [x] Remove stale SOUL.md/AGENTS.md/CLAUDE.md from: scryai-swift, scryai-gorust, elixir, espanol, scry-trader
+Added CLAUDE.md to all 14 active repos. Removed stale SOUL.md/AGENTS.md/CLAUDE.md from scryai-swift, scryai-gorust, elixir, espanol, scry-trader. Fixed HTTPS→SSH remotes on repos that had them.
 
-### Phase 2: Archive Dead Repos
-Archive and remove repos with no code or that duplicate TypeScript work.
+### Phase 2: Archive Dead Repos ✅
 
-- [x] scryai-swift → deleted local, archived on GitHub + Codeberg
-- [x] scryai-gorust → deleted local, archived on GitHub + Codeberg
-- [x] elixir → deleted local, archived on GitHub + Codeberg
-- [x] espanol → deleted local, archived on GitHub + Codeberg
+Deleted local copies of scryai-swift, scryai-gorust, elixir, espanol. All preserved on GitHub + Codeberg.
 
-### Phase 3: Align Active Web Apps
-Ensure all web apps pass lint + typecheck with current Biome, have consistent tsconfig, and match the stack contract.
+### Phase 3: Verify Active Web Apps ✅
 
-- [x] mylife-rpg — lint clean, typecheck clean
-- [x] poddashboard — lint clean (fixed migration snapshot formatting), typecheck clean
-- [x] reactiveweb — lint clean, typecheck clean
-- [x] repo-monitor — lint warnings only (a11y SVG titles), typecheck clean
-- [x] open-video-downloader — lint clean, typecheck clean
+All five web apps pass `bun run lint` and `bun run typecheck`. Poddashboard had Drizzle migration snapshot formatting fixed. Repo-monitor has a11y warnings (non-blocking).
 
 ### Phase 4: Align CallRift (Mobile)
-Bring the React Native app onto the current baseline.
 
-- [ ] Upgrade React to 19+ (check Expo SDK compatibility)
-- [ ] Replace expo lint (eslint) with Biome
-- [ ] Replace zustand with TanStack Query where appropriate
-- [ ] Add CLAUDE.md
-- [ ] Verify typecheck clean
+- [ ] Upgrade React to 19+ (check Expo SDK compatibility first)
+- [ ] Replace expo lint (ESLint) with Biome
+- [ ] Evaluate zustand — keep for client UI state, replace with TanStack Query for async/server state
+- [ ] Verify `bun run lint` + `bun run typecheck` clean
+- [ ] Update README tech stack table
 
 ### Phase 5: Rewrite Python Repos in TypeScript
-Convert active Python projects to TypeScript + Bun.
 
 - [ ] mtg-card-bot → TypeScript + Bun + discord.js
 - [ ] scry-trader → TypeScript + Bun (evaluate IBKR TS client availability)
 
-### Phase 6: Rewrite elchess in TypeScript
-Currently README-only. Restart as a TypeScript project.
+### Phase 6: Bootstrap elchess in TypeScript
 
-- [ ] elchess → React + Bun + WebSocket chess server
+- [ ] elchess → React Router + Vite + Tailwind + shadcn/ui + chess.js
 
 ### Phase 7: Populate MANAGED_PROJECTS
-Update scryai-typescript `projects.config.ts` with all active repos so `scry:projects:doctor` tracks everything.
 
-- [ ] Add all Tier 1 + Tier 2 repos to MANAGED_PROJECTS
+- [ ] Add all active TypeScript repos to `projects.config.ts`
 - [ ] Verify `bun run scry:projects:doctor` reports on all repos
 
 ---
@@ -167,5 +129,4 @@ Every repo in `~/github` either:
 2. Is a content/docs repo with CLAUDE.md and a clean README, OR
 3. Has been archived and removed.
 
-Zero Python. Zero Swift. Zero Go/Rust stubs. Zero stale identity docs.
-One stack. One toolchain. One workflow.
+Zero Python. Zero Swift. Zero Go/Rust stubs. Zero stale identity docs. One stack. One toolchain. One workflow.
