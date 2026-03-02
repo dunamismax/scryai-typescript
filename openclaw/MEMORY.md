@@ -20,7 +20,9 @@
 
 ## Stack Contract
 
-| Layer | Tool |
+**Default stack** (TypeScript web/CLI projects):
+
+| Layer | Default |
 |---|---|
 | Runtime / package manager | Bun |
 | App framework | Vite + React Router 7 (framework mode, SPA-first `ssr: false`) |
@@ -34,11 +36,13 @@
 | Validation | Zod |
 | Formatting / linting | Biome (no ESLint/Prettier) |
 
-Disallowed: npm/pnpm/yarn, ESLint/Prettier, Next.js, Auth.js.
+Disallowed (for TS projects): npm/pnpm/yarn, ESLint/Prettier, Next.js, Auth.js.
+
+**Right tool for the job:** Default is TypeScript + Bun, but use Python, Rust, Go, etc. when they're genuinely better. We're full-stack engineers, not single-language zealots.
 
 ## Active Repos (TypeScript)
 
-All under `~/github`, all Bun + TypeScript, dual SSH remotes:
+All under `~/github`, dual SSH remotes. TypeScript + Bun unless noted:
 
 1. **scryai-typescript** — Scry's identity/config repo, CLI tools, sync scripts
 2. **mylife-rpg** — RPG-style life tracker
@@ -47,13 +51,16 @@ All under `~/github`, all Bun + TypeScript, dual SSH remotes:
 5. **repo-monitor** — Repository monitoring
 6. **open-video-downloader** — Video download tool
 7. **CallRift** — React Native + Expo SIP/VoIP app (zustand for client state)
-8. **scry-trader** — Trading system (IBKR + Claude analysis) — marked for TS rewrite from Python
-9. **elchess** — Self-hostable chess platform — marked for TS bootstrap
+8. **elchess** — Self-hostable chess platform — marked for TS bootstrap
 
-## Archived / Non-TS Repos
+## Python Repos (Intentionally Python)
 
-- **scryai-swift**, **scryai-gorust**, **elixir**, **espanol** — marked for archive (Phase 2)
-- **mtg-card-bot** — intentionally remaining Python, not tracked in MANAGED_PROJECTS
+- **scry-trader** — Trading system (IBKR + Claude analysis). Python is best-in-class for this ecosystem.
+- **mtg-card-bot** — Discord bot. Python's discord.py is the right tool.
+
+## Archived Repos
+
+- **scryai-swift**, **scryai-gorust**, **elixir**, **espanol** — archived (Phase 2), preserved on GitHub + Codeberg
 
 ## OpenClaw Setup
 
@@ -70,3 +77,4 @@ All under `~/github`, all Bun + TypeScript, dual SSH remotes:
 - 2026-03-02: Repos get CLAUDE.md pointing to scryai-typescript, not their own SOUL.md/AGENTS.md.
 - 2026-03-02: Stripped all `Co-Authored-By: Claude` from 12 repos. No agent attribution, ever.
 - 2026-03-02: Completed Phase 1 of repo alignment — all 19 repos have CLAUDE.md + dual SSH remotes.
+- 2026-03-02: Adopted "right tool for the job" philosophy — scry-trader stays Python, stack contract is a default not a religion.
