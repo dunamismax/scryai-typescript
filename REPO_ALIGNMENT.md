@@ -126,11 +126,11 @@ Archive and remove repos with no code or that duplicate TypeScript work.
 ### Phase 3: Align Active Web Apps
 Ensure all web apps pass lint + typecheck with current Biome, have consistent tsconfig, and match the stack contract.
 
-- [ ] mylife-rpg — verify lint + typecheck clean
-- [ ] poddashboard — verify lint + typecheck clean, add shadcn/ui init
-- [ ] reactiveweb — verify lint + typecheck clean
-- [ ] repo-monitor — verify lint + typecheck clean
-- [ ] open-video-downloader — verify lint + typecheck clean
+- [x] mylife-rpg — lint clean, typecheck clean
+- [x] poddashboard — lint clean (fixed migration snapshot formatting), typecheck clean
+- [x] reactiveweb — lint clean, typecheck clean
+- [x] repo-monitor — lint warnings only (a11y SVG titles), typecheck clean
+- [x] open-video-downloader — lint clean, typecheck clean
 
 ### Phase 4: Align CallRift (Mobile)
 Bring the React Native app onto the current baseline.
