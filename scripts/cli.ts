@@ -6,6 +6,7 @@ import {
   listProjects,
   verifyProjects,
 } from "./tasks/projects";
+import { setupConfigBackup } from "./tasks/setup-config-backup";
 import { setupSshBackup, setupSshRestore } from "./tasks/setup-ssh";
 import { setupWorkstation } from "./tasks/setup-workstation";
 import { syncRemotes } from "./tasks/sync-remotes";
@@ -17,6 +18,7 @@ const commands: Record<string, () => void> = {
   bootstrap,
   doctor,
   "setup:workstation": setupWorkstation,
+  "setup:config_backup": setupConfigBackup,
   "setup:ssh_backup": setupSshBackup,
   "setup:ssh_restore": setupSshRestore,
   "projects:list": listProjects,
