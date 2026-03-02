@@ -1,0 +1,12 @@
+{
+  "agents": {},
+  "defaults": {
+    "ask": "on-miss",
+    "security": "allowlist"
+  },
+  "socket": {
+    "path": "\/Users\/sawyer\/.openclaw\/exec-approvals.sock",
+    "token": "g0t1HRBnajsSQ-XZbWB-MTjiMIBfTjn3"
+  },
+  "version": 1
+}

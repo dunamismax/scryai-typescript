@@ -9,6 +9,7 @@ import {
 import { setupConfigBackup } from "./tasks/setup-config-backup";
 import { setupSshBackup, setupSshRestore } from "./tasks/setup-ssh";
 import { setupWorkstation } from "./tasks/setup-workstation";
+import { syncOpenclaw } from "./tasks/sync-openclaw";
 import { syncRemotes } from "./tasks/sync-remotes";
 import { syncWorkDesktop } from "./tasks/sync-work-desktop";
 
@@ -25,6 +26,7 @@ const commands: Record<string, () => void> = {
   "projects:doctor": doctorProjects,
   "projects:install": installProjects,
   "projects:verify": verifyProjects,
+  "sync:openclaw": syncOpenclaw,
   "sync:remotes": syncRemotes,
   "sync:work-desktop": syncWorkDesktop,
 };

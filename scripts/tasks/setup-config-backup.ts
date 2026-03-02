@@ -29,7 +29,7 @@ const CONFIG_KDF_ITERATIONS = 250_000;
 const CONFIG_KEY_LENGTH = 32;
 const CONFIG_SALT_LENGTH = 16;
 const CONFIG_IV_LENGTH = 12;
-const CONFIG_AUTH_TAG_LENGTH = 16;
+const _CONFIG_AUTH_TAG_LENGTH = 16;
 const CONFIG_FORMAT_MAGIC = "SCRYCFG1";
 
 const DEFAULT_CONFIG_PATHS = [
@@ -101,7 +101,7 @@ function buildConfigPathSet(home: string): {
   const extraRaw = process.env.SCRY_CONFIG_EXTRA_PATHS ?? "";
   const excludeRaw = process.env.SCRY_CONFIG_EXCLUDE_PATHS ?? "";
 
-  const requested = [...DEFAULT_CONFIG_PATHS];
+  const requested: string[] = [...DEFAULT_CONFIG_PATHS];
   if (extraRaw.length > 0) {
     requested.push(...parsePathList(extraRaw));
   }
@@ -232,9 +232,8 @@ export function setupConfigBackup(): void {
     );
   }
 
-  const { requestedPaths, includedPaths, missingPaths } = buildConfigPathSet(
-    home,
-  );
+  const { requestedPaths, includedPaths, missingPaths } =
+    buildConfigPathSet(home);
 
   if (includedPaths.length === 0) {
     throw new Error(

@@ -16,6 +16,9 @@ credentials.json
 service-account*.json
 **/secrets/
 
+# Vault (encrypted backups — only commit intentionally)
+vault/
+
 # Logs
 *.log
 

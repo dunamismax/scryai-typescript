@@ -8,11 +8,11 @@
 
 ### Terminal Portfolio
 
-Personal site that looks and behaves like a real terminal. Visitors type commands to explore your work, read about projects, check your stack, and navigate like they're SSH'd into your brain. Vue SPA with a custom shell parser, command history, tab completion, and enough personality to make people stay and poke around.
+Personal site that looks and behaves like a real terminal. Visitors type commands to explore your work, read about projects, check your stack, and navigate like they're SSH'd into your brain. SPA with a custom shell parser, command history, tab completion, and enough personality to make people stay and poke around.
 
 **Why it's great:** It's a front door that filters for your kind of people. Anyone who enjoys it is someone worth talking to. Surprisingly shippable — the core is a text input and a command router. Everything else is content.
 
-**Stack:** Vue 3, Vite, Tailwind, deployed as a static SPA.
+**Stack:** React, Vite, Tailwind, deployed as a static SPA.
 
 ---
 
@@ -22,7 +22,7 @@ Self-hosted uptime monitoring with a clean public status page. Ping your service
 
 **Why it's great:** Everyone running self-hosted services needs this, and the existing options are either overkill or someone else's server. One `bun run` to start monitoring. One URL to share.
 
-**Stack:** Bun server, Postgres for check history, Vue frontend for the public page, cron-style health checks.
+**Stack:** Bun server, Postgres, React frontend for the public page, cron-style health checks.
 
 ---
 
@@ -32,7 +32,7 @@ A site that renders your CLI tools with interactive, sandboxed demos. Visitors t
 
 **Why it's great:** Most developer portfolios show screenshots. This one lets people *use* the work. It's a live demo that speaks the language your tools were built in.
 
-**Stack:** Vue 3, Vite, Tailwind, sandboxed command execution (WASM or pre-recorded output trees).
+**Stack:** React, Vite, Tailwind, sandboxed command execution (WASM or pre-recorded output trees).
 
 ---
 
@@ -44,7 +44,7 @@ Structured log of what broke, when, why, and what fixed it. Searchable. Taggable
 
 **Why it's great:** Incident memory is one of the highest-leverage things a solo operator can have. Past-you solving a problem is the best documentation future-you will ever read.
 
-**Stack:** Bun server, Postgres, Vue frontend with full-text search.
+**Stack:** Bun server, Postgres, React frontend with full-text search.
 
 ---
 
@@ -54,7 +54,7 @@ A curated collection of links with notes, tags, and a public page. Not a bookmar
 
 **Why it's great:** It's a blog for people who discover more than they write. Lower friction than publishing posts, higher signal than a Twitter thread.
 
-**Stack:** Bun server, Postgres, Vue frontend, RSS generation.
+**Stack:** Bun server, Postgres, React frontend, RSS generation.
 
 ---
 
@@ -64,7 +64,7 @@ Point it at your GitHub and Codeberg repos. It scores them on documentation qual
 
 **Why it's great:** It turns "I should really update that repo" into a number you can't ignore. Self-awareness as a feature.
 
-**Stack:** Bun server, GitHub/Codeberg APIs, Postgres for historical scores, Vue frontend.
+**Stack:** Bun server, GitHub/Codeberg APIs, Postgres for historical scores, React frontend.
 
 ---
 
@@ -74,4 +74,4 @@ Scans every dependency across your repos. Flags abandoned packages, unmaintained
 
 **Why it's great:** The repo health dashboard's paranoid cousin. Most security incidents start with a dependency nobody was watching. This watches all of them.
 
-**Stack:** Bun server, GitHub/Codeberg APIs, npm/package registry APIs, Postgres, Vue frontend.
+**Stack:** Bun server, GitHub/Codeberg APIs, npm/package registry APIs, Postgres, React frontend.
