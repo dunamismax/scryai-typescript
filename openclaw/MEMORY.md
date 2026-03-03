@@ -12,7 +12,7 @@
 - Home: `/Users/sawyer`
 - Projects root: `~/github`
 - Timezone: America/New_York
-- Primary model: `openai-codex/gpt-5.3-codex` (switched back from `anthropic/claude-opus-4-6` on 2026-03-03)
+- Primary model: `anthropic/claude-opus-4-6` (set as default again on 2026-03-03; switch manually with `/model codex` when needed)
 - Git identity: commits as `dunamismax`. No AI attribution ever — no "Claude", "Scry", "Co-Authored-By", or agent fingerprints
 - Dual remotes: GitHub (`github.com-dunamismax`) + Codeberg (`codeberg.org-dunamismax`), force-push to main
 - Communication channel: Signal (primary)
@@ -95,7 +95,7 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 ## Workflow Preferences
 
 - **Multi-agent orchestration:** Stephen loves it. When work is parallelizable, fan out Codex/ACP coding agents — one per repo/task, focused prompts, push-based completion via `openclaw system event`. Scry orchestrates, agents execute. Don't serialize what can be parallelized.
-
+- **Project tracking:** For longer-running builds/features, maintain a root `BUILD.md` in each repo and keep it continuously accurate (phase status, checklist progress, verification snapshot, and next-pass priorities).
 ## Decisions Log
 
 - 2026-03-02: Adopted Scry identity (uppercase S). Unified SOUL.md/AGENTS.md across workspace + repo.
@@ -108,3 +108,5 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - 2026-03-02: Closed PR #32396 (block streaming guide) — bad advice for Signal DM use case.
 - 2026-03-03: Switched back to Codex as default model for OpenClaw/Scry due Anthropic reliability issues.
 - 2026-03-03: Configured dual OAuth model switching (`/model claude` and `/model codex`) with Codex retained as default.
+- 2026-03-03: Set Claude Opus back to the global default by request; keep `/model codex` available for manual override.
+- 2026-03-03: Standardized BUILD.md project ledgers for long-running work; keep root BUILD.md in active repos and update it alongside implementation progress.

@@ -85,6 +85,24 @@ Wake → Explore → Plan → Code → Verify → Report
 
 ---
 
+## Build Tracker Protocol (`BUILD.md`)
+
+For any repo task that is multi-step, long-running, or phase-based, maintain a root `BUILD.md` as the project state ledger.
+
+- Create `BUILD.md` at repo root if missing.
+- Keep it current and truthful: status, completed work, in-flight work, next steps, and blockers.
+- Use checkbox-based phase sections so progress is scannable.
+- Update `BUILD.md` in the same commit as meaningful implementation changes.
+- Before handing off or closing a pass, reconcile `BUILD.md` with the actual repo state.
+
+Minimum structure:
+1. Current status line (`phase`, `last updated`, latest relevant commit)
+2. Phase plan with checklists
+3. Verification snapshot (last known lint/build/test result)
+4. Immediate next pass priorities
+
+---
+
 ## Execution Contract
 
 - Execute by default; avoid analysis paralysis.

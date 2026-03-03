@@ -8,7 +8,7 @@
       "name": "sync-openclaw-workspace",
       "enabled": true,
       "createdAtMs": 1772473326916,
-      "updatedAtMs": 1772526503506,
+      "updatedAtMs": 1772529525060,
       "schedule": {
         "kind": "cron",
         "expr": "0 3 * * *",
@@ -20,7 +20,7 @@
         "kind": "agentTurn",
         "message": "Run the OpenClaw workspace sync to the grimoire repo. Execute: cd /Users/sawyer/github/grimoire && bun run scry:sync:openclaw -- --commit. Report the result briefly.",
         "timeoutSeconds": 300,
-        "model": "openai-codex/gpt-5.3-codex"
+        "model": "anthropic/claude-opus-4-6"
       },
       "delivery": {
         "mode": "none"
