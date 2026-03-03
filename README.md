@@ -43,3 +43,5 @@ bun run scry:setup:config_backup  # Create/update encrypted critical config back
 ## OpenClaw Capability Planning
 
 - Max-capability integration roadmap: `openclaw/MAX-CAPABILITIES-PLAYBOOK.md`
+- GitHub agent prompt templates: `openclaw/templates/github/`
+- Integration checklist template: `openclaw/templates/integrations/INTEGRATION-CHECKLIST.md`

@@ -126,9 +126,14 @@ This is the practical roadmap to make your OpenClaw setup maximally useful while
 ## 4) What to enable next (recommended order)
 
 ## Phase A — Immediate (high value, low risk)
-- [ ] Add an **integration backlog doc** per active project (`BUILD.md` + integration checklist)
-- [ ] Add daily/weekly cron summaries (repos, tasks, calendar priorities)
-- [ ] Add GitHub automation templates for issue triage and PR review cycles
+- [x] Add an **integration backlog doc** per active project (`BUILD.md` + integration checklist)
+- [x] Add daily/weekly cron summaries (repos, tasks, calendar priorities)
+- [x] Add GitHub automation templates for issue triage and PR review cycles
+
+Implemented now:
+- Daily summary job: `briefing:daily-repo-priority-summary`
+- Weekly summary job: `briefing:weekly-project-review`
+- Templates added under `openclaw/templates/github/`
 
 ## Phase B — External systems bridge
 - [ ] Enable webhook ingress mappings (`/hooks/*`) for external triggers
