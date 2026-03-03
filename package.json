@@ -11,6 +11,7 @@
     "scry:doctor": "bun run scripts/cli.ts doctor",
     "scry:setup:workstation": "bun run scripts/cli.ts setup:workstation",
     "scry:setup:config_backup": "bun run scripts/cli.ts setup:config_backup",
+    "scry:verify:config_backup": "bun run scripts/cli.ts verify:config_backup",
     "scry:setup:ssh_backup": "bun run scripts/cli.ts setup:ssh_backup",
     "scry:setup:ssh_restore": "bun run scripts/cli.ts setup:ssh_restore",
     "scry:projects:list": "bun run scripts/cli.ts projects:list",

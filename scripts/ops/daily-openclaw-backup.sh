@@ -7,6 +7,8 @@ REPO_ROOT="${HOME}/github/grimoire"
 LOG_DIR="${HOME}/Library/Logs/scry"
 LOG_FILE="${LOG_DIR}/openclaw-critical-backup.log"
 
+export PATH="${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 mkdir -p "${LOG_DIR}"
 
 exec >>"${LOG_FILE}" 2>&1
@@ -29,6 +31,7 @@ cd "${REPO_ROOT}"
 
 export SCRY_CONFIG_BACKUP_PASSPHRASE="${PASSPHRASE}"
 bun run scry:setup:config_backup
+bun run scry:verify:config_backup
 bun run scry:sync:openclaw -- --commit
 
 META_FILE="${REPO_ROOT}/vault/config/critical-configs.meta.json"

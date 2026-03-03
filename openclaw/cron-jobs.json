@@ -8,7 +8,7 @@
       "name": "sync-openclaw-workspace",
       "enabled": true,
       "createdAtMs": 1772473326916,
-      "updatedAtMs": 1772529525060,
+      "updatedAtMs": 1772532358779,
       "schedule": {
         "kind": "cron",
         "expr": "0 3 * * *",
@@ -20,7 +20,7 @@
         "kind": "agentTurn",
         "message": "Run the OpenClaw workspace sync to the grimoire repo. Execute: cd /Users/sawyer/github/grimoire && bun run scry:sync:openclaw -- --commit. Report the result briefly.",
         "timeoutSeconds": 300,
-        "model": "anthropic/claude-opus-4-6"
+        "model": "openai-codex/gpt-5.3-codex"
       },
       "delivery": {
         "mode": "none"
@@ -34,6 +34,64 @@
         "lastDelivered": false,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "4996f3f6-67d2-46ee-88dd-ba89d4c6bdbd",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "healthcheck:backup-freshness",
+      "enabled": true,
+      "createdAtMs": 1772532367675,
+      "updatedAtMs": 1772532402920,
+      "schedule": {
+        "kind": "cron",
+        "expr": "10 6 * * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "model": "openai-codex/gpt-5.3-codex",
+        "timeoutSeconds": 180,
+        "message": "Run a daily encrypted backup freshness check.\n\nExecute exactly:\ncd /Users/sawyer/github/grimoire\nMETA=\"/Users/sawyer/github/grimoire/vault/config/critical-configs.meta.json\"\nif [ ! -f \"$META\" ]; then\n  openclaw system event --text \"Reminder: daily backup freshness check failed — critical-configs.meta.json is missing in grimoire/vault/config. Investigate backup automation.\" --mode now\n  exit 1\nfi\npython3 - \"$META\" <<'PY'\nimport json, sys, datetime\nfrom datetime import timezone\np=sys.argv[1]\nwith open(p,'r',encoding='utf-8') as f:\n    m=json.load(f)\ncreated=m.get('createdAt')\nif not created:\n    print('MISSING_CREATED_AT')\n    sys.exit(2)\ncreated_dt=datetime.datetime.fromisoformat(created.replace('Z','+00:00'))\nage=(datetime.datetime.now(timezone.utc)-created_dt).total_seconds()/3600\nprint(f'AGE_HOURS={age:.2f}')\nif age>26:\n    sys.exit(3)\nPY\nRC=$?\nif [ \"$RC\" -eq 0 ]; then\n  exit 0\nelif [ \"$RC\" -eq 2 ]; then\n  openclaw system event --text \"Reminder: backup freshness check found invalid metadata (missing createdAt). Please inspect critical-configs.meta.json.\" --mode now\n  exit 1\nelse\n  openclaw system event --text \"Reminder: encrypted config backup is stale (>26h old). Run backup and investigate scheduler/logs.\" --mode now\n  exit 1\nfi"
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1772536200000,
+        "lastRunAtMs": 1772532384443,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 18477,
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "4fbc37f9-ce57-4053-8bde-2b208a2715de",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "healthcheck:restore-drill-reminder",
+      "enabled": true,
+      "createdAtMs": 1772532375030,
+      "updatedAtMs": 1772532375030,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 1 * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Reminder: monthly restore drill is due. Run the OpenClaw backup restore drill checklist in ~/github/grimoire/openclaw/BACKUPS.md and log pass/fail + follow-ups."
+      },
+      "state": {
+        "nextRunAtMs": 1775052000000
       }
     }
   ]

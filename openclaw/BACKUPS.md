@@ -28,10 +28,14 @@ This document covers backup layers for Stephen's local OpenClaw deployment and h
 
 ## Automation Implemented
 
-## Daily encrypted critical backup
+## Daily encrypted critical backup + integrity verification
 - Script: `~/github/grimoire/scripts/ops/daily-openclaw-backup.sh`
 - Scheduler: LaunchAgent `com.scry.openclaw.backup`
 - Time: daily at 02:20 local time
+- Daily run executes:
+  1. `bun run scry:setup:config_backup`
+  2. `bun run scry:verify:config_backup`
+  3. `bun run scry:sync:openclaw -- --commit`
 - Logs:
   - `~/Library/Logs/scry/openclaw-critical-backup.log`
   - `~/Library/Logs/scry/openclaw-backup.launchd.out.log`
