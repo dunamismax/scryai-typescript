@@ -18,7 +18,7 @@
       "wakeMode": "now",
       "payload": {
         "kind": "agentTurn",
-        "message": "Run the OpenClaw workspace sync to the scryai-typescript repo. Execute: cd /Users/sawyer/github/scryai-typescript && bun run scry:sync:openclaw -- --commit. Report the result briefly.",
+        "message": "Run the OpenClaw workspace sync to the grimoire repo. Execute: cd /Users/sawyer/github/grimoire && bun run scry:sync:openclaw -- --commit. Report the result briefly.",
         "timeoutSeconds": 120
       },
       "delivery": {

@@ -11,7 +11,7 @@ import {
 import { MANAGED_PROJECTS } from "../projects.config";
 
 const FALLBACK_REPOS = [
-  "scryai",
+  "grimoire",
   "dunamismax",
   "BereanAI",
   "TALLstack",
@@ -80,7 +80,7 @@ export function setupWorkstation(): void {
     process.env.GITHUB_HOST_ALIAS ?? `github.com-${owner}`;
   const codebergHostAlias =
     process.env.CODEBERG_HOST_ALIAS ?? `codeberg.org-${owner}`;
-  const anchorRepo = process.env.GITHUB_ANCHOR_REPO ?? "scryai";
+  const anchorRepo = process.env.GITHUB_ANCHOR_REPO ?? "grimoire";
   const profileRepo = process.env.GITHUB_PROFILE_REPO ?? "dunamismax";
   const reposIndexPath = join(githubRoot, profileRepo, "REPOS.md");
   const managedProjectRepos = unique(

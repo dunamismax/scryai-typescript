@@ -7,8 +7,8 @@ const GITHUB = join(homedir(), "github");
 export const MANAGED_PROJECTS: ManagedProject[] = [
   // --- TypeScript Web Apps ---
   {
-    name: "mylife-rpg",
-    path: join(GITHUB, "mylife-rpg"),
+    name: "questlog",
+    path: join(GITHUB, "questlog"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -16,8 +16,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
     ],
   },
   {
-    name: "poddashboard",
-    path: join(GITHUB, "poddashboard"),
+    name: "podwatch",
+    path: join(GITHUB, "podwatch"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -25,8 +25,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
     ],
   },
   {
-    name: "reactiveweb",
-    path: join(GITHUB, "reactiveweb"),
+    name: "homepage",
+    path: join(GITHUB, "homepage"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -34,8 +34,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
     ],
   },
   {
-    name: "repo-monitor",
-    path: join(GITHUB, "repo-monitor"),
+    name: "sentinel",
+    path: join(GITHUB, "sentinel"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -43,8 +43,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
     ],
   },
   {
-    name: "open-video-downloader",
-    path: join(GITHUB, "open-video-downloader"),
+    name: "rip",
+    path: join(GITHUB, "rip"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -73,8 +73,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
   },
   // --- Ops CLI ---
   {
-    name: "scryai-typescript",
-    path: join(GITHUB, "scryai-typescript"),
+    name: "grimoire",
+    path: join(GITHUB, "grimoire"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -83,8 +83,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
   },
   // --- Python ---
   {
-    name: "mtg-card-bot",
-    path: join(GITHUB, "mtg-card-bot"),
+    name: "oracle",
+    path: join(GITHUB, "oracle"),
     installCommand: ["uv", "sync"],
     verifyCommands: [
       ["uv", "run", "ruff", "check", "."],
@@ -92,8 +92,8 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
     ],
   },
   {
-    name: "scry-trader",
-    path: join(GITHUB, "scry-trader"),
+    name: "augur",
+    path: join(GITHUB, "augur"),
     installCommand: ["uv", "sync"],
     verifyCommands: [
       ["uv", "run", "ruff", "check", "."],
