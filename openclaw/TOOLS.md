@@ -18,7 +18,6 @@
 ## Reference Docs
 
 - **CONTRIBUTING_TO_OPENCLAW.md** (workspace + grimoire) — read before any work on the OpenClaw repo. Covers repo setup, build system, PR template, Signal plugin architecture, test patterns, reviewer expectations.
-- **CAPABILITY-GUIDE.md** (workspace) — full integration audit and setup guide for maximum capability.
 
 ## SSH Remotes
 
