@@ -96,6 +96,7 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 
 - **Multi-agent orchestration:** Stephen loves it. When work is parallelizable, fan out Codex/ACP coding agents — one per repo/task, focused prompts, push-based completion via `openclaw system event`. Scry orchestrates, agents execute. Don't serialize what can be parallelized.
 - **Project tracking:** For longer-running builds/features, maintain a root `BUILD.md` in each repo and keep it continuously accurate (phase status, checklist progress, verification snapshot, and next-pass priorities).
+- **Background-first workflow:** Stephen strongly prefers background agents for implementation while keeping the main chat thread continuously available for coordination, updates, and parallel work across repos.
 ## Decisions Log
 
 - 2026-03-02: Adopted Scry identity (uppercase S). Unified SOUL.md/AGENTS.md across workspace + repo.
@@ -110,3 +111,4 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - 2026-03-03: Configured dual OAuth model switching (`/model claude` and `/model codex`) with Codex retained as default.
 - 2026-03-03: Set Claude Opus back to the global default by request; keep `/model codex` available for manual override.
 - 2026-03-03: Standardized BUILD.md project ledgers for long-running work; keep root BUILD.md in active repos and update it alongside implementation progress.
+- 2026-03-03: Reaffirmed background-agent-first workflow as preferred mode: run coding agents in background, keep main thread responsive for orchestration and concurrent work.

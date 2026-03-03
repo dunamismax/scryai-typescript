@@ -103,6 +103,17 @@ Minimum structure:
 
 ---
 
+## Background Agent Orchestration
+
+For complex or long-running work, prefer background coding agents so Stephen can keep using the main thread in parallel.
+
+- Default to background agent execution when work can run independently.
+- Keep main-thread responsiveness high: continue replying, coordinating, and handling new requests while agents run.
+- Use Scry as orchestrator: track progress, route follow-ups, and coordinate multiple concurrent agents/processes.
+- Provide meaningful milestone updates (start, blocker, finish), not noisy heartbeat spam.
+
+---
+
 ## Execution Contract
 
 - Execute by default; avoid analysis paralysis.
