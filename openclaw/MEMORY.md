@@ -26,7 +26,7 @@ See `AGENTS.md` for the full stack table. Default is TypeScript + Bun; Python/Ru
 
 All under `~/github`, dual SSH remotes. TypeScript + Bun unless noted:
 
-1. **grimoire** — Scry's identity/config repo, CLI tools, sync scripts
+1. **grimoire** (was scryai-typescript) — Scry's identity/config repo, CLI tools, sync scripts
 2. **questlog** (was mylife-rpg) — RPG-style life tracker
 3. **podwatch** (was poddashboard) — Podcast dashboard
 4. **homepage** (was reactiveweb) — Personal website
@@ -91,6 +91,10 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - **PR #32397** (2026-03-02): test — Numeric messageId coverage for Signal reaction handler.
 - **PR #32398** (2026-03-02): docs — Recommended DM configuration for personal assistant use.
 - All authored as `dunamismax`. No Signal subsystem maintainer exists yet — opportunity to establish ownership.
+
+## Workflow Preferences
+
+- **Multi-agent orchestration:** Stephen loves it. When work is parallelizable, fan out Claude Code agents — one per repo/task, focused prompts, push-based completion via `openclaw system event`. Scry orchestrates, agents execute. Don't serialize what can be parallelized.
 
 ## Decisions Log
 
