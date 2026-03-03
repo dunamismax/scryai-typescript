@@ -31,4 +31,11 @@ bun run scry:doctor           # Verify prerequisites and project health
 bun run scry:projects:doctor  # Check all managed repos
 bun run scry:sync:remotes     # Configure dual push remotes
 bun run scry:sync:openclaw    # Sync workspace → repo
+bun run scry:setup:config_backup  # Create/update encrypted critical config backup
 ```
+
+## OpenClaw Backups
+
+- Backup policy and restore drill checklist: `openclaw/BACKUPS.md`
+- Daily backup runner: `scripts/ops/daily-openclaw-backup.sh`
+- LaunchAgent installer: `scripts/ops/install-openclaw-backup-launchagent.sh`
