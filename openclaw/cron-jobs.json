@@ -240,7 +240,7 @@
       "name": "optimization:weekly-agent-bench-review",
       "enabled": true,
       "createdAtMs": 1772542999126,
-      "updatedAtMs": 1772555345911,
+      "updatedAtMs": 1772555567575,
       "schedule": {
         "kind": "cron",
         "expr": "40 9 * * 1",
@@ -252,7 +252,7 @@
         "kind": "agentTurn",
         "model": "anthropic/claude-opus-4-6",
         "timeoutSeconds": 420,
-        "message": "Run the weekly specialist-agent bench optimization review for Stephen.\n\nTimebox: finish within ~5 minutes. Prefer deterministic checks; do not do broad repo scans.\n\nScope:\n- Agents: main, samantha, sentinel, shipwright, caretaker, archivist, scout, operator, reviewer, builder-mobile\n- Files: ~/.openclaw/workspace/{SOUL.md,AGENTS.md,CLAUDE.md,MEMORY.md}\n- Specialist files: ~/.openclaw/workspace-<agentId>/{SOUL.md,AGENTS.md,IDENTITY.md,CLAUDE.md}\n- Config source of truth: `openclaw config get agents.list`\n\nRequired checks:\n1) Missing agents/files and obvious config drift.\n2) Model-fit check per agent (primary/fallback alignment).\n3) Prompt-fit quality notes (clarity, boundaries, handoff quality, verification discipline).\n4) Delegation/tooling fit and orchestration bottlenecks.\n5) Top 5 improvements for this week, ranked by impact.\n\nOutput (concise, high signal):\n- Executive summary (3-5 bullets)\n- Ranked top-5 improvements with expected ROI\n- Per-agent table: status | model fit | prompt fit | key fix\n- Risk/watchlist\n- “Auto-apply now?” section: safe-now vs approval-required\n\nIf any check cannot be completed, report partial results with exact blockers instead of timing out.",
+        "message": "Run the weekly specialist-agent bench optimization review for Stephen.\n\nTimebox: finish within ~5 minutes. Prefer deterministic checks; do not do broad repo scans.\n\nScope:\n- Agents: main, samantha, sentinel, shipwright, caretaker, archivist, scout, operator, reviewer, builder-mobile\n- Files: ~/.openclaw/workspace/{SOUL.md,AGENTS.md,CLAUDE.md,MEMORY.md}\n- Specialist files: ~/.openclaw/workspace-<agentId>/{SOUL.md,AGENTS.md,IDENTITY.md,CLAUDE.md}\n- Config source of truth: `openclaw config get agents.list`\n\nModel policy (hard constraint):\n- Use/recommend only these models: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`.\n- Do not recommend cost-saving downgrades or lower-tier models.\n\nRequired checks:\n1) Missing agents/files and obvious config drift.\n2) Model-fit check per agent (primary/fallback alignment).\n3) Prompt-fit quality notes (clarity, boundaries, handoff quality, verification discipline).\n4) Delegation/tooling fit and orchestration bottlenecks.\n5) Top 5 improvements for this week, ranked by impact.\n\nOutput (concise, high signal):\n- Executive summary (3-5 bullets)\n- Ranked top-5 improvements with expected ROI\n- Per-agent table: status | model fit | prompt fit | key fix\n- Risk/watchlist\n- “Auto-apply now?” section: safe-now vs approval-required\n\nIf any check cannot be completed, report partial results with exact blockers instead of timing out.",
         "thinking": "low"
       },
       "delivery": {
@@ -263,10 +263,10 @@
       },
       "state": {
         "nextRunAtMs": 1773063600000,
-        "lastRunAtMs": 1772555294140,
+        "lastRunAtMs": 1772555516319,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 51771,
+        "lastDurationMs": 51256,
         "lastDeliveryStatus": "delivered",
         "consecutiveErrors": 0,
         "lastDelivered": true

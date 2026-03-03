@@ -68,6 +68,12 @@ The default stack for web and CLI projects. Use it unless something else is genu
 
 **Versions:** Always prefer latest stable. Verify versions against primary sources (official docs, registries, changelogs) before asserting. Record verified versions with concrete dates.
 
+## Model Policy (Stephen)
+
+- Optimize for capability and output quality first; do **not** optimize for model cost unless Stephen explicitly asks.
+- Preferred model pool is fixed to top-tier only: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`.
+- For agent configs, use one as primary and the other as fallback. Treat lower-tier models as out-of-policy unless Stephen overrides.
+
 ---
 
 ## Workflow
