@@ -1,10 +1,4 @@
-import {
-  createCipheriv,
-  createDecipheriv,
-  createHash,
-  pbkdf2Sync,
-  randomBytes,
-} from "node:crypto";
+import { createHash } from "node:crypto";
 import {
   chmodSync,
   cpSync,
@@ -13,13 +7,12 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
-  readlinkSync,
   renameSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { homedir, hostname, tmpdir } from "node:os";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import {
   commandExists,
   ensureDir,
@@ -27,65 +20,10 @@ import {
   logStep,
   runOrThrow,
 } from "../common";
+import { decrypt, encrypt } from "../crypto";
+import { directorySnapshot } from "../snapshot";
 
-const SSH_KDF_ITERATIONS = 250_000;
-const SSH_KEY_LENGTH = 32;
-const SSH_SALT_LENGTH = 16;
-const SSH_IV_LENGTH = 12;
-const SSH_AUTH_TAG_LENGTH = 16;
 const SSH_FORMAT_MAGIC = "SCRYSSH2";
-
-function sourceSnapshot(root: string): {
-  fingerprint: string;
-  fileCount: number;
-  totalBytes: number;
-} {
-  const entries: string[] = [];
-  let fileCount = 0;
-  let totalBytes = 0;
-
-  const walk = (current: string) => {
-    for (const name of readdirSync(current).sort()) {
-      const path = join(current, name);
-      const stats = lstatSync(path);
-      const rel = path.replace(`${root}/`, "");
-      const mode = (stats.mode & 0o777).toString(8).padStart(3, "0");
-
-      if (stats.isSymbolicLink()) {
-        fileCount += 1;
-        entries.push(`symlink ${rel} mode=${mode} -> ${readlinkSync(path)}`);
-        continue;
-      }
-
-      if (stats.isDirectory()) {
-        entries.push(`dir ${rel} mode=${mode}`);
-        walk(path);
-        continue;
-      }
-
-      if (stats.isFile()) {
-        fileCount += 1;
-        totalBytes += stats.size;
-        const content = readFileSync(path);
-        const fileHash = createHash("sha256").update(content).digest("hex");
-        entries.push(
-          `file ${rel} mode=${mode} size=${stats.size} sha256=${fileHash}`,
-        );
-        continue;
-      }
-
-      entries.push(`other ${rel} mode=${mode}`);
-    }
-  };
-
-  walk(root);
-
-  const fingerprint = createHash("sha256")
-    .update(entries.join("\n"))
-    .digest("hex");
-
-  return { fingerprint, fileCount, totalBytes };
-}
 
 function buildManagedBlock(
   githubHostAlias: string,
@@ -141,7 +79,7 @@ export function setupSshBackup(): void {
     );
   }
 
-  const { fingerprint, fileCount, totalBytes } = sourceSnapshot(sshDir);
+  const { fingerprint, fileCount, totalBytes } = directorySnapshot(sshDir);
 
   if (existsSync(encryptedFile) && existsSync(metadataFile)) {
     try {
@@ -171,30 +109,9 @@ export function setupSshBackup(): void {
     runOrThrow(["tar", "-C", home, "-cf", tempTar, ".ssh"]);
 
     const plaintext = readFileSync(tempTar);
-    const salt = randomBytes(SSH_SALT_LENGTH);
-    const iv = randomBytes(SSH_IV_LENGTH);
-    const key = pbkdf2Sync(
-      passphrase,
-      salt,
-      SSH_KDF_ITERATIONS,
-      SSH_KEY_LENGTH,
-      "sha256",
-    );
-
-    const cipher = createCipheriv("aes-256-gcm", key, iv);
-    const ciphertext = Buffer.concat([
-      cipher.update(plaintext),
-      cipher.final(),
-    ]);
-    const authTag = cipher.getAuthTag();
-
-    const payload = Buffer.concat([
-      Buffer.from(SSH_FORMAT_MAGIC),
-      salt,
-      iv,
-      authTag,
-      ciphertext,
-    ]);
+    const payload = encrypt(plaintext, passphrase, {
+      magic: SSH_FORMAT_MAGIC,
+    });
     writeFileSync(encryptedFile, payload);
     chmodSync(encryptedFile, 0o600);
 
@@ -203,12 +120,12 @@ export function setupSshBackup(): void {
     const metadata = {
       createdAt: new Date().toISOString(),
       host: hostname(),
-      sourceDir: sshDir,
-      encryptedBackupFile: encryptedFile,
+      sourceDir: "~/.ssh",
+      encryptedBackupFile: relative(repoRoot, encryptedFile),
       cipher: "aes-256-gcm",
       kdf: "pbkdf2",
       kdfDigest: "sha256",
-      kdfIterations: SSH_KDF_ITERATIONS,
+      kdfIterations: 250_000,
       sourceFingerprint: fingerprint,
       sourceFileCount: fileCount,
       sourceTotalBytes: totalBytes,
@@ -285,57 +202,9 @@ export function setupSshRestore(): void {
     logStep("Decrypting and authenticating SSH archive");
 
     const payload = readFileSync(encryptedFile);
-    const minLength =
-      SSH_FORMAT_MAGIC.length +
-      SSH_SALT_LENGTH +
-      SSH_IV_LENGTH +
-      SSH_AUTH_TAG_LENGTH +
-      1;
-
-    if (payload.length < minLength) {
-      throw new Error("Encrypted SSH backup is malformed or truncated.");
-    }
-
-    const magic = payload.subarray(0, SSH_FORMAT_MAGIC.length).toString("utf8");
-    if (magic !== SSH_FORMAT_MAGIC) {
-      throw new Error("Encrypted SSH backup format is unsupported.");
-    }
-
-    let offset = SSH_FORMAT_MAGIC.length;
-
-    const salt = payload.subarray(offset, offset + SSH_SALT_LENGTH);
-    offset += SSH_SALT_LENGTH;
-
-    const iv = payload.subarray(offset, offset + SSH_IV_LENGTH);
-    offset += SSH_IV_LENGTH;
-
-    const authTag = payload.subarray(offset, offset + SSH_AUTH_TAG_LENGTH);
-    offset += SSH_AUTH_TAG_LENGTH;
-
-    const ciphertext = payload.subarray(offset);
-
-    const key = pbkdf2Sync(
-      passphrase,
-      salt,
-      SSH_KDF_ITERATIONS,
-      SSH_KEY_LENGTH,
-      "sha256",
-    );
-
-    const decipher = createDecipheriv("aes-256-gcm", key, iv);
-    decipher.setAuthTag(authTag);
-
-    let plaintext: Buffer;
-    try {
-      plaintext = Buffer.concat([
-        decipher.update(ciphertext),
-        decipher.final(),
-      ]);
-    } catch {
-      throw new Error(
-        "Failed to decrypt and authenticate SSH backup. Check SCRY_SSH_BACKUP_PASSPHRASE and backup integrity.",
-      );
-    }
+    const plaintext = decrypt(payload, passphrase, {
+      magic: SSH_FORMAT_MAGIC,
+    });
 
     writeFileSync(tempTar, plaintext);
 

@@ -1,17 +1,9 @@
-import {
-  createCipheriv,
-  createHash,
-  pbkdf2Sync,
-  randomBytes,
-} from "node:crypto";
+import { createHash } from "node:crypto";
 import {
   chmodSync,
   existsSync,
-  lstatSync,
   mkdirSync,
-  readdirSync,
   readFileSync,
-  readlinkSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -24,12 +16,9 @@ import {
   logStep,
   runOrThrow,
 } from "../common";
+import { encrypt } from "../crypto";
+import { sourceSnapshot } from "../snapshot";
 
-const CONFIG_KDF_ITERATIONS = 250_000;
-const CONFIG_KEY_LENGTH = 32;
-const CONFIG_SALT_LENGTH = 16;
-const CONFIG_IV_LENGTH = 12;
-const _CONFIG_AUTH_TAG_LENGTH = 16;
 const CONFIG_FORMAT_MAGIC = "SCRYCFG1";
 
 const DEFAULT_CONFIG_PATHS = [
@@ -62,20 +51,14 @@ const DEFAULT_CONFIG_PATHS = [
   "Library/Application Support/Code/User/mcp.json",
 ] as const;
 
-type Snapshot = {
-  fingerprint: string;
-  fileCount: number;
-  totalBytes: number;
-};
-
-function parsePathList(value: string): string[] {
+export function parsePathList(value: string): string[] {
   return value
     .split(/[,\n]/)
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
 }
 
-function normalizeHomeRelativePath(home: string, raw: string): string {
+export function normalizeHomeRelativePath(home: string, raw: string): string {
   const trimmed = raw.trim().replace(/^~\//, "");
   const withoutLeading = trimmed.replace(/^\.\//, "");
   const resolved = resolve(home, withoutLeading);
@@ -93,7 +76,7 @@ function normalizeHomeRelativePath(home: string, raw: string): string {
   return rel;
 }
 
-function buildConfigPathSet(home: string): {
+export function buildConfigPathSet(home: string): {
   requestedPaths: string[];
   includedPaths: string[];
   missingPaths: string[];
@@ -137,68 +120,6 @@ function buildConfigPathSet(home: string): {
   }
 
   return { requestedPaths, includedPaths, missingPaths };
-}
-
-function addSnapshotEntries(
-  absPath: string,
-  relPath: string,
-  entries: string[],
-  counters: { fileCount: number; totalBytes: number },
-): void {
-  const stats = lstatSync(absPath);
-  const mode = (stats.mode & 0o777).toString(8).padStart(3, "0");
-
-  if (stats.isSymbolicLink()) {
-    counters.fileCount += 1;
-    entries.push(`symlink ${relPath} mode=${mode} -> ${readlinkSync(absPath)}`);
-    return;
-  }
-
-  if (stats.isDirectory()) {
-    entries.push(`dir ${relPath} mode=${mode}`);
-    for (const child of readdirSync(absPath).sort()) {
-      addSnapshotEntries(
-        join(absPath, child),
-        relPath.length > 0 ? `${relPath}/${child}` : child,
-        entries,
-        counters,
-      );
-    }
-    return;
-  }
-
-  if (stats.isFile()) {
-    counters.fileCount += 1;
-    counters.totalBytes += stats.size;
-    const fileHash = createHash("sha256")
-      .update(readFileSync(absPath))
-      .digest("hex");
-    entries.push(
-      `file ${relPath} mode=${mode} size=${stats.size} sha256=${fileHash}`,
-    );
-    return;
-  }
-
-  entries.push(`other ${relPath} mode=${mode}`);
-}
-
-function sourceSnapshot(home: string, includedPaths: string[]): Snapshot {
-  const entries: string[] = [];
-  const counters = { fileCount: 0, totalBytes: 0 };
-
-  for (const relPath of includedPaths) {
-    addSnapshotEntries(join(home, relPath), relPath, entries, counters);
-  }
-
-  const fingerprint = createHash("sha256")
-    .update(entries.join("\n"))
-    .digest("hex");
-
-  return {
-    fingerprint,
-    fileCount: counters.fileCount,
-    totalBytes: counters.totalBytes,
-  };
 }
 
 function sameStringList(a: string[] | undefined, b: string[]): boolean {
@@ -278,30 +199,9 @@ export function setupConfigBackup(): void {
     runOrThrow(["tar", "-C", home, "-cf", tempTar, ...includedPaths]);
 
     const plaintext = readFileSync(tempTar);
-    const salt = randomBytes(CONFIG_SALT_LENGTH);
-    const iv = randomBytes(CONFIG_IV_LENGTH);
-    const key = pbkdf2Sync(
-      passphrase,
-      salt,
-      CONFIG_KDF_ITERATIONS,
-      CONFIG_KEY_LENGTH,
-      "sha256",
-    );
-
-    const cipher = createCipheriv("aes-256-gcm", key, iv);
-    const ciphertext = Buffer.concat([
-      cipher.update(plaintext),
-      cipher.final(),
-    ]);
-    const authTag = cipher.getAuthTag();
-
-    const payload = Buffer.concat([
-      Buffer.from(CONFIG_FORMAT_MAGIC),
-      salt,
-      iv,
-      authTag,
-      ciphertext,
-    ]);
+    const payload = encrypt(plaintext, passphrase, {
+      magic: CONFIG_FORMAT_MAGIC,
+    });
     writeFileSync(encryptedFile, payload);
     chmodSync(encryptedFile, 0o600);
 
@@ -309,12 +209,12 @@ export function setupConfigBackup(): void {
     const metadata = {
       createdAt: new Date().toISOString(),
       host: hostname(),
-      sourceHome: home,
-      encryptedBackupFile: encryptedFile,
+      sourceHome: "~",
+      encryptedBackupFile: relative(repoRoot, encryptedFile),
       cipher: "aes-256-gcm",
       kdf: "pbkdf2",
       kdfDigest: "sha256",
-      kdfIterations: CONFIG_KDF_ITERATIONS,
+      kdfIterations: 250_000,
       sourceFingerprint: fingerprint,
       sourceFileCount: fileCount,
       sourceTotalBytes: totalBytes,

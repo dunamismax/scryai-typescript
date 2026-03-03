@@ -61,12 +61,7 @@ export function runOrThrow(
 }
 
 export function commandExists(binary: string): boolean {
-  const result = Bun.spawnSync({
-    cmd: ["bash", "-lc", `command -v ${binary} >/dev/null 2>&1`],
-    stdout: "ignore",
-    stderr: "ignore",
-  });
-  return result.exitCode === 0;
+  return Bun.which(binary) !== null;
 }
 
 export function hasEnv(name: string): boolean {

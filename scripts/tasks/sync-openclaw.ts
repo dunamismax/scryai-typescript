@@ -28,7 +28,6 @@
 import {
   copyFileSync,
   existsSync,
-  mkdirSync,
   readdirSync,
   readFileSync,
   rmSync,
@@ -36,7 +35,7 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-import { logStep } from "../common";
+import { ensureDir, logStep } from "../common";
 
 const OPENCLAW_WORKSPACE =
   process.env.OPENCLAW_WORKSPACE ??
@@ -80,10 +79,6 @@ function filesMatch(a: string, b: string): boolean {
   const aContent = readFileSync(a);
   const bContent = readFileSync(b);
   return aContent.equals(bContent);
-}
-
-function ensureDir(path: string): void {
-  mkdirSync(path, { recursive: true });
 }
 
 function syncFile(src: string, dest: string, result: SyncResult): void {

@@ -1,9 +1,10 @@
 import { readdirSync, statSync } from "node:fs";
+import { homedir } from "node:os";
 import { basename, join } from "node:path";
 import { isGitRepo, logStep, runOrThrow } from "../common";
 
 const DEFAULTS = {
-  root: "/Users/sawyer/github",
+  root: join(homedir(), "github"),
   owner: "dunamismax",
   ghAlias: "github.com-dunamismax",
   cbAlias: "codeberg.org-dunamismax",
@@ -89,7 +90,7 @@ function expectedUrls(repoName: string): { ghUrl: string; cbUrl: string } {
   };
 }
 
-function isCorrect(
+export function isCorrect(
   urls: { fetchUrl: string; pushUrls: string[] },
   expected: { ghUrl: string; cbUrl: string },
 ): boolean {

@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "bunx @biomejs/biome check .",
     "format": "bunx @biomejs/biome format --write .",
+    "test": "bun test",
     "typecheck": "bunx tsc --noEmit",
     "scry:bootstrap": "bun run scripts/cli.ts bootstrap",
     "scry:doctor": "bun run scripts/cli.ts doctor",

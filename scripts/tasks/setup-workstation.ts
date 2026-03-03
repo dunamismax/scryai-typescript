@@ -41,7 +41,7 @@ function repoNameFromPath(path: string): string {
   return basename(normalized);
 }
 
-function parseReposFromIndex(markdown: string): string[] {
+export function parseReposFromIndex(markdown: string): string[] {
   const repos: string[] = [];
   let inSection = false;
 
