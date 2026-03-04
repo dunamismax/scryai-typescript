@@ -1,4 +1,11 @@
-import { chmodSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { logStep } from "../common";
@@ -319,7 +326,8 @@ function writeIfChanged(path: string, content: string): boolean {
 }
 
 function appendIdentityLine(path: string): boolean {
-  const line = "- Commit metadata must never include assistant/agent/AI attribution terms.";
+  const line =
+    "- Commit metadata must never include assistant/agent/AI attribution terms.";
   const current = readFileSync(path, "utf8");
   if (current.includes(line)) return false;
   const next = `${current.trimEnd()}\n${line}\n`;
@@ -412,8 +420,20 @@ export function hardenSpecialists(): void {
 
     if (writeIfChanged(join(hooksDir, "commit-msg"), COMMIT_HOOK)) writes++;
     if (writeIfChanged(join(hooksDir, "pre-push"), PRE_PUSH_HOOK)) writes++;
-    if (writeIfChanged(join(scriptsDir, "agent-attribution-audit.sh"), AUDIT_SCRIPT)) writes++;
-    if (writeIfChanged(join(scriptsDir, "specialist-weekly-smoke.sh"), smokeScript(agentId))) writes++;
+    if (
+      writeIfChanged(
+        join(scriptsDir, "agent-attribution-audit.sh"),
+        AUDIT_SCRIPT,
+      )
+    )
+      writes++;
+    if (
+      writeIfChanged(
+        join(scriptsDir, "specialist-weekly-smoke.sh"),
+        smokeScript(agentId),
+      )
+    )
+      writes++;
 
     chmodSync(join(hooksDir, "commit-msg"), 0o700);
     chmodSync(join(hooksDir, "pre-push"), 0o700);
@@ -434,10 +454,14 @@ export function hardenSpecialists(): void {
     }
 
     if (existsSync(claudePath)) {
-      if (upsertHardeningSection(claudePath, universalHardeningSection(agentId))) writes++;
+      if (
+        upsertHardeningSection(claudePath, universalHardeningSection(agentId))
+      )
+        writes++;
     }
 
-    if (writeIfChanged(runbookPath, runbook(agentId, displayName(agentId)))) writes++;
+    if (writeIfChanged(runbookPath, runbook(agentId, displayName(agentId))))
+      writes++;
 
     console.log(`  [OK] ${agentId}`);
   }

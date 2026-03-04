@@ -121,7 +121,7 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - 2026-03-03: Reaffirmed background-agent-first workflow as preferred mode: run coding agents in background, keep main thread responsive for orchestration and concurrent work.
 - 2026-03-03: Adopted explicit max-capability integration posture: prioritize durable OpenClaw integrations/automation across Stephen's stack, with clear risk/consent gates for high-impact enables.
 - 2026-03-03: Nuked npm OpenClaw install, symlinked `~/.openclaw/lib/node_modules/openclaw` → `~/openclaw` git repo. Git-only install going forward.
-- 2026-03-03: Enabled browser (Brave), ACP coding agents (acpx/codex), nested sub-agents (depth 2), web fetch. Created CAPABILITY-GUIDE.md.
+- 2026-03-03: Enabled browser (Brave), ACP coding agents (acpx/codex), nested sub-agents (depth 2), web fetch.
 - 2026-03-03: **Claude Code is now the default for all background coding work.** ACP defaultAgent switched from codex → claude. Samantha's primary model switched to Opus 4.6. ALL agents now run Opus 4.6 as primary, Codex as fallback only. Codex available via manual `/model codex` override only. This is permanent unless Stephen explicitly says otherwise.
 - 2026-03-03: Stephen's app stack: Notion, GitHub, Codeberg, Docker, VSCode, M365, macOS, Ghostty, RustDesk, Tailscale, Signal, Brave, LocalSend.
 - 2026-03-03: Stephen declined email integration (Himalaya/Gmail/M365). Removed config + keychain entries. No email access.

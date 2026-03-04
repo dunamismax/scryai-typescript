@@ -102,7 +102,7 @@ function specialistSmokePayload(agentId: string, dn: string): string {
     `OUT="$(${scriptPath} 2>&1)" || RC=$?`,
     "RC=${RC:-0}",
     "printf '%s\\n' \"$OUT\"",
-    "if [ \"$RC\" -ne 0 ]; then",
+    'if [ "$RC" -ne 0 ]; then',
     `  openclaw system event --text "${failMsg}" --mode now`,
     "  exit 1",
     "fi",
@@ -143,7 +143,7 @@ function buildManifest(): ManagedJob[] {
       thinking: "low",
       timeoutSeconds: 480,
       message:
-        "Run the weekly specialist-agent bench smoke test. This is a deterministic health + recency check — not a deep optimization review.\n\n## Agents to check\nsamantha, sentinel, shipwright, caretaker, archivist, scout, operator, reviewer, builder-mobile, openclaw-maintainer\n\n## Required checks (deterministic, per agent)\n\n1. **Config presence**: Run `openclaw config get agents.list` and verify each agent ID exists.\n2. **Workspace files**: For each agent, check that these files exist in `~/.openclaw/workspace-<agentId>/`:\n   - SOUL.md, AGENTS.md, IDENTITY.md\n   - (CLAUDE.md is optional — note if missing but do not fail)\n3. **Model policy compliance**: Verify each agent uses only `anthropic/claude-opus-4-6` or `openai-codex/gpt-5.3-codex` as primary and fallback.\n4. **Recency check**: Run `openclaw cron runs --limit 50 --json 2>/dev/null` and `ls -lt ~/.openclaw/sessions/ 2>/dev/null | head -30` to assess recent agent activity. Flag any specialist with no session activity in the last 7 days as \"dormant\".\n5. **Cron guard health**: Verify that `healthcheck:agent-bench-daily` exists and its lastRunStatus is \"ok\" (run `openclaw cron list --json`).\n\n## Output format (concise, structured)\n\n```\n## Weekly Bench Smoke Test — <date>\n\n### Pass/Fail Summary\n| Agent | Config | Files | Model | Recency | Status |\n|-------|--------|-------|-------|---------|--------|\n| samantha | ✅ | ✅ | ✅ | active | PASS |\n| ... | ... | ... | ... | ... | ... |\n\n### Recency & Risk Watchlist\n- <agent>: <risk note or \"nominal\">\n- ...\n\n### Cron Guard Status\n- healthcheck:agent-bench-daily: <status>\n\n### Overall: <PASS/FAIL> (<N>/<total> agents healthy)\n```\n\n## Model policy (hard constraint)\nUse/recommend only: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`. Do not suggest downgrades.\n\nIf any check cannot complete, report partial results with exact blockers.",
+        'Run the weekly specialist-agent bench smoke test. This is a deterministic health + recency check — not a deep optimization review.\n\n## Agents to check\nsamantha, sentinel, shipwright, caretaker, archivist, scout, operator, reviewer, builder-mobile, openclaw-maintainer\n\n## Required checks (deterministic, per agent)\n\n1. **Config presence**: Run `openclaw config get agents.list` and verify each agent ID exists.\n2. **Workspace files**: For each agent, check that these files exist in `~/.openclaw/workspace-<agentId>/`:\n   - SOUL.md, AGENTS.md, IDENTITY.md\n   - (CLAUDE.md is optional — note if missing but do not fail)\n3. **Model policy compliance**: Verify each agent uses only `anthropic/claude-opus-4-6` or `openai-codex/gpt-5.3-codex` as primary and fallback.\n4. **Recency check**: Run `openclaw cron runs --limit 50 --json 2>/dev/null` and `ls -lt ~/.openclaw/sessions/ 2>/dev/null | head -30` to assess recent agent activity. Flag any specialist with no session activity in the last 7 days as "dormant".\n5. **Cron guard health**: Verify that `healthcheck:agent-bench-daily` exists and its lastRunStatus is "ok" (run `openclaw cron list --json`).\n\n## Output format (concise, structured)\n\n```\n## Weekly Bench Smoke Test — <date>\n\n### Pass/Fail Summary\n| Agent | Config | Files | Model | Recency | Status |\n|-------|--------|-------|-------|---------|--------|\n| samantha | ✅ | ✅ | ✅ | active | PASS |\n| ... | ... | ... | ... | ... | ... |\n\n### Recency & Risk Watchlist\n- <agent>: <risk note or "nominal">\n- ...\n\n### Cron Guard Status\n- healthcheck:agent-bench-daily: <status>\n\n### Overall: <PASS/FAIL> (<N>/<total> agents healthy)\n```\n\n## Model policy (hard constraint)\nUse/recommend only: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`. Do not suggest downgrades.\n\nIf any check cannot complete, report partial results with exact blockers.',
     },
     delivery: {
       mode: "announce",
@@ -199,7 +199,7 @@ function loadLiveJobs(): LiveJob[] {
   const parsed = JSON.parse(raw);
   const list = Array.isArray(parsed)
     ? parsed
-    : parsed.jobs ?? parsed.entries ?? [];
+    : (parsed.jobs ?? parsed.entries ?? []);
   return list as LiveJob[];
 }
 
@@ -209,7 +209,12 @@ function loadLiveJobs(): LiveJob[] {
 
 type Action =
   | { kind: "create"; job: ManagedJob }
-  | { kind: "update"; jobId: string; name: string; patches: Record<string, unknown> }
+  | {
+      kind: "update";
+      jobId: string;
+      name: string;
+      patches: Record<string, unknown>;
+    }
   | { kind: "remove"; jobId: string; name: string };
 
 /** Deep equality ignoring ephemeral/computed fields like staggerMs and key order. */
@@ -226,7 +231,9 @@ function stableStringify(v: unknown): string {
   }
   const obj = v as Record<string, unknown>;
   const keys = Object.keys(obj).sort();
-  const entries = keys.map((k) => `${JSON.stringify(k)}:${stableStringify(obj[k])}`);
+  const entries = keys.map(
+    (k) => `${JSON.stringify(k)}:${stableStringify(obj[k])}`,
+  );
   return `{${entries.join(",")}}`;
 }
 
@@ -234,7 +241,10 @@ function normalize(v: unknown): unknown {
   if (v === null || v === undefined) return v;
   if (typeof v === "string") {
     // Normalize whitespace: trim trailing whitespace per line, normalize line endings
-    return v.replace(/\r\n/g, "\n").replace(/[ \t]+$/gm, "").trimEnd();
+    return v
+      .replace(/\r\n/g, "\n")
+      .replace(/[ \t]+$/gm, "")
+      .trimEnd();
   }
   if (typeof v !== "object") return v;
   if (Array.isArray(v)) return v.map(normalize);
@@ -248,10 +258,7 @@ function normalize(v: unknown): unknown {
   return out;
 }
 
-function diff(
-  manifest: ManagedJob[],
-  live: LiveJob[],
-): Action[] {
+function diff(manifest: ManagedJob[], live: LiveJob[]): Action[] {
   const actions: Action[] = [];
   const liveByName = new Map<string, LiveJob>();
   for (const j of live) {
@@ -287,15 +294,22 @@ function diff(
     }
 
     if (Object.keys(patches).length > 0) {
-      actions.push({ kind: "update", jobId: have.id, name: want.name, patches });
+      actions.push({
+        kind: "update",
+        jobId: have.id,
+        name: want.name,
+        patches,
+      });
     }
   }
 
   // Check for orphaned managed jobs (live jobs whose names match manifest naming
   // patterns but are NOT in the current manifest scope). Only flag names that look
   // like they belong to the filtered manifest — don't touch unrelated jobs.
-  const manifestPrefixes = new Set(
-    manifest.map((j) => j.name.split(":")[0] + ":" + j.name.split(":")[1]?.split("-")[0]),
+  const _manifestPrefixes = new Set(
+    manifest.map(
+      (j) => `${j.name.split(":")[0]}:${j.name.split(":")[1]?.split("-")[0]}`,
+    ),
   );
   for (const [name, lj] of liveByName) {
     if (!managedNames.has(name)) {
@@ -328,9 +342,13 @@ function diff(
 
 function applyCreate(job: ManagedJob): void {
   const args = [
-    "openclaw", "cron", "add",
-    "--name", job.name,
-    "--session", job.sessionTarget,
+    "openclaw",
+    "cron",
+    "add",
+    "--name",
+    job.name,
+    "--session",
+    job.sessionTarget,
   ];
 
   if (job.schedule.kind === "cron") {

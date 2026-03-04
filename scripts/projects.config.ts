@@ -7,35 +7,8 @@ const GITHUB = join(homedir(), "github");
 export const MANAGED_PROJECTS: ManagedProject[] = [
   // --- TypeScript Web Apps ---
   {
-    name: "questlog",
-    path: join(GITHUB, "questlog"),
-    installCommand: ["bun", "install"],
-    verifyCommands: [
-      ["bun", "run", "lint"],
-      ["bun", "run", "typecheck"],
-    ],
-  },
-  {
     name: "podwatch",
     path: join(GITHUB, "podwatch"),
-    installCommand: ["bun", "install"],
-    verifyCommands: [
-      ["bun", "run", "lint"],
-      ["bun", "run", "typecheck"],
-    ],
-  },
-  {
-    name: "homepage",
-    path: join(GITHUB, "homepage"),
-    installCommand: ["bun", "install"],
-    verifyCommands: [
-      ["bun", "run", "lint"],
-      ["bun", "run", "typecheck"],
-    ],
-  },
-  {
-    name: "sentinel",
-    path: join(GITHUB, "sentinel"),
     installCommand: ["bun", "install"],
     verifyCommands: [
       ["bun", "run", "lint"],
@@ -71,6 +44,16 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
       ["bun", "run", "typecheck"],
     ],
   },
+  // --- CI Pipeline ---
+  {
+    name: "pr-firefighter",
+    path: join(GITHUB, "pr-firefighter"),
+    installCommand: ["bun", "install"],
+    verifyCommands: [
+      ["bun", "run", "lint"],
+      ["bun", "run", "typecheck"],
+    ],
+  },
   // --- Ops CLI ---
   {
     name: "grimoire",
@@ -81,16 +64,14 @@ export const MANAGED_PROJECTS: ManagedProject[] = [
       ["bun", "run", "typecheck"],
     ],
   },
-  // --- Python ---
+  // --- Content ---
   {
-    name: "oracle",
-    path: join(GITHUB, "oracle"),
-    installCommand: ["uv", "sync"],
-    verifyCommands: [
-      ["uv", "run", "ruff", "check", "."],
-      ["uv", "run", "mypy", "."],
-    ],
+    name: "Sawyer-Visual-Media",
+    path: join(GITHUB, "Sawyer-Visual-Media"),
+    installCommand: ["bun", "install"],
+    verifyCommands: [],
   },
+  // --- Python ---
   {
     name: "augur",
     path: join(GITHUB, "augur"),
