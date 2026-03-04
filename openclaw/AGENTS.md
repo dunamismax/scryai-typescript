@@ -127,7 +127,7 @@ ACP runtime uses `--non-interactive-permissions fail` which silently kills any a
 The correct pattern:
 
 ```bash
-exec pty:true background:true workdir:<repo> timeout:600 command:'claude -p "<task prompt>
+exec pty:true background:true workdir:<repo> timeout:1800 command:'claude -p "<task prompt>
 
 When completely finished, run: openclaw system event --text \"Done: <repo> — <summary>\" --mode now" --dangerously-skip-permissions 2>&1'
 ```
@@ -136,7 +136,7 @@ Key flags:
 - `pty: true` — Claude Code is an interactive terminal app
 - `background: true` — runs independently, returns sessionId
 - `--dangerously-skip-permissions` — auto-approves all file operations
-- `timeout: 600` — 10-minute safety net
+- `timeout: 1800` — 30-minute safety net
 - `openclaw system event` suffix — push-based completion notification
 - `workdir` — scopes the agent to the target repo
 

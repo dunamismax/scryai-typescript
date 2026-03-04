@@ -141,7 +141,7 @@ function buildManifest(): ManagedJob[] {
       kind: "agentTurn",
       model: "anthropic/claude-opus-4-6",
       thinking: "low",
-      timeoutSeconds: 480,
+      timeoutSeconds: 1800,
       message:
         'Run the weekly specialist-agent bench smoke test. This is a deterministic health + recency check — not a deep optimization review.\n\n## Agents to check\nsamantha, sentinel, shipwright, caretaker, archivist, scout, operator, reviewer, builder-mobile, openclaw-maintainer\n\n## Required checks (deterministic, per agent)\n\n1. **Config presence**: Run `openclaw config get agents.list` and verify each agent ID exists.\n2. **Workspace files**: For each agent, check that these files exist in `~/.openclaw/workspace-<agentId>/`:\n   - SOUL.md, AGENTS.md, IDENTITY.md\n   - (CLAUDE.md is optional — note if missing but do not fail)\n3. **Model policy compliance**: Verify each agent uses only `anthropic/claude-opus-4-6` or `openai-codex/gpt-5.3-codex` as primary and fallback.\n4. **Recency check**: Run `openclaw cron runs --limit 50 --json 2>/dev/null` and `ls -lt ~/.openclaw/sessions/ 2>/dev/null | head -30` to assess recent agent activity. Flag any specialist with no session activity in the last 7 days as "dormant".\n5. **Cron guard health**: Verify that `healthcheck:agent-bench-daily` exists and its lastRunStatus is "ok" (run `openclaw cron list --json`).\n\n## Output format (concise, structured)\n\n```\n## Weekly Bench Smoke Test — <date>\n\n### Pass/Fail Summary\n| Agent | Config | Files | Model | Recency | Status |\n|-------|--------|-------|-------|---------|--------|\n| samantha | ✅ | ✅ | ✅ | active | PASS |\n| ... | ... | ... | ... | ... | ... |\n\n### Recency & Risk Watchlist\n- <agent>: <risk note or "nominal">\n- ...\n\n### Cron Guard Status\n- healthcheck:agent-bench-daily: <status>\n\n### Overall: <PASS/FAIL> (<N>/<total> agents healthy)\n```\n\n## Model policy (hard constraint)\nUse/recommend only: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`. Do not suggest downgrades.\n\nIf any check cannot complete, report partial results with exact blockers.',
     },
@@ -172,7 +172,7 @@ function buildManifest(): ManagedJob[] {
         kind: "agentTurn",
         model: "anthropic/claude-opus-4-6",
         thinking: "low",
-        timeoutSeconds: 240,
+        timeoutSeconds: 1800,
         message: specialistSmokePayload(agentId, dn),
       },
       delivery: {
