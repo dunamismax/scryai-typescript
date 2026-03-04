@@ -19,6 +19,12 @@
 
 - **CONTRIBUTING_TO_OPENCLAW.md** (workspace + grimoire) — read before any work on the OpenClaw repo. Covers repo setup, build system, PR template, Signal plugin architecture, test patterns, reviewer expectations.
 
+## Grimoire CLI Commands
+
+- `bun run scry:sync:openclaw` — sync workspace → grimoire (add `-- --commit` to auto-push)
+- `bun run scry:specialists:harden` — apply Phase 2 hooks/templates/smoke to specialist workspaces
+- `bun run scry:cron:reconcile` — reconcile managed cron jobs against manifest (add `-- --apply` to converge)
+
 ## SSH Remotes
 
 All repos use dual SSH remotes with host aliases:

@@ -179,6 +179,10 @@ Maintain and actively use the specialist bench as first-class infrastructure, no
   - `cd ~/github/grimoire && bun run scry:specialists:harden`
   - optional discovery mode: `bun run scry:specialists:harden -- --discover`
 - Keep commit attribution enforcement active via hooks (`core.hooksPath`) and weekly specialist smoke jobs.
+- Reconcile cron jobs against the single manifest to prevent drift:
+  - `cd ~/github/grimoire && bun run scry:cron:reconcile` (dry-run)
+  - `bun run scry:cron:reconcile -- --apply` (converge live state)
+  - `bun run scry:cron:reconcile -- --scope=all` (include system-level bench smoke)
 - Record durable bench changes in `MEMORY.md` decisions log.
 
 ### Weekly bench smoke test (`healthcheck:agent-bench-weekly-smoke`)

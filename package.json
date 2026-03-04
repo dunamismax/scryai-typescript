@@ -21,6 +21,7 @@
     "scry:projects:verify": "bun run scripts/cli.ts projects:verify",
     "scry:sync:openclaw": "bun run scripts/cli.ts sync:openclaw",
     "scry:specialists:harden": "bun run scripts/cli.ts specialists:harden",
+    "scry:cron:reconcile": "bun run scripts/cli.ts cron:reconcile",
     "scry:sync:remotes": "bun run scripts/cli.ts sync:remotes",
     "scry:sync:work-desktop": "bun run scripts/cli.ts sync:work-desktop"
   },

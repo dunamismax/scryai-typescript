@@ -10,6 +10,7 @@ import { setupConfigBackup } from "./tasks/setup-config-backup";
 import { setupSshBackup, setupSshRestore } from "./tasks/setup-ssh";
 import { setupWorkstation } from "./tasks/setup-workstation";
 import { hardenSpecialists } from "./tasks/harden-specialists";
+import { reconcileCron } from "./tasks/reconcile-cron";
 import { syncOpenclaw } from "./tasks/sync-openclaw";
 import { syncRemotes } from "./tasks/sync-remotes";
 import { syncWorkDesktop } from "./tasks/sync-work-desktop";
@@ -41,6 +42,10 @@ const commands: Record<string, Command> = {
   "specialists:harden": {
     fn: hardenSpecialists,
     flags: "--discover | --agents=a,b | --include-maintainer  choose target specialist workspaces",
+  },
+  "cron:reconcile": {
+    fn: reconcileCron,
+    flags: "--apply  converge live state | --scope=smoke|all  filter job scope",
   },
   "sync:remotes": {
     fn: syncRemotes,
