@@ -30,13 +30,13 @@ fi
 cd "${REPO_ROOT}"
 
 export SCRY_CONFIG_BACKUP_PASSPHRASE="${PASSPHRASE}"
-python3 -m scripts setup:config_backup
-python3 -m scripts verify:config_backup
-python3 -m scripts sync:openclaw --commit
+uv run python -m scripts setup:config_backup
+uv run python -m scripts verify:config_backup
+uv run python -m scripts sync:openclaw --commit
 
 META_FILE="${REPO_ROOT}/vault/config/critical-configs.meta.json"
 if [[ -f "${META_FILE}" ]]; then
-  CREATED_AT="$(python3 - "${META_FILE}" <<'PY'
+  CREATED_AT="$(uv run python - "${META_FILE}" <<'PY'
 import json,sys
 p=sys.argv[1]
 with open(p,'r',encoding='utf-8') as f:

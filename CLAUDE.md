@@ -9,9 +9,9 @@
 ## Repo-Specific Notes
 
 - CLI entrypoint: `scripts/cli.py` → all tasks under `scripts/tasks/`.
-- Run `python3 -m scripts doctor` to verify prerequisites and project health.
+- Run `uv run python -m scripts doctor` to verify prerequisites and project health.
 - Run `bun run lint && bun run typecheck` before committing.
-- Use `python3 -m scripts sync:remotes --fix` to configure dual push remotes on new repos.
+- Use `uv run python -m scripts sync:remotes --fix` to configure dual push remotes on new repos.
 - The `openclaw/` directory is auto-synced from the OpenClaw workspace. Do not edit files there directly.
 - The `vault/` directory contains encrypted backups. Never commit decrypted secrets.
 - SOUL.md and AGENTS.md at repo root are synced from the OpenClaw workspace (canonical source). Edits here get overwritten on next sync.

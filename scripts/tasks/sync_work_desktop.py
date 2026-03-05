@@ -3,8 +3,8 @@
 After cloud-to-cloud sync, mirrors OneDrive → local git repo.
 
 Usage:
-  python3 -m scripts sync:work-desktop              # live run
-  python3 -m scripts sync:work-desktop --dry-run     # preview only
+  uv run python -m scripts sync:work-desktop              # live run
+  uv run python -m scripts sync:work-desktop --dry-run     # preview only
 """
 
 from __future__ import annotations

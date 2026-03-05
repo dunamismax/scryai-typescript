@@ -84,7 +84,7 @@ Last verified: 2026-03-04
 ## Agent Instructions
 
 - **Canonical sync direction:** OpenClaw workspace → grimoire. Never edit grimoire copies of SOUL.md/AGENTS.md directly.
-- Run `python3 -m scripts sync:openclaw --commit` after workspace identity file changes.
+- Run `uv run python -m scripts sync:openclaw --commit` after workspace identity file changes.
 - Keep `openclaw/cron-jobs.json` committed when state changes — it's the cron audit trail.
 - Update this BUILD.md in the same commit as meaningful changes.
 - If adding a new CLI command: register in `scripts/cli.py`, add to package.json scripts, document here.

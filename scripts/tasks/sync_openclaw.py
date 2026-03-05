@@ -16,8 +16,8 @@ Sync map:
 Secrets (openclaw.json, credentials/, tokens) are NOT synced here.
 
 Usage:
-  python3 -m scripts sync:openclaw               # sync only
-  python3 -m scripts sync:openclaw --commit       # sync + git commit + push
+  uv run python -m scripts sync:openclaw               # sync only
+  uv run python -m scripts sync:openclaw --commit       # sync + git commit + push
 """
 
 from __future__ import annotations

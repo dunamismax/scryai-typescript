@@ -5,10 +5,10 @@ BOOTSTRAP.md template, CLAUDE.md hardening section, IDENTITY.md attribution line
 and RUNBOOK.md per specialist.
 
 Usage:
-  python3 -m scripts specialists:harden
-  python3 -m scripts specialists:harden --discover
-  python3 -m scripts specialists:harden --agents=samantha,sentinel
-  python3 -m scripts specialists:harden --include-maintainer
+  uv run python -m scripts specialists:harden
+  uv run python -m scripts specialists:harden --discover
+  uv run python -m scripts specialists:harden --agents=samantha,sentinel
+  uv run python -m scripts specialists:harden --include-maintainer
 """
 
 from __future__ import annotations

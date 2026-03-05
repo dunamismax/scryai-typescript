@@ -66,7 +66,7 @@ The default stack for web and CLI projects. Use it unless something else is genu
 
 **Language policy:**
 - **TypeScript + Bun** — applications, websites, CLIs with rich UI, and libraries.
-- **Python** — all scripting, automation, data pipelines, trading, ML, and any standalone tool/utility. Scripts live in `~/github/scripts`. Python linting/formatting via `ruff`.
+- **Python** — all scripting, automation, data pipelines, trading, ML, and any standalone tool/utility. Scripts live in `~/github/scripts`. Python toolchain: **uv** (package/project/venv management), **ruff** (linting/formatting). Use `uv run` to execute, `uv add` for deps, `uv pip` for global installs. No raw `pip3` or `python3` invocations.
 - **Rust / Go** — when performance or systems constraints demand it.
 
 TypeScript is for products. Python is for scripts. Don't use TypeScript for scripting; don't use Python for web apps. If the line is blurry, ask.
@@ -187,13 +187,13 @@ Maintain and actively use the specialist bench as first-class infrastructure, no
 - Update model defaults/fallbacks intentionally; verify with at least one smoke run.
 - Keep daily cron guards enabled and healthy (`healthcheck:agent-bench-daily`, `healthcheck:docs-sync-daily`).
 - Run the shared specialist hardening generator from grimoire after creating/updating specialist agents:
-  - `cd ~/github/grimoire && python3 -m scripts specialists:harden`
-  - optional discovery mode: `python3 -m scripts specialists:harden --discover`
+  - `cd ~/github/grimoire && uv run python -m scripts specialists:harden`
+  - optional discovery mode: `uv run python -m scripts specialists:harden --discover`
 - Keep commit attribution enforcement active via hooks (`core.hooksPath`) and weekly specialist smoke jobs.
 - Reconcile cron jobs against the single manifest to prevent drift:
-  - `cd ~/github/grimoire && python3 -m scripts cron:reconcile` (dry-run)
-  - `python3 -m scripts cron:reconcile --apply` (converge live state)
-  - `python3 -m scripts cron:reconcile --scope=all` (include system-level bench smoke)
+  - `cd ~/github/grimoire && uv run python -m scripts cron:reconcile` (dry-run)
+  - `uv run python -m scripts cron:reconcile --apply` (converge live state)
+  - `uv run python -m scripts cron:reconcile --scope=all` (include system-level bench smoke)
 - Record durable bench changes in `MEMORY.md` decisions log.
 
 ### Weekly bench smoke test (`healthcheck:agent-bench-weekly-smoke`)

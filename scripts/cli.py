@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run python
 """CLI dispatcher for grimoire scripts.
 
 Usage:
-  python3 -m scripts <command> [flags]
+  uv run python -m scripts <command> [flags]
   python3 scripts/cli.py <command> [flags]
 """
 
@@ -83,7 +83,7 @@ def main() -> None:
 
     if "--help" in sys.argv:
         cmd = COMMANDS[command]
-        print(f"Usage: python3 -m scripts {command}")
+        print(f"Usage: uv run python -m scripts {command}")
         if cmd.get("flags"):
             print(f"\nFlags:\n  {cmd['flags']}")
         sys.exit(0)

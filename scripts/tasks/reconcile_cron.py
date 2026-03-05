@@ -5,8 +5,8 @@ Pass --scope=smoke to reconcile only specialist smoke jobs (default).
 Pass --scope=all to reconcile ALL managed jobs in the manifest.
 
 Usage:
-  python3 -m scripts cron:reconcile               # dry-run
-  python3 -m scripts cron:reconcile --apply        # apply changes
+  uv run python -m scripts cron:reconcile               # dry-run
+  uv run python -m scripts cron:reconcile --apply        # apply changes
 """
 
 from __future__ import annotations

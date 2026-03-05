@@ -143,7 +143,7 @@ def setup_workstation() -> None:
         )
 
     log_step("Checking workstation bootstrap prerequisites")
-    required = ["git", "ssh"] + (["python3"] if restore_ssh else [])
+    required = ["git", "ssh"] + (["uv"] if restore_ssh else [])
     for tool in required:
         if not command_exists(tool):
             raise RuntimeError(f"Missing required tool: {tool}")
@@ -161,7 +161,7 @@ def setup_workstation() -> None:
     if restore_ssh:
         log_step("Restoring encrypted SSH backup")
         run_or_throw(
-            ["python3", "-m", "scripts", "setup:ssh_restore"], cwd=script_repo_root
+            ["uv", "run", "python", "-m", "scripts", "setup:ssh_restore"], cwd=script_repo_root
         )
 
     clone_or_fetch(profile_repo)
@@ -234,4 +234,4 @@ def setup_workstation() -> None:
         print("mode: local-only")
     if source == "fallback":
         print("mode: fallback-discovery-only")
-    print("next: python3 -m scripts bootstrap")
+    print("next: uv run python -m scripts bootstrap")

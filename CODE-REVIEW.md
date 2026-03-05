@@ -37,9 +37,9 @@ Grimoire is a well-structured personal ops/identity repo with TypeScript across 
 
 The dispatch table pattern is straightforward and works well for this scale. A few gaps:
 
-- **No `--help` flag.** Running `python3 -m scripts` with no args shows available commands (good), but there's no per-command help or description.
+- **No `--help` flag.** Running `uv run python -m scripts` with no args shows available commands (good), but there's no per-command help or description.
 - **Commands typed as `() => void`.** Several commands could benefit from being async (e.g., if you ever want parallel project installs or async I/O). The type should be `() => void | Promise<void>` with an `await` in the try/catch. Not urgent but blocks future async work.
-- **No argument forwarding visibility.** Some tasks read `sys.argv` directly (e.g., `sync_openclaw` checks for `--commit`, `sync_remotes` checks for `--fix`). This works but the CLI entrypoint doesn't document which commands accept flags. A user running `python3 -m scripts sync:openclaw` has to read source to know `--commit` exists.
+- **No argument forwarding visibility.** Some tasks read `sys.argv` directly (e.g., `sync_openclaw` checks for `--commit`, `sync_remotes` checks for `--fix`). This works but the CLI entrypoint doesn't document which commands accept flags. A user running `uv run python -m scripts sync:openclaw` has to read source to know `--commit` exists.
 
 ### Module Boundaries
 

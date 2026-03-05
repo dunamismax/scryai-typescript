@@ -18,7 +18,7 @@ def bootstrap() -> None:
     run_or_throw(["bun", "install"])
 
     log_step("Installing managed project dependencies")
-    run_or_throw(["python3", "-m", "scripts", "projects:install"])
+    run_or_throw(["uv", "run", "python", "-m", "scripts", "projects:install"])
 
     log_step("Bootstrap complete")
     bun_version = run_or_throw(["bun", "--version"], quiet=True)

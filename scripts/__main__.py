@@ -1,4 +1,4 @@
-"""Allow running as `python3 -m scripts <command>`."""
+"""Allow running as `uv run python -m scripts <command>`."""
 
 from scripts.cli import main
 

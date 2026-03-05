@@ -21,9 +21,9 @@
 
 ## Grimoire CLI Commands
 
-- `python3 -m scripts sync:openclaw` — sync workspace → grimoire (add `--commit` to auto-push)
-- `python3 -m scripts specialists:harden` — apply Phase 2 hooks/templates/smoke to specialist workspaces
-- `python3 -m scripts cron:reconcile` — reconcile managed cron jobs against manifest (add `--apply` to converge)
+- `uv run python -m scripts sync:openclaw` — sync workspace → grimoire (add `--commit` to auto-push)
+- `uv run python -m scripts specialists:harden` — apply Phase 2 hooks/templates/smoke to specialist workspaces
+- `uv run python -m scripts cron:reconcile` — reconcile managed cron jobs against manifest (add `--apply` to converge)
 
 ## SSH Remotes
 
@@ -68,7 +68,7 @@ All repos use dual SSH remotes with host aliases:
 - **Utilities**: `parallel`, `entr`, `pv`, `hyperfine`, `tokei`, `dust`, `duf`, `procs`, `sd`, `difftastic`, `mkcert`, `watchman`, `pandoc`, `clawhub`
 - **Not installed**: acpx, mcporter, playwright
 
-## Python AI/ML Stack (pip3 global, Python 3.14)
+## Python AI/ML Stack (uv-managed, Python 3.14)
 
 - **ML frameworks**: PyTorch 2.10 (MPS ✓), MLX 0.31, mlx-lm
 - **HuggingFace**: transformers, diffusers, datasets, accelerate, safetensors

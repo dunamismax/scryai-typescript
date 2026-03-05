@@ -1,7 +1,7 @@
 """AES-256-GCM encryption/decryption with PBKDF2 key derivation.
 
 Format-compatible with the original TypeScript implementation.
-Requires the `cryptography` package: pip install cryptography
+Requires the `cryptography` package: uv add cryptography
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ def encrypt(plaintext: bytes, passphrase: str, fmt: CryptoFormat) -> bytes:
         from cryptography.hazmat.primitives.ciphers.aead import AESGCM
     except ImportError as exc:
         raise RuntimeError(
-            "The 'cryptography' package is required for encryption. Install with: pip install cryptography"
+            "The 'cryptography' package is required for encryption. Install with: uv add cryptography"
         ) from exc
 
     salt = os.urandom(SALT_LENGTH)
@@ -54,7 +54,7 @@ def decrypt(payload: bytes, passphrase: str, fmt: CryptoFormat) -> bytes:
         from cryptography.hazmat.primitives.ciphers.aead import AESGCM
     except ImportError as exc:
         raise RuntimeError(
-            "The 'cryptography' package is required for decryption. Install with: pip install cryptography"
+            "The 'cryptography' package is required for decryption. Install with: uv add cryptography"
         ) from exc
 
     magic_len = len(fmt.magic)
