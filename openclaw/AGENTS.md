@@ -78,7 +78,8 @@ TypeScript is for products. Python is for scripts. Don't use TypeScript for scri
 ## Model Policy (Stephen)
 
 - Optimize for capability and output quality first; do **not** optimize for model cost unless Stephen explicitly asks.
-- Preferred model pool is fixed to top-tier only: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`.
+- Preferred model pool is fixed to top-tier only: `openai-codex/gpt-5.4-codex` and `anthropic/claude-opus-4-6`.
+- Default primary: `openai-codex/gpt-5.4-codex`. Default fallback: `anthropic/claude-opus-4-6`.
 - For agent configs, use one as primary and the other as fallback. Treat lower-tier models as out-of-policy unless Stephen overrides.
 
 ---
@@ -197,11 +198,11 @@ Maintain and actively use the specialist bench as first-class infrastructure, no
 
 ### Weekly bench smoke test (`healthcheck:agent-bench-weekly-smoke`)
 
-Runs every Monday at 09:20 ET (Opus, isolated, 480s timeout). Deterministic checks per specialist agent:
+Runs every Monday at 09:20 ET (Codex 5.4, isolated, 1800s timeout). Deterministic checks per specialist agent:
 
 1. **Config presence** — agent ID exists in `agents.list`.
 2. **Workspace files** — SOUL.md, AGENTS.md, IDENTITY.md present in workspace.
-3. **Model policy** — primary/fallback restricted to `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`.
+3. **Model policy** — primary/fallback restricted to `openai-codex/gpt-5.4-codex` and `anthropic/claude-opus-4-6`.
 4. **Recency** — flags agents with no session activity in the past 7 days as "dormant".
 5. **Cron guard health** — verifies `healthcheck:agent-bench-daily` last run was OK.
 

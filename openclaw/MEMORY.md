@@ -12,7 +12,7 @@
 - Home: `/Users/sawyer`
 - Projects root: `~/github`
 - Timezone: America/New_York
-- Primary model: `anthropic/claude-opus-4-6` (set as default again on 2026-03-03; switch manually with `/model codex` when needed)
+- Primary model: `openai-codex/gpt-5.4-codex` (switched from Opus 4.6 on 2026-03-05; Opus now fallback; switch manually with `/model claude` when needed)
 - Git identity: commits as `dunamismax`. No AI attribution ever - no "Claude", "Scry", "Co-Authored-By", or agent fingerprints
 - Dual remotes: GitHub (`github.com-dunamismax`) + Codeberg (`codeberg.org-dunamismax`), force-push to main
 - Machine: M5 MacBook Pro 14" (32GB/1TB, macOS 26.3.1) — migrated from M4 Air 16GB on 2026-03-05 via Time Machine
@@ -42,6 +42,9 @@ All under `~/github`, dual SSH remotes. TypeScript + Bun:
 ## Other Projects
 
 - **Sawyer-Visual-Media** - Stephen's drone photography/videography business (aerial work). DJI Mini 5 Pro. Keep this repo.
+- **dotfiles** - Personal workstation configuration backups (organized by OS/source path).
+- **dunamismax** - GitHub profile README repo.
+- **forks/openclaw** - Local fork of OpenClaw for contribution work.
 
 ## Archived / Removed Repos
 
@@ -59,7 +62,7 @@ All under `~/github`, dual SSH remotes. TypeScript + Bun:
 - Auth profiles: `openai-codex:default` (OAuth), `anthropic:default` (OAuth)
 - Daily cron at 3am ET syncs workspace → grimoire
 - **Browser**: Brave configured, profiles `openclaw` (18800) + `chrome` (18792)
-- **ACP**: enabled, acpx backend, default **claude** (Claude Code), allows pi/claude/codex/opencode/gemini, 8 concurrent
+- **ACP**: enabled, acpx backend, default **codex**, allows pi/claude/codex/opencode/gemini, 8 concurrent
 - **Sub-agents**: depth 2, 8 concurrent, 5 children/agent
 - **Web**: search (Brave, needs API key), fetch (50K chars, 30s timeout)
 
@@ -135,14 +138,15 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - 2026-03-03: Added explicit specialist-bench stewardship rules to Scry’s AGENTS/SOUL and validated delegation wiring with Sentinel/Reviewer smoke runs (Opus attempts failed transiently, Codex fallback smoke runs succeeded).
 - 2026-03-03: Added daily cron maintenance: `healthcheck:agent-bench-daily` (agent/workspace/model integrity) and `healthcheck:docs-sync-daily` (SOUL/AGENTS canonical sync + drift auto-commit), both verified with manual runs.
 - 2026-03-03: Repaired `optimization:weekly-agent-bench-review` cron (previous run timed out on both Codex and Opus) by tightening prompt scope, lowering thinking, and switching to Opus primary; forced validation run succeeded and delivered.
-- 2026-03-03: Set explicit model policy: prioritize capability over cost; keep all agents on top-tier pool only (`anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`) unless Stephen explicitly overrides.
+- 2026-03-03: Set explicit model policy: prioritize capability over cost; keep all agents on top-tier pool only.
+- 2026-03-05: **Global model swap to GPT 5.4 Codex.** Primary: `openai-codex/gpt-5.4-codex`, fallback: `anthropic/claude-opus-4-6`. Applied to: global defaults, all 12 specialist agents, ACP default (codex), and all 19 cron jobs. Daily bench health check updated to validate new model policy. Opus available via `/model claude`. This supersedes all prior model decisions — pool is now `gpt-5.4-codex` + `claude-opus-4-6` only.
 - 2026-03-03: Implemented all 5 weekly specialist-bench improvements in parallel (verification gates, handoff protocols, scope boundaries, role-specific CLAUDE docs, weekly smoke-check automation) and added `healthcheck:agent-bench-weekly-smoke` (Mon 09:20 ET).
 - 2026-03-03: **PTY spawn is the only valid method for background coding agents.** ACP runtime (`sessions_spawn runtime:"acp"`) fails silently on all writes (exit code 5, `--non-interactive-permissions fail`). Always use `exec pty:true background:true` with `claude -p --dangerously-skip-permissions`. Permanent decision.
 - 2026-03-03: **Full code review completed across all 7 active repos** (augur, CallRift, elchess, grimoire, podwatch, rip, Sawyer-Visual-Media). Two passes: deep pass (P0/P1 security + architecture fixes) then final polish (42 UX/DX items). All committed and pushed to both remotes. Master tracker removed.
 - 2026-03-04: Added specialist agent `openclaw-maintainer` with dedicated workspace and delegation policy. Default routing now sends `~/openclaw` tasks to this specialist unless Stephen overrides.
 - 2026-03-04: Completed OpenClaw Maintainer Phase 2 hardening: installed repo-local commit metadata guardrails via external `commit-msg`/`pre-push` hooks (`core.hooksPath`), added attribution audit + scored weekly smoke script, and scheduled `healthcheck:openclaw-maintainer-weekly-smoke` (Mon 09:32 ET) with Signal delivery.
 - 2026-03-04: Adopted formal language policy — TypeScript for apps/products, Python for all scripting/automation/utilities. Created `scripts` repo (`~/github/scripts`) with `tools/`, `scratch/`, `lib/` structure, `ruff` for linting/formatting. Grimoire scripts will be rewritten in Python later.
-- 2026-03-05: Created specialist agent `luma` — visual media, color science, LUT engineering, drone cinematography, video editing, photography. Dedicated to `~/github/Sawyer-Visual-Media`. Workspace at `~/.openclaw/workspace-luma`. Opus 4.6 primary, Codex fallback. Added to Scry's delegation allowlist.
+- 2026-03-05: Created specialist agent `luma` — visual media, color science, LUT engineering, drone cinematography, video editing, photography. Dedicated to `~/github/Sawyer-Visual-Media`. Workspace at `~/.openclaw/workspace-luma`. Added to Scry's delegation allowlist. (Model policy follows global: Codex 5.4 primary, Opus fallback.)
 - 2026-03-04: Applied Phase 2 hardening across all specialist agents (Samantha, Sentinel, Shipwright, Caretaker, Archivist, Scout, Operator, Reviewer, Builder Mobile): standardized no-attribution hook packs + audit/smoke runbooks per workspace, added weekly cron smokes (Mon 10:02–10:18 ET), and force-ran all jobs successfully (all 10/10 PASS). Also set global git hooksPath to `/Users/sawyer/.openclaw/git-hooks` for cross-repo commit metadata enforcement.
 - 2026-03-04: Added shared specialist hardening generator in grimoire (`python3 -m scripts specialists:harden`) as the single source for hook/template rollout across specialist workspaces; default target excludes `openclaw-maintainer` (custom profile) unless explicitly included.
 - 2026-03-04: Added cron manifest reconciler (`python3 -m scripts cron:reconcile`) as single source of truth for all managed specialist smoke cron jobs + bench-wide smoke; prevents schedule/payload/delivery drift with dry-run default and `--apply` to converge.
