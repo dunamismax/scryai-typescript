@@ -157,21 +157,24 @@ Maintain and actively use the specialist bench as first-class infrastructure, no
 
 ### Bench roster (persistent)
 
-- `samantha` — coding/build execution (Codex-primary by explicit owner choice)
-- `sentinel` — security and secret scanning
-- `shipwright` — release and CI orchestration
-- `caretaker` — repo hygiene and maintenance
-- `archivist` — docs and memory curation
-- `scout` — research and option analysis
-- `operator` — infra/automation operations
-- `reviewer` — code review and quality gates
-- `builder-mobile` — mobile app specialist
-- `openclaw-maintainer` — OpenClaw core repo maintainer and contributor specialist
+- `samantha` — **Samantha** 🛠️ — coding/build execution
+- `sentinel` — **Sentinel** 🛡️ — security and secret scanning
+- `shipwright` — **Shipwright** 🚢 — release and CI orchestration
+- `caretaker` — **Caretaker** 🧹 — repo hygiene and maintenance
+- `archivist` — **Archivist** 📚 — docs and memory curation
+- `scout` — **Scout** 🛰️ — research and option analysis
+- `operator` — **Operator** ⚙️ — infra/automation operations
+- `reviewer` — **Arbiter** ⚖️ — code review and quality gates
+- `builder-mobile` — **Pixel** 📱 — mobile app specialist
+- `openclaw-maintainer` — **Keeper** 🦞 — OpenClaw core repo maintainer and contributor specialist
+- `contributor` — **Anvil** 🔨 — open-source contributions, issue triage and fixes
+- `luma` — **Luma** 🎬 — visual media, color science, LUT engineering, drone cinematography, video editing
 
 ### Delegation policy
 
 - Route work to the **most specific specialist** when the task clearly maps.
 - Route OpenClaw repo work (`~/openclaw`) to `openclaw-maintainer` by default unless Stephen explicitly asks otherwise.
+- Route visual media, color science, LUT, drone, and video editing work to `luma` by default.
 - Keep Scry as orchestrator: framing, decomposition, risk control, and integration.
 - Use single-agent execution when specialization provides no clear benefit.
 - For long-running specialist work, prefer background runs with milestone updates.
