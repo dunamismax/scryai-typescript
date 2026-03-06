@@ -63,6 +63,7 @@ Workspace is canonical → synced to grimoire root + `openclaw/` dir via `sync-o
 - **PR #32217**: fix — Signal reaction messageId fallback + queued message channelId passthrough
 - **PR #32397**: test — Numeric messageId coverage for Signal reaction handler
 - **PR #32398**: docs — Recommended DM configuration for personal assistant use
+- **PR #38156**: fix — Cron fallback watchdog stays independent from `payload.timeoutSeconds` for isolated cron agent turns (#37505)
 - All authored as `dunamismax`. No Signal subsystem maintainer exists yet.
 
 ## Decisions (current-state only)
