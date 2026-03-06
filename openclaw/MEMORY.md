@@ -72,6 +72,6 @@ Workspace is canonical → synced to grimoire root + `openclaw/` dir via `sync-o
 - PTY spawn is the only valid method for background coding agents. Never ACP runtime (`sessions_spawn runtime:"acp"`) — it silently fails on writes.
 - TypeScript for apps/products. Python for all scripting/automation/utilities. Right tool wins.
 - Model policy: capability over cost. Opus 4.6 primary, Codex 5.3 fallback. No downgrades.
-- Specialist bench: 6 agents (sentinel, reviewer, builder-mobile, openclaw-maintainer, contributor, luma). Trimmed from 12 on 2026-03-05.
+- Specialist bench: 7 agents (codex-orchestrator, sentinel, reviewer, builder-mobile, openclaw-maintainer, contributor, luma). Codex ⚡ added 2026-03-05 — runs Opus for orchestration, dispatches Codex CLI (GPT-5.4) instances via `codex exec --full-auto` for all programming tasks. Bypasses OpenClaw OAuth by using codex's own local auth.
 - Grimoire CLI tools: `specialists:harden` (hook/template rollout), `cron:reconcile` (manifest convergence).
 - Reference docs (CONTRIBUTING_TO_OPENCLAW.md, issue candidates) live in `grimoire/reference/`, not workspace.

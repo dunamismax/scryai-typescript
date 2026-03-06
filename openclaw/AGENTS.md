@@ -153,10 +153,11 @@ Monitor with `process action:list` and `process action:log sessionId:<id>`. Neve
 
 ## Specialist Agent Bench
 
-6 specialist agents. Route work to the most specific match; Scry orchestrates.
+7 specialist agents. Route work to the most specific match; Scry orchestrates.
 
 | ID | Name | Domain |
 |---|---|---|
+| `codex-orchestrator` | Codex ⚡ | Code orchestration — dispatches Codex CLI (GPT-5.4) instances |
 | `sentinel` | Sentinel 🛡️ | Security and secret scanning |
 | `reviewer` | Arbiter ⚖️ | Code review and quality gates |
 | `builder-mobile` | Pixel 📱 | Mobile app (React Native + Expo) |
