@@ -19,12 +19,12 @@ if _repo_root not in sys.path:
 from scripts.tasks.bootstrap import bootstrap  # noqa: E402
 from scripts.tasks.doctor import doctor  # noqa: E402
 from scripts.tasks.harden_specialists import harden_specialists  # noqa: E402
-from scripts.tasks.projects import (
+from scripts.tasks.projects import (  # noqa: E402
     doctor_projects,
     install_projects,
     list_projects,
     verify_projects,
-)  # noqa: E402
+)
 from scripts.tasks.reconcile_cron import reconcile_cron  # noqa: E402
 from scripts.tasks.setup_config_backup import setup_config_backup  # noqa: E402
 from scripts.tasks.setup_ssh import setup_ssh_backup, setup_ssh_restore  # noqa: E402

@@ -464,19 +464,16 @@ def harden_specialists() -> None:
         claude_path = ws / "CLAUDE.md"
         runbook_path = ws / "RUNBOOK.md"
 
-        if bootstrap_path.exists():
-            if _write_if_changed(bootstrap_path, BOOTSTRAP_TEMPLATE):
-                writes += 1
+        if bootstrap_path.exists() and _write_if_changed(bootstrap_path, BOOTSTRAP_TEMPLATE):
+            writes += 1
 
-        if identity_path.exists():
-            if _append_identity_line(identity_path):
-                writes += 1
+        if identity_path.exists() and _append_identity_line(identity_path):
+            writes += 1
 
-        if claude_path.exists():
-            if _upsert_hardening_section(
-                claude_path, _universal_hardening_section(agent_id)
-            ):
-                writes += 1
+        if claude_path.exists() and _upsert_hardening_section(
+            claude_path, _universal_hardening_section(agent_id)
+        ):
+            writes += 1
 
         if _write_if_changed(runbook_path, _runbook(agent_id, _display_name(agent_id))):
             writes += 1

@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import shutil
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from scripts.common import ensure_dir, log_step, run_or_throw
@@ -157,9 +157,17 @@ def sync_openclaw() -> None:
         return
 
     log_step("Committing and pushing")
-    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    date = datetime.now(UTC).strftime("%Y-%m-%d")
 
-    run_or_throw(["git", "add", "-A"], cwd=str(REPO_ROOT))
+    # Only stage the files we actually synced — never `git add -A` which
+    # could sweep in unrelated local edits.
+    sync_paths = [
+        *(str(REPO_ROOT / f) for f in ROOT_FILES),
+        *(str(REPO_ROOT / "openclaw" / f) for f in OPENCLAW_FILES),
+        *(str(REPO_ROOT / "openclaw" / dest) for _, dest in EXTRA_FILES),
+        str(REPO_ROOT / "openclaw" / "memory"),
+    ]
+    run_or_throw(["git", "add", "--", *sync_paths], cwd=str(REPO_ROOT))
 
     try:
         run_or_throw(

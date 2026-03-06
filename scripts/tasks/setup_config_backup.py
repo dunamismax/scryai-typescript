@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import tempfile
+from datetime import UTC
 from pathlib import Path
 from platform import node as hostname
 
@@ -178,10 +179,10 @@ def setup_config_backup() -> None:
         encrypted_file.chmod(0o600)
 
         log_step("Writing backup metadata")
-        from datetime import datetime, timezone
+        from datetime import datetime
 
         metadata = {
-            "createdAt": datetime.now(timezone.utc).isoformat(),
+            "createdAt": datetime.now(UTC).isoformat(),
             "host": hostname(),
             "sourceHome": "~",
             "encryptedBackupFile": str(encrypted_file.relative_to(repo_root)),

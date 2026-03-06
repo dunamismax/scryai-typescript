@@ -162,6 +162,17 @@ def _backup_to_git(dry_run: bool) -> None:
     o_files = _walk_dir(ONEDRIVE_WD)
     g_files = _walk_dir(GIT_WD)
 
+    # Guard: if OneDrive returned zero files but git has content, the source
+    # is likely unmounted or unreadable.  Refuse to proceed so we don't
+    # delete the entire git mirror.
+    if len(o_files) == 0 and len(g_files) > 0:
+        print(
+            "  [ABORT] OneDrive source is empty but git mirror has files.\n"
+            "          This usually means OneDrive is unmounted or unreadable.\n"
+            "          Skipping mirror to prevent data loss."
+        )
+        return
+
     copied = 0
     updated = 0
     deleted = 0
