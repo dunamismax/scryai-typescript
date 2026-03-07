@@ -6,7 +6,7 @@ For each target repo:
 - Determine what the project is, whether it is useful, and whether it should continue, pivot, archive, or be deleted.
 - Be candid about whether the project feels redundant, overbuilt, stale, vague, or pointless — but ground every judgment in evidence from the repo.
 - Suggest cleaner, more literal, more memorable repository names.
-- Write the final review to `/Users/sawyer/.openclaw/workspace/reviews/<repo>.md`.
+- Write the final review to `/Users/sawyer/github/scry-home/reference/reviews/<repo>.md`.
 
 Required sections:
 1. Repo
