@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-AGENT_ID="luma"
-WS="/Users/sawyer/.openclaw/workspace-luma"
+AGENT_ID="operator"
+WS="/Users/sawyer/.openclaw/workspace-operator"
 CLAUDE_MD="$WS/CLAUDE.md"
 BOOTSTRAP_MD="$WS/BOOTSTRAP.md"
 IDENTITY_MD="$WS/IDENTITY.md"
@@ -72,7 +72,7 @@ if (( protocol < 8 || verification < 8 || attribution < 8 || hard_fail != 0 )); 
 fi
 
 cat <<REPORT
-## luma Weekly Specialist Smoke
+## operator Weekly Specialist Smoke
 
 | Category | Score (0-10) | Status |
 |---|---:|---|

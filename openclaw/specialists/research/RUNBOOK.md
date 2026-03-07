@@ -1,20 +1,20 @@
-# RUNBOOK.md — Codex Operations
+# RUNBOOK.md — Research Operations
 
 ## 1) Hook wiring check (target repo)
 ```bash
 git -C <repo> config --get core.hooksPath
 ```
 Expected:
-`/Users/sawyer/.openclaw/workspace-codex-orchestrator/hooks/git`
+`/Users/sawyer/.openclaw/workspace-research/hooks/git`
 
 ## 2) Manual attribution audit
 ```bash
-/Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/agent-attribution-audit.sh <repo> origin/main
+/Users/sawyer/.openclaw/workspace-research/scripts/agent-attribution-audit.sh <repo> origin/main
 ```
 
 ## 3) Weekly scored smoke
 ```bash
-/Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/specialist-weekly-smoke.sh
+/Users/sawyer/.openclaw/workspace-research/scripts/specialist-weekly-smoke.sh
 ```
 
 ## 4) Canonical workspace doc audit

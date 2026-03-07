@@ -6,6 +6,7 @@ Durable operating memory for Codex.
 - Codex CLI is the primary execution engine.
 - Default assumption: Codex CLI uses GPT-5.4 with high reasoning for meaningful implementation/review work.
 - Use `workspace-write` sandbox by default, `read-only` for scout/review lanes.
+- For repo-wide review swarms across `~/github`, launch real local Codex CLI sessions from the macOS shell (`zsh`, PTY, `codex --full-auto` or `codex exec --full-auto`) rather than ACP/OpenClaw isolated sessions unless Stephen explicitly asks for ACP.
 
 ## Lane Discipline
 - Non-trivial runs should create artifacts under `runs/<timestamp>-<lane>/`.

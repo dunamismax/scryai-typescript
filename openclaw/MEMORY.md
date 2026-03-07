@@ -22,25 +22,50 @@
 
 ## Active Repos
 
-All under `~/github`, dual SSH remotes.
+All primary repos under `~/github` are cloned locally and use dual SSH remotes with GitHub + Codeberg push URLs.
 
-**TypeScript + Bun (apps & products):**
-1. **grimoire** — Scry's identity/config repo, CLI tools, sync scripts
-2. **podwatch** — Podcast dashboard
-3. **rip** — Video download tool
-4. **CallRift** — React Native + Expo SIP/VoIP app
-5. **elchess** — Self-hostable chess platform
-6. **pr-firefighter** — Autonomous CI fix pipeline
+**Current local inventory (2026-03-07):**
+- `augur`
+- `CallRift`
+- `c-from-the-ground-up`
+- `dotfiles`
+- `dunamismax`
+- `elchess`
+- `go-web-server`
+- `grimoire`
+- `hello-world-from-hell`
+- `homepage`
+- `images`
+- `imaging-services-website`
+- `imagingservices`
+- `openclaw`
+- `oracle`
+- `podwatch`
+- `pr-firefighter`
+- `questlog`
+- `rip`
+- `Sawyer-Visual-Media`
+- `scripts`
+- `sentinel`
+- `xray-chrome`
 
-**Python:**
-- **scripts** — Reusable scripts/utilities (`tools/`, `scratch/`, `lib/`). Linting via `ruff`.
-- **augur** — Trading system (IBKR + LLM analysis)
+**Known repo roles / notes:**
+- `grimoire` — Scry identity/config repo, CLI tools, sync scripts
+- `podwatch` — podcast dashboard
+- `rip` — video download tool
+- `CallRift` — React Native + Expo SIP/VoIP app
+- `elchess` — self-hostable chess platform
+- `pr-firefighter` — autonomous CI fix pipeline
+- `scripts` — reusable Python scripts/utilities (`tools/`, `scratch/`, `lib/`), linting via `ruff`
+- `augur` — trading system (IBKR + LLM analysis)
+- `Sawyer-Visual-Media` — drone photography/videography business; DJI Mini 5 Pro
+- `dotfiles` — workstation config backups
+- `dunamismax` — GitHub profile README
 
-**Other:**
-- **Sawyer-Visual-Media** — Drone photography/videography business. DJI Mini 5 Pro.
-- **dotfiles** — Workstation config backups
-- **dunamismax** — GitHub profile README
-- **forks/openclaw** — Local fork for contribution work
+**OpenClaw local layout:**
+- `~/github/openclaw` — primary local repo clone
+- `~/openclaw` — live install checkout used by the running system
+- `~/github/forks/openclaw` — contribution fork/worktree source
 
 ## OpenClaw Setup
 
@@ -48,7 +73,7 @@ All under `~/github`, dual SSH remotes.
 - **Service**: LaunchAgent, port 18789, loopback-only + Tailscale
 - **Auth**: `openai-codex:default` (OAuth), `anthropic:manual` (token)
 - **Signal**: DM allowlist, block streaming off, typing on thinking, reasoning hidden
-- **Discord**: enabled alongside Signal; Stephen DM allowlist active; guild `1479614326774956167` allowlisted with per-agent channels bound to `main/sentinel/reviewer/builder-mobile/openclaw-maintainer/contributor/luma/codex-orchestrator`; Discord thread bindings enabled for `/focus`, subagent thread spawns, and ACP thread spawns
+- **Discord**: enabled alongside Signal; Stephen DM allowlist active; guild `1479614326774956167` allowlisted with per-agent channels bound to `main/codex-orchestrator/scribe/research/sentinel/luma/operator`; Discord thread bindings enabled for `/focus`, subagent thread spawns, and ACP thread spawns
 - **Browser**: Brave, profiles `openclaw` (18800) + `chrome` (18792)
 - **ACP**: acpx backend, default **codex**, allows pi/claude/codex/opencode/gemini, 8 concurrent
 - **Sub-agents**: depth 2, 8 concurrent, 5 children/agent
@@ -74,13 +99,13 @@ Workspace is canonical → synced to grimoire root + `openclaw/` dir via `sync-o
 - PTY spawn is the only valid method for background coding agents. Never ACP runtime (`sessions_spawn runtime:"acp"`) — it silently fails on writes.
 - TypeScript for apps/products. Python for all scripting/automation/utilities. Right tool wins.
 - Model policy: capability over cost. GPT-5.4 primary (via Codex OAuth), Opus 4.6 fallback. No downgrades. Switched 2026-03-06 after PR #36590 merged.
-- Specialist bench: 7 agents (codex-orchestrator, sentinel, reviewer, builder-mobile, openclaw-maintainer, contributor, luma). Codex ⚡ added 2026-03-05 — dispatches Codex CLI (GPT-5.4) instances via `codex exec --full-auto` for parallel programming work. OpenClaw itself now supports GPT-5.4 via Codex OAuth, so this is an orchestration path, not an OAuth workaround.
+- Specialist bench: 6 agents (codex-orchestrator, sentinel, scribe, research, luma, operator). Roster refactored 2026-03-07: retired reviewer/builder-mobile/openclaw-maintainer/contributor; added scribe (writing/comms), research (deep research/synthesis), operator (infra/automation/systems). Codex ⚡ dispatches Codex CLI (GPT-5.4) instances for parallel programming work.
 - Workflow decision (2026-03-06): background Codex/GPT-5.4 coding work routes through `codex-orchestrator`; main and other specialists do not spawn Codex CLI or ACP `agentId:"codex"` directly for repo implementation. Repo specialists own framing; `codex-orchestrator` owns Codex execution, monitoring, and proactive status updates.
-- OpenClaw upstream queue policy (2026-03-06): keep `dunamismax` at **<= 10 active PRs** in `openclaw/openclaw`. `contributor` must account for PR headroom during issue triage, and `codex-orchestrator` must prune stale/weak/superseded PRs before launching or opening more when the queue is tight.
+- OpenClaw upstream queue policy (2026-03-06): keep `dunamismax` at **<= 10 active PRs** in `openclaw/openclaw`. `codex-orchestrator` must prune stale/weak/superseded PRs before launching or opening more when the queue is tight.
 - Codex-orchestrator prompt policy (2026-03-06): every spawned Codex CLI lane must be told to use local repo docs first for repo behavior, Context7 first for external/current docs and patterns, and web search only as fallback when Context7 lacks coverage or seems stale.
 - Grimoire CLI tools: `specialists:harden` (hook/template rollout), `cron:reconcile` (manifest convergence).
 - Grimoire workspace sync now mirrors specialist workspace docs under `grimoire/openclaw/specialists/<agentId>/` for bench backup coverage.
-- Cron smoke reconciliation now covers all seven specialists, including codex-orchestrator, contributor, and luma weekly smoke jobs.
+- Cron smoke reconciliation covers all six specialists: codex-orchestrator, sentinel, scribe, research, luma, operator.
 - Reference docs (CONTRIBUTING_TO_OPENCLAW.md, issue candidates) live in `grimoire/reference/`, not workspace.
 - Communication architecture (2026-03-06): Signal remains active as a parallel channel, but Discord is now configured as the clean multi-agent front door: one dedicated Discord text channel per agent plus thread-bound session support.
 - Workspace discipline (2026-03-07): canonical main-workspace docs now explicitly include `BOOTSTRAP.md`; multi-step maintenance passes should keep `BUILD.md` current until handoff.

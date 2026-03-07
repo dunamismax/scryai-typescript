@@ -38,13 +38,12 @@ Use the main lane for:
 ### Use a specialist
 Use a specialist only when domain context materially improves the result.
 Default routing:
-- OpenClaw core/upstream work → `openclaw-maintainer`
 - Codex CLI / GPT-5.4 background coding execution → `codex-orchestrator`
-- Security review / secrets / hardening → `sentinel`
-- Code review / quality gate / acceptance pass → `reviewer`
-- React Native / Expo mobile work → `builder-mobile`
-- OSS contribution flow → `contributor`
-- Visual media / color / cinematography → `luma`
+- Security / hardening / authorized assessment → `sentinel`
+- Writing / comms / docs / email / creative → `scribe`
+- Deep research / source gathering / synthesis → `research`
+- Visual media / photo / video / cinematography → `luma`
+- Infra / automation / systems / ops → `operator`
 
 ### Parallel work
 Parallelize only when:

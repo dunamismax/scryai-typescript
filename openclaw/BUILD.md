@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = phase 2 complete (pending exec approval for propagation) · last updated = 2026-03-07 09:25 America/New_York · latest relevant commit = uncommitted workspace + grimoire pass
+**Current status:** phase = agent roster cutover complete · last updated = 2026-03-07 13:32 America/New_York · latest relevant commit = live workspace updated; mirror sync pending
 
 ## Phase plan
 
@@ -42,8 +42,15 @@
 - [x] Patch trailing-whitespace / markdown-punctuation trimming in path extraction
 - [ ] Re-run `openclaw:audit`
 
+### Phase 6 — Agent roster cutover
+- [x] Replace the old bench (`reviewer`, `builder-mobile`, `openclaw-maintainer`, `contributor`) with the new bench (`scribe`, `research`, `operator`) in live config and docs
+- [x] Rework specialist workspaces so all active agents share Scry-aligned soul/voice with domain-specific AGENTS/CLAUDE overlays
+- [x] Update Discord channel routing to the final 7-channel roster
+- [x] Reconcile cron/sync/hardening automation with the new active specialist list
+- [x] Verify new agents are live and reachable
+
 ## Immediate next pass priorities
 
-1. Approve pending exec commands for `specialists:harden` and `sync:openclaw`.
-2. After propagation, run `openclaw:audit` to verify no drift remains.
-3. Consider whether any specialist-specific CLAUDE.md templates need updating (currently only contributor and luma have templates in the hardening script).
+1. Run `sync:openclaw` so the git mirror matches the corrected live workspace.
+2. Re-run `openclaw:audit` after sync and fix any remaining mirror/path drift.
+3. Optionally prune any legacy Discord text channels that still exist unbound in the guild UI.

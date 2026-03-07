@@ -177,8 +177,8 @@ ACP runtime uses `--non-interactive-permissions fail` which silently kills any a
 
 - If Stephen asks to use Codex CLI, spin up Codex, or run GPT-5.4 coding work in the background, route it through `codex-orchestrator`.
 - Main and non-Codex specialists do **not** launch Codex CLI directly and do **not** use ACP runtime `agentId:"codex"` for background repo work.
-- Repo specialists still own task framing and acceptance criteria, but Codex execution/monitoring belongs to `codex-orchestrator`.
-- For OpenClaw repo work, apply `openclaw-maintainer` guardrails (worktree discipline, no implementation on the live clone) and then delegate Codex execution to `codex-orchestrator`.
+- Domain specialists still own task framing and acceptance criteria, but Codex execution/monitoring belongs to `codex-orchestrator`.
+- For repo implementation work that needs GPT-5.4 coding power, frame the task clearly and then delegate Codex execution to `codex-orchestrator`.
 - Reserve ACP/runtime Codex sessions for explicit harness/thread conversations where platform policy requires ACP semantics.
 
 ### OpenClaw PR Queue Guard (mandatory)
@@ -189,7 +189,7 @@ For `openclaw/openclaw` work under `dunamismax`, treat **10 active PRs** as a ha
 - Maintain headroom for in-flight work: if you are about to run 2 issue-fix lanes, prune until `current_open_prs + planned_new_prs <= 10`.
 - Prefer pruning the weakest queue entries first: stale/no-traction PRs, docs-only or test-only PRs, superseded/duplicate work, narrow low-priority provider fixes, or repeatedly failing PRs that are unlikely to merge.
 - Preserve the strongest/highest-signal bugfixes and anything with clear maintainer traction.
-- `contributor` must treat queue headroom as part of issue triage. `codex-orchestrator` must treat it as launch gating and PR-open gating.
+- `codex-orchestrator` must treat queue headroom as launch gating and PR-open gating. Main should preserve the same discipline when planning repo work.
 - When queue pressure requires pruning, close the weakest PRs with a brief honest note and report what was cut and why.
 
 The correct pattern:
@@ -214,19 +214,18 @@ Monitor with `process action:list` and `process action:log sessionId:<id>`. Neve
 
 ## Specialist Agent Bench
 
-7 specialist agents. Route work to the most specific match; Scry orchestrates.
+6 specialist agents. Route work to the most specific match; Scry orchestrates.
 
 | ID | Name | Domain |
 |---|---|---|
 | `codex-orchestrator` | Codex ⚡ | Code orchestration — dispatches Codex CLI (GPT-5.4) instances |
-| `sentinel` | Sentinel 🛡️ | Security and secret scanning |
-| `reviewer` | Arbiter ⚖️ | Code review and quality gates |
-| `builder-mobile` | Pixel 📱 | Mobile app (React Native + Expo) |
-| `openclaw-maintainer` | Keeper 🦞 | OpenClaw core repo work |
-| `contributor` | Anvil 🔨 | Open-source contributions |
-| `luma` | Luma 🎬 | Visual media, color science, drone cinematography |
+| `sentinel` | Sentinel 🛡️ | Security, hardening, and authorized assessment |
+| `scribe` | Scribe ✍️ | Writing, comms, docs, email, and creative work |
+| `research` | Research 🔎 | Deep research, source gathering, and synthesis |
+| `luma` | Luma 🎬 | Visual media, color science, and cinematography |
+| `operator` | Operator 🛠️ | Infra, automation, and systems operations |
 
-**Routing defaults:** OpenClaw repo → `openclaw-maintainer`. Visual media → `luma`. Codex CLI / GPT-5.4 coding execution → `codex-orchestrator`. Everything else → most specific match or single-agent if no clear specialist.
+**Routing defaults:** Codex CLI / GPT-5.4 coding execution → `codex-orchestrator`. Security/hardening → `sentinel`. Writing/comms → `scribe`. Research/synthesis → `research`. Visual media → `luma`. Infra/automation/systems → `operator`. Everything else → most specific match or single-agent if no clear specialist.
 
 ### Routing Heuristics
 

@@ -48,6 +48,8 @@ The job is not merely to launch Codex CLI. The job is to:
 
 The primary execution engine is Codex CLI v0.110.0+ using GPT-5.4 by default.
 
+For repo-swarm reviews in `~/github`, prefer real local Codex CLI launches from macOS shell sessions (`zsh` + PTY + `--full-auto`) over ACP/OpenClaw isolated sessions unless Stephen explicitly asks for ACP harness routing.
+
 ### Two Execution Modes
 
 **1. Non-interactive (`codex exec`)** — default for most work

@@ -28,32 +28,17 @@ WS = str(Path.home() / ".openclaw")
 
 
 def _display_name(agent_id: str) -> str:
-    if agent_id == "builder-mobile":
-        return "Builder Mobile"
-    if agent_id == "openclaw-maintainer":
-        return "OpenClaw Maintainer"
-    return agent_id[0].upper() + agent_id[1:]
+    if agent_id == "codex-orchestrator":
+        return "Codex"
+    return agent_id.replace("-", " ").title()
 
 
 def _specialist_smoke_payload(agent_id: str, dn: str) -> str:
-    is_maintainer = agent_id == "openclaw-maintainer"
-    script_path = (
-        f"{WS}/workspace-openclaw-maintainer/scripts/openclaw-maintainer-weekly-smoke.sh"
-        if is_maintainer
-        else f"{WS}/workspace-{agent_id}/scripts/specialist-weekly-smoke.sh"
-    )
+    script_path = f"{WS}/workspace-{agent_id}/scripts/specialist-weekly-smoke.sh"
 
-    title = (
-        "Run the OpenClaw Maintainer weekly scored smoke test and report results."
-        if is_maintainer
-        else f"Run {dn} weekly specialist smoke test."
-    )
+    title = f"Run {dn} weekly specialist smoke test."
 
-    fail_msg = (
-        "Reminder: weekly OpenClaw maintainer smoke failed. Review hook wiring, triage protocol, verification gates, and attribution compliance."
-        if is_maintainer
-        else f"Reminder: {dn} weekly smoke failed. Review protocol, verification discipline, and attribution guardrails."
-    )
+    fail_msg = f"Reminder: {dn} weekly smoke failed. Review protocol, verification discipline, and attribution guardrails."
 
     return "\n".join(
         [
@@ -97,11 +82,10 @@ def _workspace_doc_drift_payload() -> str:
 SPECIALIST_SCHEDULE = [
     {"id": "codex-orchestrator", "minute": 2, "hour": 10},
     {"id": "sentinel", "minute": 4, "hour": 10},
-    {"id": "reviewer", "minute": 16, "hour": 10},
-    {"id": "builder-mobile", "minute": 18, "hour": 10},
-    {"id": "openclaw-maintainer", "minute": 32, "hour": 9},
-    {"id": "contributor", "minute": 34, "hour": 9},
-    {"id": "luma", "minute": 36, "hour": 9},
+    {"id": "scribe", "minute": 8, "hour": 10},
+    {"id": "research", "minute": 12, "hour": 10},
+    {"id": "luma", "minute": 16, "hour": 10},
+    {"id": "operator", "minute": 20, "hour": 10},
 ]
 
 
@@ -126,7 +110,7 @@ def _build_manifest() -> list[dict]:
                 "timeoutSeconds": 1800,
                 "message": (
                     "Run the weekly specialist-agent bench smoke test. This is a deterministic health + recency check — not a deep optimization review.\n\n"
-                    "## Agents to check\ncodex-orchestrator, sentinel, reviewer, builder-mobile, openclaw-maintainer, contributor, luma\n\n"
+                    "## Agents to check\ncodex-orchestrator, sentinel, scribe, research, luma, operator\n\n"
                     "## Required checks (deterministic, per agent)\n\n"
                     "1. **Config presence**: Run `openclaw config get agents.list` and verify each agent ID exists.\n"
                     "2. **Workspace files**: For each agent, check that these files exist in `~/.openclaw/workspace-<agentId>/`:\n"

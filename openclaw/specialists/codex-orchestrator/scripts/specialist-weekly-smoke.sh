@@ -27,13 +27,13 @@ hard_fail=0
 # --- PROTOCOL QUALITY (10) ---
 if has_text "## Mission" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing mission section"); fi
 if has_text "## Scope" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing scope section"); fi
-if has_text "## Verification Expectations" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing verification expectations section"); fi
-if has_text "## Escalation Triggers" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing escalation triggers section"); fi
+if has_text "## Verification Expectations|## Verification Gates" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing verification expectations section"); fi
+if has_text "## Escalation Triggers|## Safety and Escalation" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing escalation triggers section"); fi
 if has_text "Universal Phase 2 Hardening" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing phase 2 hardening section"); fi
 if [[ -f "$USER_MD" ]]; then :; else notes+=("protocol: missing USER.md"); hard_fail=1; fi
 if [[ -f "$TOOLS_MD" ]]; then :; else notes+=("protocol: missing TOOLS.md"); hard_fail=1; fi
 
-if [[ "$AGENT_ID" == "codex-orchestrator" || "$AGENT_ID" == "contributor" ]]; then
+if [[ "$AGENT_ID" == "codex-orchestrator" ]]; then
   if has_text "10 active PRs|10-active-PR cap" "$CLAUDE_MD" && has_text "10 active PRs as a hard cap|10-active-PR cap" "$BOOTSTRAP_MD"; then
     :
   else
@@ -43,8 +43,8 @@ if [[ "$AGENT_ID" == "codex-orchestrator" || "$AGENT_ID" == "contributor" ]]; th
 fi
 
 # --- VERIFICATION DISCIPLINE (10) ---
-if has_text "verify before claiming completion|Verification Expectations" "$CLAUDE_MD"; then verification=$((verification+3)); else notes+=("verification: weak CLAUDE verification language"); fi
-if has_text "Read `CLAUDE\\.md` when it exists|Read .*CLAUDE\\.md" "$BOOTSTRAP_MD"; then verification=$((verification+2)); else notes+=("verification: bootstrap missing CLAUDE read step"); fi
+if has_text "verify before claiming completion|Verification Expectations|Verification Gates|prove findings and prove fixes|Re-run the relevant check after a fix" "$CLAUDE_MD"; then verification=$((verification+3)); else notes+=("verification: weak CLAUDE verification language"); fi
+if has_text "Read CLAUDE\\.md when it exists|Read .*CLAUDE\\.md" "$BOOTSTRAP_MD"; then verification=$((verification+2)); else notes+=("verification: bootstrap missing CLAUDE read step"); fi
 if has_text "outcome, evidence, risks/open questions, next move|outcome → evidence → risks/open questions → next move" "$BOOTSTRAP_MD"; then verification=$((verification+3)); else notes+=("verification: bootstrap missing reporting shape"); fi
 if has_text "BUILD\\.md" "$BOOTSTRAP_MD"; then verification=$((verification+1)); else notes+=("verification: bootstrap missing BUILD.md discipline"); fi
 if has_text "Verify before claiming completion" "$IDENTITY_MD"; then verification=$((verification+1)); else notes+=("verification: identity missing verification anchor"); fi
