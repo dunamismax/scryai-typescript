@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scripts.common import command_exists, log_step, run_or_throw
+from scripts.common import (
+    command_exists,
+    git_remote_push_urls,
+    log_step,
+    run_or_throw,
+)
 from scripts.projects_config import MANAGED_PROJECTS
 
 
@@ -40,14 +45,12 @@ def doctor() -> None:
             ["git", "branch", "--show-current"], cwd=str(project.path), quiet=True
         )
 
-        push_urls = run_or_throw(
-            ["git", "remote", "get-url", "--all", "--push", "origin"],
-            cwd=str(project.path),
-            quiet=True,
-        )
-
-        urls = " | ".join(
-            line.strip() for line in push_urls.split("\n") if line.strip()
-        )
         print(f"branch: {branch}")
-        print(f"push: {urls}")
+
+        origin_urls = git_remote_push_urls(str(project.path), "origin")
+        if origin_urls:
+            print(f"push(origin): {' | '.join(origin_urls)}")
+
+        fork_urls = git_remote_push_urls(str(project.path), "fork")
+        if fork_urls:
+            print(f"push(fork): {' | '.join(fork_urls)}")

@@ -59,4 +59,26 @@ MANAGED_PROJECTS: list[ManagedProject] = [
         install_command=["echo", "no install needed"],
         verify_commands=[["make", "test"]],
     ),
+    ManagedProject(
+        name="trade-desk-cli",
+        path=GITHUB / "trade-desk-cli",
+        install_command=["uv", "sync", "--all-extras"],
+        verify_commands=[
+            ["uv", "run", "pytest"],
+            ["uv", "run", "mypy", "src"],
+            ["uv", "run", "ruff", "check", "src", "tests"],
+        ],
+    ),
+    ManagedProject(
+        name="Sawyer-Visual-Media",
+        path=GITHUB / "Sawyer-Visual-Media",
+        install_command=["echo", "no install needed"],
+        verify_commands=[],
+    ),
+    ManagedProject(
+        name="openclaw",
+        path=GITHUB / "openclaw",
+        install_command=["corepack", "pnpm", "install", "--frozen-lockfile"],
+        verify_commands=[["corepack", "pnpm", "check"]],
+    ),
 ]

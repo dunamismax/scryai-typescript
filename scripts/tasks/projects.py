@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from scripts.common import has_env, is_git_repo, log_step, run_or_throw
+from scripts.common import (
+    git_remote_push_urls,
+    has_env,
+    is_git_repo,
+    log_step,
+    run_or_throw,
+)
 from scripts.projects_config import MANAGED_PROJECTS
 
 
@@ -81,14 +87,12 @@ def doctor_projects() -> None:
 
         branch = run_or_throw(["git", "branch", "--show-current"], cwd=path, quiet=True)
 
-        push_urls = run_or_throw(
-            ["git", "remote", "get-url", "--all", "--push", "origin"],
-            cwd=path,
-            quiet=True,
-        )
-
-        urls = " | ".join(
-            line.strip() for line in push_urls.split("\n") if line.strip()
-        )
         print(f"branch: {branch}")
-        print(f"push: {urls}")
+
+        origin_urls = git_remote_push_urls(path, "origin")
+        if origin_urls:
+            print(f"push(origin): {' | '.join(origin_urls)}")
+
+        fork_urls = git_remote_push_urls(path, "fork")
+        if fork_urls:
+            print(f"push(fork): {' | '.join(fork_urls)}")

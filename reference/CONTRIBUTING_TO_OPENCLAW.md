@@ -13,9 +13,12 @@
 
 - Upstream: `https://github.com/openclaw/openclaw.git` (remote `origin`)
 - Fork: `git@github.com-dunamismax:dunamismax/openclaw.git` (remote `fork`)
-- Local clone: `~/github/openclaw`
-- **Never** work directly on `main` in the local clone — it tracks upstream and is used by the live OpenClaw instance
-- Branch from `main`, push to `fork`, PR against `openclaw:main`
+- Contribution clone: `~/github/openclaw`
+- Live git install: `~/openclaw`
+- `~/github/openclaw` is the work-ready clone for upstream sync, branches, worktrees, and PR submission
+- `~/openclaw` remains the live install used by the running OpenClaw instance
+- **Never** do feature work in `~/openclaw`; keep it clean for runtime updates
+- Branch from `main` in `~/github/openclaw`, push to `fork`, PR against `openclaw:main`
 
 ### Fork Remote Setup
 
@@ -102,7 +105,7 @@ test/signal-reaction-coverage
 
 ### Parallel PRs with Git Worktrees
 
-When submitting multiple independent PRs, use worktrees to avoid branch-switching conflicts:
+When submitting multiple independent PRs, use worktrees off the contribution clone to avoid branch-switching conflicts:
 
 ```bash
 cd ~/github/openclaw

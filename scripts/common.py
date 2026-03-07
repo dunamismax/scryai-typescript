@@ -71,6 +71,19 @@ def is_git_repo(path: str | Path) -> bool:
     return p.exists() and (p / ".git").exists()
 
 
+def git_remote_push_urls(cwd: str | Path, remote: str) -> list[str]:
+    result = subprocess.run(
+        ["git", "remote", "get-url", "--all", "--push", remote],
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return []
+
+    return [line.strip() for line in result.stdout.split("\n") if line.strip()]
+
+
 def get_argv() -> list[str]:
     """Return sys.argv for argument parsing."""
     return sys.argv

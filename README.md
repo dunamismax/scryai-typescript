@@ -14,6 +14,20 @@ This repo is the versioned home for:
 
 The live OpenClaw workspace is canonical for synced identity files. This repo is the durable export and operations repo around that workspace.
 
+## Active Keeper Repos
+
+`projects:doctor` and workstation bootstrap treat this as the active keeper set:
+
+- `scry-home`
+- `dunamismax`
+- `boring-go-web`
+- `c-from-the-ground-up`
+- `scryfall-discord-bot`
+- `hello-world-from-hell`
+- `trade-desk-cli`
+- `Sawyer-Visual-Media`
+- `openclaw` — contribution clone at `~/github/openclaw`; live git install remains at `~/openclaw`
+
 ## What This Repo Is
 
 - `SOUL.md` / `AGENTS.md` — synced copies of canonical workspace docs
@@ -36,7 +50,7 @@ uv run python -m scripts doctor
 
 ```bash
 uv run python -m scripts doctor           # Verify prerequisites and project health
-uv run python -m scripts projects:doctor  # Check keeper repos tracked by this repo
+uv run python -m scripts projects:doctor  # Check active keeper repos tracked by this repo
 uv run python -m scripts sync:remotes     # Configure dual push remotes
 uv run python -m scripts sync:openclaw    # Sync OpenClaw workspace → this repo
 uv run python -m scripts setup:config_backup  # Create/update encrypted critical config backup
@@ -52,9 +66,9 @@ uv run python -m scripts setup:config_backup  # Create/update encrypted critical
 
 ## OpenClaw Backups
 
-- Backup policy and restore drill checklist: `openclaw/BACKUPS.md`
 - Daily backup runner: `scripts/ops/daily-openclaw-backup.sh`
 - LaunchAgent installer: `scripts/ops/install-openclaw-backup-launchagent.sh`
+- Sensitive/manual backup scope notes: `workstation/macOS/metadata/manual-items.md`
 
 ## OpenClaw Templates
 

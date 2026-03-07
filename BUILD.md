@@ -1,8 +1,8 @@
 # scry-home — Build Tracker
 
-**Status:** canonical doc refresh, specialist bench inheritance refresh, and rename-drift cleanup complete in working tree  
+**Status:** keeper-set widening and OpenClaw contribution-path cleanup complete in working tree  
 **Last Updated:** 2026-03-07  
-**Latest Relevant Commit:** uncommitted `scry-home` rename cleanup + full audit pass
+**Latest Relevant Commit:** uncommitted `scry-home` keeper-set refresh + OpenClaw path cleanup
 
 ---
 
@@ -48,12 +48,21 @@ The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror
 - [x] Re-run every specialist weekly smoke; all six passed 10/10 across protocol, verification, and attribution
 - [x] Sync refreshed canonical and specialist docs back into the repo-root and `openclaw/` mirror
 
+### Phase 4 — Keeper-set widening after portfolio decision
+
+- [x] Restore `trade-desk-cli`, `Sawyer-Visual-Media`, and `openclaw` to the managed project inventory
+- [x] Update repo-owned docs so the final keeper set is explicit and current again
+- [x] Correct OpenClaw contribution guidance so `~/github/openclaw` is the contribution clone while `~/openclaw` remains the live install
+- [x] Keep synced `openclaw/` mirror boundaries intact; do not hand-edit mirrored daily/history files here
+
 ---
 
 ## Acceptance Checks
 
 - `bun run lint`
 - `uv run python -m scripts doctor`
+- `uv run python -m scripts projects:doctor`
+- `UV_CACHE_DIR=${UV_CACHE_DIR:-/tmp/uv-cache-scry-home} uv run python -m py_compile scripts/common.py scripts/projects_config.py scripts/tasks/doctor.py scripts/tasks/projects.py`
 - `bash -n scripts/ops/run-automated-backups.sh`
 - `bash -n scripts/ops/install-backup-launchagent.sh`
 - `bash -n scripts/ops/daily-openclaw-backup.sh`
@@ -77,17 +86,22 @@ The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror
 - `cd ~/github/scry-home && uv run python -m scripts sync:openclaw` ✅
 - `cd ~/github/scry-home && uv run python -m scripts openclaw:audit` ✅ after fixing canonical stale paths, excluding historical `runs/` from mirror/path checks, and skipping stale-path validation for `memory/` history logs
 - `launchctl bootstrap gui/$(id -u) /Users/sawyer/Library/LaunchAgents/com.scry.openclaw.backup.plist` ✅ reloaded live backup LaunchAgent with `scry-home` paths
+- `bun run lint` ✅
+- `uv run python -m scripts doctor` ✅ all nine keeper repos reported present; `openclaw` now shows both upstream `origin` and PR-target `fork` remotes
+- `uv run python -m scripts projects:doctor` ✅ all nine keeper repos reported present
+- `UV_CACHE_DIR=${UV_CACHE_DIR:-/tmp/uv-cache-scry-home} uv run python -m py_compile scripts/common.py scripts/projects_config.py scripts/tasks/doctor.py scripts/tasks/projects.py` ✅
 
 ---
 
 ## Immediate Next Pass Priorities
 
 1. If desired, run `uv run python -m scripts cron:reconcile --scope=all --apply` to converge any managed-cron manifest drift.
-2. Delete non-keeper repos locally only after any remaining useful content has been migrated elsewhere.
+2. Delete non-keeper repos locally only after any remaining useful content has been migrated elsewhere and they are confirmed outside the final nine-repo keeper set.
 3. Tighten any remaining repo docs if future renames introduce new drift.
 
 ---
 
 ## Blockers / Human Decisions
 
-- No blockers on the canonical-doc / specialist-bench / rename-drift pass. Remaining repo cleanup is optional follow-on work, not a dependency.
+- No blockers on the keeper-set widening pass inside `scry-home`.
+- Synced `openclaw/cron-jobs.json` still references a non-mirrored `openclaw/BACKUPS.md` restore checklist; fix that in the canonical OpenClaw workspace and re-sync if Stephen wants the reminder text repaired here too.
