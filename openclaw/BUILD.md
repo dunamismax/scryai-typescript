@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = canonical doc refresh merged and synced · last updated = 2026-03-07 14:30 America/New_York · latest relevant commit = live workspace docs refreshed; mirror sync completed
+**Current status:** phase = specialist bench doc inheritance refreshed and synced · last updated = 2026-03-07 14:48 America/New_York · latest relevant commit = specialist hardening baselines refreshed; mirror sync completed
 
 ## Phase plan
 
@@ -30,6 +30,8 @@
 - Cron health snapshot: 11 jobs listed; no failing/stuck jobs observed in the returned scheduler state. Recent jobs with state data showed `lastStatus: ok`.
 - Workspace doc consistency: re-read `SOUL.md`, `AGENTS.md`, `BOOTSTRAP.md`, `IDENTITY.md`, `TOOLS.md`, `HEARTBEAT.md`, and `MEMORY.md` after edits; changes are internally consistent.
 - 2026-03-07 doc refresh: canonical `SOUL.md`, `AGENTS.md`, and `CLAUDE.md` updated from reviewed `improved_files` proposals, with stale bench guidance filtered out.
+- Specialist inheritance refresh: `scripts/tasks/harden_specialists.py` rebuilt to generate upgraded specialist `SOUL.md` / `AGENTS.md` / `CLAUDE.md` baselines plus stronger smoke enforcement.
+- Specialist verification: `uv run python -m scripts specialists:harden` ✅ and all six `scripts/specialist-weekly-smoke.sh` runs ✅ at 10/10 across protocol, verification, and attribution.
 - Mirror propagation: `cd ~/github/scry-home && uv run python -m scripts sync:openclaw` ✅ copied updated root and `openclaw/` mirror docs.
 - Known drift repaired: missing `BOOTSTRAP.md`, missing `BUILD.md`, stale `TOOLS.md` reference to a workspace-local `CONTRIBUTING_TO_OPENCLAW.md`.
 
@@ -57,8 +59,15 @@
 - [x] Update canonical workspace docs and repo-root `CLAUDE.md`
 - [x] Run `sync:openclaw` so repo-root and `openclaw/` mirror copies match the live workspace
 
+### Phase 8 — Specialist bench inheritance refresh
+- [x] Rebuild `specialists:harden` so it writes upgraded specialist `SOUL.md`, `AGENTS.md`, and `CLAUDE.md` baselines instead of only hook boilerplate
+- [x] Reapply hardening across all active specialists: `codex-orchestrator`, `sentinel`, `scribe`, `research`, `luma`, `operator`
+- [x] Fix the generated smoke-script quoting/scoring bug uncovered during verification
+- [x] Re-run specialist weekly smokes; all six active specialists now pass 10/10 across protocol, verification, and attribution
+- [x] Sync refreshed specialist workspaces back into the `scry-home` mirror
+
 ## Immediate next pass priorities
 
-1. Re-run `openclaw:audit` after the doc refresh and fix any remaining mirror/path drift.
-2. Optionally run `specialists:harden` if future changes need to propagate new shared templates or shared specialist-doc structure.
+1. Re-run `openclaw:audit` after the specialist refresh and fix any remaining mirror/path drift.
+2. If desired, tighten specialist-specific `IDENTITY.md` files beyond the shared verification/attribution anchors.
 3. Optionally prune any legacy Discord text channels that still exist unbound in the guild UI.

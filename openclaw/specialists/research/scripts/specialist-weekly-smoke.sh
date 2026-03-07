@@ -3,6 +3,8 @@ set -euo pipefail
 
 AGENT_ID="research"
 WS="/Users/sawyer/.openclaw/workspace-research"
+SOUL_MD="$WS/SOUL.md"
+AGENTS_MD="$WS/AGENTS.md"
 CLAUDE_MD="$WS/CLAUDE.md"
 BOOTSTRAP_MD="$WS/BOOTSTRAP.md"
 IDENTITY_MD="$WS/IDENTITY.md"
@@ -25,16 +27,22 @@ notes=()
 hard_fail=0
 
 # --- PROTOCOL QUALITY (10) ---
-if has_text "## Mission" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing mission section"); fi
-if has_text "## Scope" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing scope section"); fi
-if has_text "## Verification Expectations|## Verification Gates" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing verification expectations section"); fi
-if has_text "## Escalation Triggers|## Safety and Escalation" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing escalation triggers section"); fi
-if has_text "Universal Phase 2 Hardening" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing phase 2 hardening section"); fi
+if has_text "## Mission" "$CLAUDE_MD"; then protocol=$((protocol+1)); else notes+=("protocol: missing CLAUDE mission section"); fi
+if has_text "## Scope" "$CLAUDE_MD"; then protocol=$((protocol+1)); else notes+=("protocol: missing CLAUDE scope section"); fi
+if has_text "## Verification Expectations" "$CLAUDE_MD"; then protocol=$((protocol+1)); else notes+=("protocol: missing CLAUDE verification section"); fi
+if has_text "## Escalation Triggers" "$CLAUDE_MD"; then protocol=$((protocol+1)); else notes+=("protocol: missing CLAUDE escalation section"); fi
+if has_text "### Relational Stance" "$SOUL_MD"; then protocol=$((protocol+1)); else notes+=("protocol: SOUL missing relational stance"); fi
+if has_text "### Registers" "$SOUL_MD"; then protocol=$((protocol+1)); else notes+=("protocol: SOUL missing registers section"); fi
+if has_text "## Boundary Contract" "$AGENTS_MD"; then protocol=$((protocol+1)); else notes+=("protocol: AGENTS missing boundary contract"); fi
+if has_text "## Approval Gates" "$AGENTS_MD"; then protocol=$((protocol+1)); else notes+=("protocol: AGENTS missing approval gates"); fi
+if has_text "## Reporting Contract" "$AGENTS_MD"; then protocol=$((protocol+1)); else notes+=("protocol: AGENTS missing reporting contract"); fi
+if has_text "Universal Phase 2 Hardening" "$CLAUDE_MD"; then protocol=$((protocol+1)); else notes+=("protocol: missing hardening section"); fi
+
 if [[ -f "$USER_MD" ]]; then :; else notes+=("protocol: missing USER.md"); hard_fail=1; fi
 if [[ -f "$TOOLS_MD" ]]; then :; else notes+=("protocol: missing TOOLS.md"); hard_fail=1; fi
 
 if [[ "$AGENT_ID" == "codex-orchestrator" ]]; then
-  if has_text "10 active PRs|10-active-PR cap" "$CLAUDE_MD" && has_text "10 active PRs as a hard cap|10-active-PR cap" "$BOOTSTRAP_MD"; then
+  if has_text "10 active PRs|hard cap" "$CLAUDE_MD" && has_text "10 active PRs as a hard cap|hard cap" "$BOOTSTRAP_MD"; then
     :
   else
     notes+=("protocol: missing OpenClaw PR queue guard")
@@ -43,10 +51,13 @@ if [[ "$AGENT_ID" == "codex-orchestrator" ]]; then
 fi
 
 # --- VERIFICATION DISCIPLINE (10) ---
-if has_text "verify before claiming completion|Verification Expectations|Verification Gates|prove findings and prove fixes|Re-run the relevant check after a fix" "$CLAUDE_MD"; then verification=$((verification+3)); else notes+=("verification: weak CLAUDE verification language"); fi
-if has_text "Read CLAUDE\\.md when it exists|Read .*CLAUDE\\.md" "$BOOTSTRAP_MD"; then verification=$((verification+2)); else notes+=("verification: bootstrap missing CLAUDE read step"); fi
-if has_text "outcome, evidence, risks/open questions, next move|outcome → evidence → risks/open questions → next move" "$BOOTSTRAP_MD"; then verification=$((verification+3)); else notes+=("verification: bootstrap missing reporting shape"); fi
-if has_text "BUILD\\.md" "$BOOTSTRAP_MD"; then verification=$((verification+1)); else notes+=("verification: bootstrap missing BUILD.md discipline"); fi
+if has_text "Verification is not optional|Verification fourth" "$SOUL_MD"; then verification=$((verification+1)); else notes+=("verification: SOUL weak verification language"); fi
+if has_text "## Verification Matrix" "$AGENTS_MD"; then verification=$((verification+2)); else notes+=("verification: AGENTS missing verification matrix"); fi
+if has_text "Never imply verification that did not happen" "$AGENTS_MD"; then verification=$((verification+1)); else notes+=("verification: AGENTS missing reporting honesty line"); fi
+if has_text "## Verification Expectations" "$CLAUDE_MD"; then verification=$((verification+2)); else notes+=("verification: CLAUDE missing verification expectations"); fi
+if has_text "Read .*CLAUDE\.md" "$BOOTSTRAP_MD"; then verification=$((verification+1)); else notes+=("verification: bootstrap missing CLAUDE read step"); fi
+if has_text "outcome, evidence, risks/open questions, next move|outcome → evidence → risks/open questions → next move" "$BOOTSTRAP_MD"; then verification=$((verification+1)); else notes+=("verification: bootstrap missing reporting shape"); fi
+if has_text "BUILD.md" "$BOOTSTRAP_MD"; then verification=$((verification+1)); else notes+=("verification: bootstrap missing BUILD.md discipline"); fi
 if has_text "Verify before claiming completion" "$IDENTITY_MD"; then verification=$((verification+1)); else notes+=("verification: identity missing verification anchor"); fi
 
 # --- ATTRIBUTION COMPLIANCE (10) ---
@@ -55,11 +66,14 @@ if [[ -x "$PREPUSH_HOOK" ]]; then attribution=$((attribution+1)); else notes+=("
 if [[ -x "$AUDIT_SCRIPT" ]]; then attribution=$((attribution+1)); else notes+=("attribution: audit script missing/not executable"); fi
 if has_text "No commit metadata may reference agent names, assistants, or AI terms" "$BOOTSTRAP_MD"; then attribution=$((attribution+1)); else notes+=("attribution: bootstrap policy missing"); fi
 
-# Synthetic commit message tests
 tmp_ok="$(mktemp)"
 tmp_bad="$(mktemp)"
-printf 'fix(core): tighten validation path\n' > "$tmp_ok"
-printf 'fix: generated by Claude\n\nCo-Authored-By: Bot <bot@example.com>\n' > "$tmp_bad"
+printf 'fix(core): tighten validation path
+' > "$tmp_ok"
+printf 'fix: generated by Claude
+
+Co-Authored-By: Bot <bot@example.com>
+' > "$tmp_bad"
 
 if "$COMMIT_HOOK" "$tmp_ok" >/dev/null 2>&1; then attribution=$((attribution+3)); else notes+=("attribution: commit-msg hook failed valid message"); fi
 if "$COMMIT_HOOK" "$tmp_bad" >/dev/null 2>&1; then notes+=("attribution: commit-msg hook failed to block invalid message"); else attribution=$((attribution+3)); fi

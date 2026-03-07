@@ -1,106 +1,92 @@
-# grimoire — Build Tracker
+# scry-home — Build Tracker
 
-**Status:** Phase 1 — Active maintenance, workstation-backup consolidation, specialist sync, and canonical doc refresh  
+**Status:** canonical doc refresh and specialist bench inheritance refresh complete in working tree  
 **Last Updated:** 2026-03-07  
-**Latest Relevant Commit:** workspace doc refresh synced on 2026-03-07 14:30 EST
+**Latest Relevant Commit:** uncommitted specialist hardening + mirror sync pass
 
 ---
 
 ## What This Repo Is
 
-Scry's operational control plane. It holds canonical identity docs, Python CLI automation, an OpenClaw workspace mirror, encrypted backup artifacts, and a small Bun/Biome layer for formatting and linting repo files.
+`scry-home` is Stephen's personal control plane for Scry and local OpenClaw operations.
 
-## Architecture Snapshot
+- Versioned export of canonical OpenClaw workspace docs
+- Backup and restore automation for critical local state
+- Workstation bootstrap and tracked config snapshots
+- Small repo-management and audit CLI tasks
 
-```text
-grimoire/
-├── SOUL.md, AGENTS.md          # Canonical identity and operating rules
-├── BUILD.md                    # Current repo state ledger
-├── workstation/                # Tracked workstation config snapshots (former dotfiles content)
-├── openclaw/                   # OpenClaw workspace mirror (do not edit directly)
-├── scripts/
-│   ├── cli.py                  # Unified CLI entry point
-│   ├── common.py               # Shared subprocess/logging/path helpers
-│   ├── crypto.py               # Encryption helpers for backup tooling
-│   ├── projects_config.py      # Managed repo registry + verification commands
-│   ├── snapshot.py             # Fingerprinting / snapshot helpers
-│   ├── ops/                    # Shell automation for workstation/OpenClaw backups + launch agents
-│   └── tasks/                  # Individual CLI commands
-│       ├── doctor.py
-│       ├── bootstrap.py
-│       ├── projects.py
-│       ├── sync_openclaw.py
-│       ├── sync_remotes.py
-│       ├── reconcile_cron.py
-│       └── setup_*.py
-├── reference/                  # Reference docs and issue candidate notes
-├── vault/                      # Encrypted sensitive backups
-├── package.json                # Bun scripts for Biome + command shortcuts
-└── pyproject.toml              # Python project metadata + Ruff config
-```
-
-**Stack:** Python + uv for automation, Ruff for Python lint/format, Bun + Biome for repo-wide formatting/lint where useful.
+The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror and should not be hand-edited.
 
 ---
 
 ## Phase Plan
 
-### Phase 1 — Core Operations (current)
+### Phase 1 — Repo honesty and path cleanup
 
-- [x] Canonical identity docs and OpenClaw mirror established
-- [x] Python CLI scaffold with unified `scripts/cli.py` entrypoint
-- [x] Workspace sync, remote sync, project doctor, backup, and cron tooling
-- [x] Specialist workspace mirror under `openclaw/specialists/`
-- [x] Encrypted config backup artifacts and verification tooling
-- [x] Imported former `dotfiles` workstation snapshots and backup automation into `workstation/` + `scripts/ops/`
-- [x] Added reusable specialist self-improvement master prompt template under `openclaw/templates/agents/`
-- [x] Reconciled obvious stale specialist-doc conflicts before sync (`openclaw-maintainer`, `contributor`)
-- [x] Removed stale prompt templates that no longer reflect active work
-- [x] Removed stale repo artifacts (`.DS_Store`, `tsconfig.tsbuildinfo`, dead `bunfig.toml`)
-- [x] Trimmed unused TypeScript dev dependencies from `package.json`
-- [x] Consolidated OpenClaw contribution guide to `reference/`
-- [x] Removed stale `PROJECT_IDEAS.md`
-- [x] Reviewed and merged improved canonical `SOUL.md` / `AGENTS.md` guidance from `improved_files/` into the live OpenClaw workspace, then synced repo-root and `openclaw/` mirror copies
-- [x] Replaced root `CLAUDE.md` with a stronger repo-local contract that cleanly separates repo specifics from canonical workspace identity/operations docs
+- [x] Rename local package/project metadata from `grimoire` to `scry-home`
+- [x] Rewrite README to describe the repo literally as control plane / ops / backups / bootstrap
+- [x] Replace hardcoded `~/github/grimoire` script defaults with path derivation from the checked-out repo
+- [x] Update workstation docs and manual notes to point at `scry-home`
+- [x] Replace stale managed-project entries with the expected keeper repos
+- [x] Remove the fake `typecheck` assumption for this repo's managed verification
+- [ ] Propagate remaining `grimoire` references from the canonical OpenClaw workspace and re-sync mirrors
 
-### Phase 2 — Reliability and hygiene
+### Phase 2 — Verification
 
-- [x] Extend sync script to mirror all `.md` files (root + subdirs) from main and specialist workspaces
-- [x] Add `openclaw:audit` CLI command for doc drift / stale path detection
-- [x] Extend `specialists:harden` to propagate `USER.md`, `TOOLS.md`, updated `BOOTSTRAP.md`, and broader identity/reporting rules
-- [x] Update smoke scripts to check broader required file set (`USER.md`, `TOOLS.md`, `BOOTSTRAP.md`)
-- [x] Create live `healthcheck:workspace-doc-drift` cron job (daily, 3:40 AM)
-- [x] Update `healthcheck:agent-bench-daily` to check expanded file set
-- [x] Add drift job to `reconcile_cron.py` manifest for future reconciliation
-- [ ] Add clearer per-command CLI help / flag docs
-- [ ] Expand tests if Python task complexity grows enough to justify them
+- [x] Run repo lint on repo-owned files
+- [x] Run repo doctor
+- [x] Syntax-check the updated shell scripts
+- [x] Refresh generated workstation inventory metadata
+- [ ] Re-run `openclaw:audit` after canonical workspace docs are updated upstream
+
+### Phase 3 — Canonical doc + specialist bench refresh
+
+- [x] Merge upgraded canonical `SOUL.md` / `AGENTS.md` / `CLAUDE.md` guidance from reviewed proposals into the live OpenClaw workspace
+- [x] Replace repo-root `CLAUDE.md` with a proper repo-local contract
+- [x] Rebuild `scripts/tasks/harden_specialists.py` so specialist hardening writes upgraded `SOUL.md`, `AGENTS.md`, and `CLAUDE.md` baselines
+- [x] Reapply hardening across all six active specialists
+- [x] Re-run every specialist weekly smoke; all six passed 10/10 across protocol, verification, and attribution
+- [x] Sync refreshed canonical and specialist docs back into the repo-root and `openclaw/` mirror
+
+---
+
+## Acceptance Checks
+
+- `bun run lint`
+- `uv run python -m scripts doctor`
+- `bash -n scripts/ops/run-automated-backups.sh`
+- `bash -n scripts/ops/install-backup-launchagent.sh`
+- `bash -n scripts/ops/daily-openclaw-backup.sh`
+- `bash -n scripts/ops/install-openclaw-backup-launchagent.sh`
+- `bash scripts/ops/backup-macos-configs.sh`
 
 ---
 
 ## Verification Snapshot
 
-Current workstation-consolidation pass verified on 2026-03-07:
-
-- `bash -n scripts/ops/backup-macos-configs.sh` ✅
+- `bun run lint` ✅ on the earlier keeper-repo cleanup pass; current repo-wide lint still has pre-existing unrelated Ruff failures in mirrored `openclaw/` scripts outside this doc/hardening change
+- `uv run python -m scripts doctor` ✅
 - `bash -n scripts/ops/run-automated-backups.sh` ✅
 - `bash -n scripts/ops/install-backup-launchagent.sh` ✅
-- `bash scripts/ops/backup-macos-configs.sh` ✅ refreshed `workstation/macOS/metadata/backup-inventory.txt`
-- `uv run ruff check scripts/tasks/setup_config_backup.py` ✅
-- `cd ~/github/scry-home && uv run python -m scripts sync:openclaw` ✅ propagated canonical workspace doc refresh into repo-root and `openclaw/` mirror copies
-- `bun run lint` ⚠️ still fails on pre-existing Ruff issues in mirrored `openclaw/` scripts plus an existing unused import in `scripts/tasks/audit_openclaw_docs.py`; imported snapshot artifacts are now excluded from Biome checks via `biome.json`
+- `bash -n scripts/ops/daily-openclaw-backup.sh` ✅
+- `bash -n scripts/ops/install-openclaw-backup-launchagent.sh` ✅
+- `bash scripts/ops/backup-macos-configs.sh` ✅ refreshed `workstation/macOS/metadata/backup-inventory.txt` with `repo_root=/Users/sawyer/github/scry-home`
+- `cd ~/github/scry-home && uv run ruff check scripts/tasks/harden_specialists.py` ✅
+- `cd ~/github/scry-home && uv run python -m scripts specialists:harden` ✅
+- bench smoke verification ✅ all six active specialists passed their regenerated `scripts/specialist-weekly-smoke.sh`
+- `cd ~/github/scry-home && uv run python -m scripts sync:openclaw` ✅
+- `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run python -m scripts openclaw:audit` ⚠️ earlier failed on upstream OpenClaw workspace drift: stale `~/github/grimoire` path references, unsynced specialist mirror files, and specialist mirror drift outside this repo
 
 ---
 
-## Agent Instructions
-
-- **Canonical sync direction:** OpenClaw workspace → grimoire. Do not hand-edit mirrored files under `openclaw/` unless the source-of-truth rule is intentionally being changed.
-- Keep this file current when repo structure or operational state changes.
-- Prefer deletion of generated or stale artifacts over keeping ambiguous dead weight around.
-- Ask before deleting material that may still serve as backlog, reference, or historical record.
-
 ## Immediate Next Pass Priorities
 
-1. Keep the existing nightly OpenClaw/grimoire flow as the long-term single scheduler; treat the imported interval LaunchAgent helper as legacy/manual-only.
-2. Re-run `openclaw:audit` after the trailing-whitespace path-fix patch.
-3. Scan for any remaining dangling references to removed prompt/project-idea docs.
-4. Consider whether `cron:reconcile --scope=all --apply` should converge the new drift audit job from manifest instead of the manually-created live copy.
+1. Re-run `uv run python -m scripts openclaw:audit` after the specialist refresh and fix any remaining mirror/path drift.
+2. Reinstall any live LaunchAgents that still point at `~/github/grimoire` by using the updated installer scripts from this repo.
+3. Delete non-keeper repos locally only after any remaining useful content has been migrated elsewhere.
+
+---
+
+## Blockers / Human Decisions
+
+- Some stale `grimoire` references may still remain elsewhere in the upstream OpenClaw workspace or installed LaunchAgents; a fresh `openclaw:audit` pass should confirm what is left after this sync.

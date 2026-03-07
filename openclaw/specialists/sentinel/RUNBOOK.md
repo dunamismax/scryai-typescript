@@ -19,7 +19,7 @@ Expected:
 
 ## 4) Canonical workspace doc audit
 ```bash
-cd /Users/sawyer/github/grimoire && uv run python -m scripts openclaw:audit
+cd /Users/sawyer/github/scry-home && uv run python -m scripts openclaw:audit
 ```
 
 Scored categories:
