@@ -45,6 +45,37 @@ Flags:
 - `--json` for machine-readable output
 - `--stale-minutes=<N>` to tune stale detection
 
+### Swarm batch manifests
+
+```bash
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-batch.py init <batch-name>
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-batch.py add <batch-dir> <lane-run-dir>
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-batch.py status <batch-dir>
+```
+
+If `CODEX_BATCH_DIR` is set when launching a tracked exec lane, the lane auto-attaches to that batch.
+
+### PTY lane tracking
+
+```bash
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-pty-lane.py register <lane-name> <repo-dir> <session-id>
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-pty-lane.py snapshot <run-dir> --tokens 12345 --note "planning done"
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-pty-lane.py status <run-dir>
+```
+
+Use this when a Codex PTY session is being monitored through OpenClaw `process` tool calls and you want structured health snapshots.
+
+### Watchdog
+
+```bash
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-watchdog.py --alerts-only
+```
+
+Useful flags:
+- `--stale-minutes=<N>`
+- `--json`
+- `--fail-on-alert`
+
 ### Prompt template
 
 Start new lane prompts from:

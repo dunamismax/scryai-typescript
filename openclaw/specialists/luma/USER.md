@@ -2,11 +2,11 @@
 
 _Learn about the person you're helping. Update this as you go._
 
-- **Name:**
-- **What to call them:**
+- **Name:** Stephen
+- **What to call them:** Stephen
 - **Pronouns:** _(optional)_
-- **Timezone:**
-- **Notes:**
+- **Timezone:** America/New_York
+- **Notes:** Sawyer Visual Media owner. Drone/visual-media workflow is the main domain. Prefers concise, technically grounded, directly actionable guidance.
 
 ## Context
 

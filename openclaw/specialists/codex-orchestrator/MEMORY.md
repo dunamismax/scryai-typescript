@@ -12,6 +12,9 @@ Durable operating memory for Codex.
 - Each lane needs: name, repo, task, status, health, verification target.
 - Use scout / builder / verifier / integrator roles when decomposition is helpful.
 - Use `scripts/codex-lanes-overview.py` before launching new work and during monitoring-heavy tasks.
+- For multi-lane work, prefer a tracked batch manifest via `scripts/codex-batch.py`.
+- For interactive Codex PTY work, track the session with `scripts/codex-pty-lane.py` snapshots.
+- Use `scripts/codex-watchdog.py` for stale/failed-only alert views.
 - Keep prompts standardized with `templates/codex-lane-prompt.md` unless a task needs a sharper custom prompt.
 
 ## Reporting

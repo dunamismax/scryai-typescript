@@ -26,7 +26,7 @@
 - `luts/custom/SVM_Florida_Coastal_v1.cube` — First custom creative LUT. Built 2026-03-05. Warm golden highlights, teal shadows, selective orange/cyan saturation boost, gentle S-curve, highlight rolloff. Optimized for polarized ND, SW Florida coastal aerial.
 
 ## Scripts
-- `editing/scripts/batch-grade.sh` — ffmpeg batch LUT application. H.265 CRF 22, auto-skip existing, default to official DJI LUT.
+- `editing/scripts/batch-grade.sh` — ffmpeg batch LUT application. HEVC CRF 22 review exports, Rec.709-tagged, 10-bit preview path, auto-skip existing, default to official DJI LUT.
 
 ## Decisions Log
 - 2026-03-05: Created Luma agent. Initial setup with official DJI LUT + SVM Florida Coastal v1 creative LUT.

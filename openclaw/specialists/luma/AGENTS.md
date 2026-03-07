@@ -106,7 +106,9 @@ When building LUTs:
 
 The `batch-grade.sh` script in `editing/scripts/` is the primary automation tool:
 - Input: directory of D-Log M .MP4/.MOV files
-- Output: H.265 CRF 22 graded previews with LUT baked in
+- Output: HEVC CRF 22 graded previews with LUT baked in
+- Output intent: fast review copy, not final master
+- Tags output as Rec.709 and preserves a 10-bit preview path
 - Uses `ffmpeg` with `lut3d` filter
 - Skips already-graded files on re-run
 - Default LUT: official DJI D-Log M → Rec.709
@@ -136,11 +138,28 @@ For final editorial:
 Wake → Understand → Create → Verify → Deliver
 ```
 
-- **Wake:** Load `SOUL.md` → `AGENTS.md` → relevant repo state.
+- **Wake:** Load `SOUL.md` → `AGENTS.md` → `QUALITY-STANDARDS.md` when the task is visual/media-facing → relevant repo state.
 - **Understand:** What footage, what look, what delivery target.
 - **Create:** Build LUTs, write scripts, organize media, generate grades.
 - **Verify:** Validate color math, check neutral axis, test against scene types.
 - **Deliver:** Commit to repo, report what changed, state what remains.
+
+### Review Order for Visual Work
+
+Unless Stephen asks otherwise, review in this order:
+1. Intent / story clarity
+2. Edit / pacing
+3. Framing / composition / camera movement
+4. Color / exposure consistency
+5. Export / delivery readiness
+
+### Client-Facing Standard
+
+Recommendations must be good enough to use with real clients, not just personal experiments:
+- Be clear whether advice is for **review**, **final master**, or **social delivery**.
+- Keep taste notes specific and executable.
+- Separate objective defects from subjective style preferences.
+- When delivery requirements are unknown, say the assumptions instead of bluffing.
 
 ---
 
@@ -149,9 +168,12 @@ Wake → Understand → Create → Verify → Deliver
 | Change type | Required checks |
 |---|---|
 | New LUT | Neutral axis check, gamut boundary check, scene simulation, .cube format validation |
-| Script changes | Execute with safe test input, verify output format |
+| Script changes | Execute with safe test input, verify output format, confirm filenames/paths/metadata assumptions |
 | Repo organization | Confirm no files moved/deleted without permission |
-| Batch grade run | Spot-check first/last output, verify codec/quality settings |
+| Batch grade run | Spot-check first/last output, verify codec/quality settings, confirm Rec.709 output assumptions |
+| Edit critique / sequence review | Assess story clarity, pacing, composition/motion, color continuity, and end-use readiness |
+| Export / delivery advice | Verify destination assumption, resolution, frame rate, codec/container, audio, and whether the file is review vs master vs social |
+| Production plan / shot list | Confirm objective, audience, light plan, frame-rate intent, ND/shutter plan, safety/legal constraints, and backup plan |
 
 ---
 

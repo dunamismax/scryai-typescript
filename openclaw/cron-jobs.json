@@ -321,6 +321,42 @@
       "state": {
         "nextRunAtMs": 1773064920000
       }
+    },
+    {
+      "id": "966ccc4d-b42d-4928-b038-3b83c2d41301",
+      "agentId": "sentinel",
+      "sessionKey": "agent:sentinel:discord:channel:1479614794154643619",
+      "name": "healthcheck:sentinel-weekly-smoke",
+      "enabled": true,
+      "createdAtMs": 1772842044963,
+      "updatedAtMs": 1772842100365,
+      "schedule": {
+        "kind": "cron",
+        "expr": "22 10 * * 1",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run Sentinel's weekly specialist smoke test.\n\nExecute exactly:\nset -euo pipefail\nOUT=\"$(/Users/sawyer/.openclaw/workspace-sentinel/scripts/specialist-weekly-smoke.sh 2>&1)\" || RC=$?\nRC=${RC:-0}\nprintf '%s\\n' \"$OUT\"\nif [ \"$RC\" -ne 0 ]; then\n  openclaw system event --text \"Reminder: Sentinel weekly smoke failed. Review contract drift, verification discipline, and attribution guardrails in ~/.openclaw/workspace-sentinel.\" --mode now\n  exit 1\nfi\nexit 0",
+        "model": "openai-codex/gpt-5.4",
+        "thinking": "low",
+        "timeoutSeconds": 1800
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1773066120000,
+        "lastRunAtMs": 1772842083757,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 16608,
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0
+      }
     }
   ]
 }

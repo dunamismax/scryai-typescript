@@ -258,7 +258,9 @@ When a lane goes sideways:
 4. **Repeated failure:** re-split the work or escalate after two scoped failures.
 5. **Conflicting parallel changes:** stop expanding the swarm, integrate deliberately, then re-verify.
 
-Use `RUNBOOK.md` and `scripts/codex-lanes-overview.py` when monitoring or recovery work is non-trivial.
+Use `RUNBOOK.md`, `scripts/codex-lanes-overview.py`, and `scripts/codex-watchdog.py` when monitoring or recovery work is non-trivial.
+For multi-lane operations, prefer a tracked batch manifest via `scripts/codex-batch.py`.
+For PTY Codex lanes, register the lane and append health snapshots with `scripts/codex-pty-lane.py`.
 
 ---
 

@@ -1,6 +1,6 @@
 # grimoire — Build Tracker
 
-**Status:** Phase 1 — Active maintenance and stale-file cleanup  
+**Status:** Phase 1 — Active maintenance, specialist sync, and prompt-template hardening  
 **Last Updated:** 2026-03-06  
 **Latest Relevant Commit:** `d2b46bd`
 
@@ -51,6 +51,8 @@ grimoire/
 - [x] Workspace sync, remote sync, project doctor, backup, and cron tooling
 - [x] Specialist workspace mirror under `openclaw/specialists/`
 - [x] Encrypted config backup artifacts and verification tooling
+- [x] Added reusable specialist self-improvement master prompt template under `openclaw/templates/agents/`
+- [x] Reconciled obvious stale specialist-doc conflicts before sync (`openclaw-maintainer`, `contributor`)
 - [x] Removed stale prompt templates that no longer reflect active work
 - [x] Removed stale repo artifacts (`.DS_Store`, `tsconfig.tsbuildinfo`, dead `bunfig.toml`)
 - [x] Trimmed unused TypeScript dev dependencies from `package.json`

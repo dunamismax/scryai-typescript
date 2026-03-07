@@ -3,7 +3,7 @@
 ## Projects
 
 - All active repos: `~/github/<name>` (see MEMORY.md for full list)
-- OpenClaw workspace (canonical): `~/.openclaw/workspace`
+- OpenClaw workspace (canonical, not a git repo): `~/.openclaw/workspace`
 - Scry config repo: `~/github/grimoire`
 - Sync script: `~/github/grimoire/scripts/tasks/sync_openclaw.py`
 
@@ -17,7 +17,7 @@
 
 ## Reference Docs
 
-- **CONTRIBUTING_TO_OPENCLAW.md** (workspace + grimoire) — read before any work on the OpenClaw repo. Covers repo setup, build system, PR template, Signal plugin architecture, test patterns, reviewer expectations.
+- **CONTRIBUTING_TO_OPENCLAW.md** (workspace canonical; backed up/synced through grimoire workflow) — read before non-trivial work on the OpenClaw repo. Covers repo boundaries, worktree discipline, local-doc-first diagnosis, verification expectations, PR quality, and escalation rules.
 
 ## SSH Remotes
 

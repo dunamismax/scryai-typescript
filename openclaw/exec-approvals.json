@@ -17,6 +17,71 @@
           "lastUsedAt": 1772840852489
         }
       ]
+    },
+    "sentinel": {
+      "allowlist": [
+        {
+          "id": "b70cc4ab-7519-46f9-93fa-4a1c2bd4249e",
+          "pattern": "/bin/pwd",
+          "lastUsedAt": 1772841817552
+        }
+      ]
+    },
+    "contributor": {
+      "allowlist": [
+        {
+          "id": "82338774-845e-4c89-8d35-2dc6f263c31e",
+          "pattern": "/bin/pwd",
+          "lastUsedAt": 1772842030397
+        },
+        {
+          "id": "644d92a9-f9fb-4d4f-a4c4-c4e346905a88",
+          "pattern": "/usr/bin/git",
+          "lastUsedAt": 1772842170699
+        }
+      ]
+    },
+    "openclaw-maintainer": {
+      "allowlist": [
+        {
+          "id": "bb786f1a-3235-4ced-bb00-93dc49b6681a",
+          "pattern": "/usr/bin/git",
+          "lastUsedAt": 1772842080167
+        }
+      ]
+    },
+    "luma": {
+      "allowlist": [
+        {
+          "id": "382740fa-9b5e-4f3f-99e4-c9c19195c6f7",
+          "pattern": "/usr/bin/find",
+          "lastUsedAt": 1772842088608
+        },
+        {
+          "id": "92a8e36d-99c2-4126-9df5-605e5a409060",
+          "pattern": "/usr/bin/sort",
+          "lastUsedAt": 1772842088608
+        },
+        {
+          "id": "fd7e2bf6-0bb1-4417-8129-38abb195fc21",
+          "pattern": "/bin/pwd",
+          "lastUsedAt": 1772842125594
+        },
+        {
+          "id": "5f4109bf-738f-40c1-a24b-e59688bac3df",
+          "pattern": "/usr/bin/printf",
+          "lastUsedAt": 1772842358533
+        }
+      ]
+    },
+    "main": {
+      "allowlist": [
+        {
+          "id": "a73dfbc9-26b5-4efd-9b3a-de477c6e2acf",
+          "pattern": "/bin/pwd",
+          "lastUsedAt": 1772842137094
+        }
+      ]
     }
   }
 }

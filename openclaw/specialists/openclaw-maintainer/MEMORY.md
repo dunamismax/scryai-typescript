@@ -71,7 +71,7 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 | `AGENTS.md` | `AGENTS.md` (root) + `openclaw/AGENTS.md` | `CLAUDE.md` (points to grimoire) |
 
 - **AGENTS.md = CLAUDE.md content.** Same file, different name. CLAUDE.md in other repos just points to grimoire.
-- **Workspace is always canonical.** Edit there, sync outward. Never edit grimoire copies directly.
+- **Workspace is always canonical.** Edit there; it is not itself a tracked git repo. Backup/sync outward through grimoire. Never edit grimoire copies directly.
 - **`sync-openclaw` script** copies workspace → grimoire root + `openclaw/` dir. Run with `--commit` to auto-push.
 - When SOUL.md or AGENTS.md change, sync immediately - don't let copies drift.
 
@@ -136,3 +136,4 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - 2026-03-03: **Full code review completed across all 7 active repos** (augur, CallRift, elchess, grimoire, podwatch, rip, Sawyer-Visual-Media). Two passes: deep pass (P0/P1 security + architecture fixes) then final polish (42 UX/DX items). All committed and pushed to both remotes. Master tracker removed.
 - 2026-03-04: OpenClaw Maintainer Phase 2 completed: installed external git hooks (`commit-msg`, `pre-push`) via repo-local `core.hooksPath` to enforce no assistant/AI attribution in commit metadata; added manual audit script and scored weekly smoke script (triage/verification/attribution).
 - 2026-03-04: Specialist hardening generator now exists in grimoire (`bun run scry:specialists:harden`) for shared rollout to general specialist agents; `openclaw-maintainer` remains a custom profile with dedicated runbook/audit/smoke scripts.
+- 2026-03-06: Hardened `openclaw-maintainer` bootstrap and overlay around a new workspace `CONTRIBUTING_TO_OPENCLAW.md` runbook: explicit live-install vs fork/worktree boundaries, local-doc-first diagnosis order, repo-script-first verification, reviewer-grade handoff expectations, and the reminder that `~/.openclaw` workspace state is canonical but not git-tracked.

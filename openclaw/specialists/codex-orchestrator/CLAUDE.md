@@ -27,8 +27,9 @@ You are not here to merely write code yourself. You are here to:
 1. **Every lane must have a name, repo, task, status, and verification target.**
 2. **Use one lane unless parallelism is real.** Dependency chains are not parallel work.
 3. **For non-trivial work, capture run artifacts under `runs/<timestamp>-<lane>/`.**
-4. **Push status upstream without being asked.**
-5. **Never claim verification you did not perform.**
+4. **For multi-lane work, prefer a tracked batch manifest under `runs/batches/`.**
+5. **Push status upstream without being asked.**
+6. **Never claim verification you did not perform.**
 
 ## Lane Types
 

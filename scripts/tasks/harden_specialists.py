@@ -56,6 +56,7 @@ Operational notes:
 - No commit metadata may reference agent names, assistants, or AI terms.
 - Before repo implementation work, set `core.hooksPath` to this workspace hook dir.
 - If Codex CLI execution is needed, delegate to `codex-orchestrator` instead of launching Codex/ACP `agentId:"codex"` directly from a non-Codex specialist.
+- For `openclaw/openclaw` under `dunamismax`, treat 10 active PRs as a hard cap; check headroom before PR-capable work and prune stale/weak PRs first when the queue is tight.
 """
 
 
@@ -90,6 +91,7 @@ Ship clean, reviewer-friendly fixes in third-party and open-source repos without
 - Avoid duplicate work: check issue/PR/commit history before coding
 - Keep patches surgical and reviewer-trustworthy
 - Delegate Codex CLI execution to `codex-orchestrator` when Codex is the right engine
+- For `openclaw/openclaw`, treat the 10-active-PR cap as part of issue selection and do not tee up more work than the queue can absorb
 """,
         "luma": """# CLAUDE.md — Luma
 
@@ -272,6 +274,7 @@ protocol=0
 verification=0
 attribution=0
 notes=()
+hard_fail=0
 
 # --- PROTOCOL QUALITY (10) ---
 if has_text "## Mission" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing mission section"); fi
@@ -279,6 +282,15 @@ if has_text "## Scope" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=
 if has_text "## Verification Expectations" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing verification expectations section"); fi
 if has_text "## Escalation Triggers" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing escalation triggers section"); fi
 if has_text "Universal Phase 2 Hardening" "$CLAUDE_MD"; then protocol=$((protocol+2)); else notes+=("protocol: missing phase 2 hardening section"); fi
+
+if [[ "$AGENT_ID" == "codex-orchestrator" || "$AGENT_ID" == "contributor" ]]; then
+  if has_text "10 active PRs|10-active-PR cap" "$CLAUDE_MD" && has_text "10 active PRs as a hard cap|10-active-PR cap" "$BOOTSTRAP_MD"; then
+    :
+  else
+    notes+=("protocol: missing OpenClaw PR queue guard")
+    hard_fail=1
+  fi
+fi
 
 # --- VERIFICATION DISCIPLINE (10) ---
 if has_text "verify before claiming completion|Verification Expectations" "$CLAUDE_MD"; then verification=$((verification+3)); else notes+=("verification: weak CLAUDE verification language"); fi
@@ -304,7 +316,7 @@ rm -f "$tmp_ok" "$tmp_bad"
 
 overall=$(( (protocol + verification + attribution) / 3 ))
 status="PASS"
-if (( protocol < 8 || verification < 8 || attribution < 8 )); then
+if (( protocol < 8 || verification < 8 || attribution < 8 || hard_fail != 0 )); then
   status="FAIL"
 fi
 
@@ -360,6 +372,11 @@ Run before push when there are branch commits:
 ### Codex CLI Delegation
 - `codex-orchestrator` owns Codex CLI dispatch + monitoring.
 - Non-Codex specialists must delegate Codex-heavy execution instead of launching Codex directly or using ACP `agentId:"codex"` for background repo work.
+
+### OpenClaw PR Queue Guard
+- For `openclaw/openclaw` work under `dunamismax`, treat **10 active PRs** as a hard cap.
+- Check current author PR count before launching PR-capable work or opening a new PR.
+- If `current_open_prs + planned_new_prs > 10`, prune stale/weak/superseded PRs first and report what was cut.
 
 ### Weekly Quality Smoke
 

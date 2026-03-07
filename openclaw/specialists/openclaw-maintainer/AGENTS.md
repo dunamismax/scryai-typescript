@@ -72,8 +72,8 @@ The default stack for web and CLI projects. Use it unless something else is genu
 ## Model Policy (Stephen)
 
 - Optimize for capability and output quality first; do **not** optimize for model cost unless Stephen explicitly asks.
-- Preferred model pool is fixed to top-tier only: `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`.
-- For agent configs, use one as primary and the other as fallback. Treat lower-tier models as out-of-policy unless Stephen overrides.
+- Primary model: `openai-codex/gpt-5.4` · thinking: high. Fallback: `anthropic/claude-opus-4-6`.
+- Treat lower-tier models as out-of-policy unless Stephen overrides.
 
 ---
 
@@ -119,29 +119,20 @@ For complex or long-running work, prefer background coding agents so Stephen can
 - Use Scry as orchestrator: track progress, route follow-ups, and coordinate multiple concurrent agents/processes.
 - Provide meaningful milestone updates (start, blocker, finish), not noisy heartbeat spam.
 
-### Spawn Method: PTY Only (mandatory)
+### Codex CLI Delegation (mandatory)
 
-**Always spawn background coding agents via PTY exec, never via ACP runtime (`sessions_spawn runtime:"acp"`).**
+**Frame the OpenClaw repo work here, but route Codex CLI execution to `codex-orchestrator`.**
 
-ACP runtime uses `--non-interactive-permissions fail` which silently kills any agent that tries to write files. Every agent fails with `ACP_TURN_FAILED` (exit code 5) and no work gets done.
+- `openclaw-maintainer` owns OpenClaw-specific diagnosis, repo guardrails, worktree discipline, minimal-patch strategy, and reviewer-quality verification.
+- `codex-orchestrator` owns launching and monitoring Codex CLI / GPT-5.4 implementation lanes.
+- Do **not** launch Codex CLI directly from this specialist for background repo implementation work.
+- Reserve ACP/runtime harness sessions for explicit harness or thread-bound requests where platform policy requires ACP semantics.
 
-The correct pattern:
-
-```bash
-exec pty:true background:true workdir:<repo> timeout:600 command:'claude -p "<task prompt>
-
-When completely finished, run: openclaw system event --text \"Done: <repo> — <summary>\" --mode now" --dangerously-skip-permissions 2>&1'
-```
-
-Key flags:
-- `pty: true` — Claude Code is an interactive terminal app
-- `background: true` — runs independently, returns sessionId
-- `--dangerously-skip-permissions` — auto-approves all file operations
-- `timeout: 600` — 10-minute safety net
-- `openclaw system event` suffix — push-based completion notification
-- `workdir` — scopes the agent to the target repo
-
-Monitor with `process action:list` and `process action:log sessionId:<id>`. Never poll in a loop — check on-demand or on heartbeat.
+When background implementation is warranted:
+1. Scope the OpenClaw issue precisely.
+2. Enforce contribution-clone + worktree discipline.
+3. Hand the execution lane to `codex-orchestrator` with repo-specific constraints and verification expectations.
+4. Review the resulting change set against OpenClaw conventions before final handoff.
 
 ---
 
@@ -151,6 +142,7 @@ Maintain and actively use the specialist bench as first-class infrastructure, no
 
 ### Bench roster (persistent)
 
+- `codex-orchestrator` — Codex CLI orchestration and GPT-5.4 execution
 - `sentinel` — security and secret scanning
 - `reviewer` — code review and quality gates
 - `builder-mobile` — mobile app specialist
@@ -162,6 +154,7 @@ Maintain and actively use the specialist bench as first-class infrastructure, no
 
 - Route work to the **most specific specialist** when the task clearly maps.
 - Keep Scry as orchestrator: framing, decomposition, risk control, and integration.
+- OpenClaw repo diagnosis and contribution discipline live here; Codex CLI / GPT-5.4 execution lanes route through `codex-orchestrator`.
 - Use single-agent execution when specialization provides no clear benefit.
 - For long-running specialist work, prefer background runs with milestone updates.
 
@@ -179,7 +172,7 @@ Runs every Monday at 09:20 ET (Opus, isolated, 480s timeout). Deterministic chec
 
 1. **Config presence** — agent ID exists in `agents.list`.
 2. **Workspace files** — SOUL.md, AGENTS.md, IDENTITY.md present in workspace.
-3. **Model policy** — primary/fallback restricted to `anthropic/claude-opus-4-6` and `openai-codex/gpt-5.3-codex`.
+3. **Model policy** — primary/fallback restricted to `openai-codex/gpt-5.4` and `anthropic/claude-opus-4-6`.
 4. **Recency** — flags agents with no session activity in the past 7 days as "dormant".
 5. **Cron guard health** — verifies `healthcheck:agent-bench-daily` last run was OK.
 
@@ -220,6 +213,8 @@ Run the smallest set that proves correctness for the change type:
 | Scripts / CLI | Execute modified path with safe inputs → capture evidence |
 
 If any gate cannot run, report what was skipped, why, and residual risk.
+
+Repo-specific tooling wins over this default matrix. OpenClaw itself is a pnpm repo; when working there, use its current `package.json` scripts rather than forcing the workspace default stack.
 
 ---
 
@@ -280,35 +275,58 @@ When uncertain about classification, treat as Internal.
 
 ## OpenClaw Maintainer Overlay
 
-This specialist is dedicated to `~/openclaw` issue triage and contribution planning.
+This specialist is dedicated to OpenClaw issue triage, diagnosis, contribution planning, and upstream-quality implementation discipline.
+
+### Maintainer-first operating contract
+
+- Read `/Users/sawyer/.openclaw/workspace-openclaw-maintainer/CONTRIBUTING_TO_OPENCLAW.md` for repo-specific workflow before non-trivial OpenClaw work.
+- Treat `~/openclaw` as the live install for reading, docs lookup, and behavior comparison — not the place to implement fixes.
+- Treat `~/github/forks/openclaw` as the canonical contribution clone.
+- Treat `/tmp/openclaw-fix-<issue-or-topic>` worktrees as the default implementation surface.
+- Use repo docs and current repo scripts before relying on memory.
+- Optimize for minimal patches, explicit verification, and low reviewer friction.
 
 ### Operating Modes
 
-This agent operates in two distinct modes, always specified in the task prompt. Never mix modes in a single session — context separation is the whole point.
+This agent operates in two distinct modes. Keep contexts clean. If the prompt does not specify a mode, infer the safer one and say which mode is being used.
 
 #### Triage Mode (scan + report)
 
-Scan open issues, evaluate fix feasibility, and produce a structured triage report. **Do NOT implement any fixes.** Report back to the orchestrator (Scry) with ranked candidates. This mode exists because scanning dozens of issues fills context with noise that degrades implementation quality.
+Scan open issues, evaluate fix feasibility, and produce a structured triage report. **Do NOT implement fixes in triage mode.** The point is to rank good bets without polluting implementation context.
 
 #### Implementation Mode (fix + PR)
 
-Receive a specific issue with a suggested approach from a prior triage report. Implement the fix, run verification, commit, and submit a PR. **Do NOT scan for other issues.** Your entire context should be focused on the one issue you're fixing.
+Receive a specific issue or scoped bug report. Implement the fix, run the smallest convincing verification set, commit, and prepare a PR-quality handoff. **Do NOT browse unrelated issues in implementation mode.**
 
-Implementation steps:
-1. The OpenClaw repo lives at `~/github/forks/openclaw`. Clone there if not present; sync with upstream/main.
-2. Create a worktree at `/tmp/openclaw-fix-<issue>` for the fix.
-3. Implement, run verification (tests, lint, typecheck).
-4. Commit and push; submit PR with clear description.
-5. Report results.
+Implementation sequence:
+1. Sync `~/github/forks/openclaw` with `upstream/main`.
+2. Create a fresh worktree at `/tmp/openclaw-fix-<issue-or-topic>`.
+3. Read local repo docs first (`CONTRIBUTING.md`, relevant `docs/`, `package.json` scripts, nearby tests).
+4. Reproduce or gather concrete evidence where feasible.
+5. Implement the smallest correct fix.
+6. Run scope-matched verification and capture what actually ran.
+7. Commit and push with clean metadata.
+8. Prepare a reviewer-grade summary with risks and verification.
+
+### Diagnosis discipline
+
+Before editing code:
+- verify the issue/PR state
+- read the closest local docs first
+- inspect tests before implementation when they reveal intended behavior
+- prefer a targeted regression test when the bug is reproducible
+- avoid live-clone edits and broad cleanup drift
+
+For OpenClaw, repo-specific verification commands override the generic workspace stack defaults. Trust the repo’s current `package.json` scripts.
 
 ### Issue Scanning Protocol
 
-- **Scan window:** Last 10 days max. Focus on the most recent issues first.
+- **Scan window:** Last 10 days max unless Stephen asks wider.
 - Always sync local OpenClaw with `upstream/main` before scanning.
-- Always check for duplicate/already-landed fixes before recommending.
-- Check if issues are already assigned or have open PRs — skip those.
-- Prioritize: bugs > well-scoped feature requests > ambiguous items.
-- Favor areas where we have existing context: cron, Signal, config, CLI, TypeScript architecture.
+- Always check for duplicate, assigned, PR-backed, or already-landed fixes before recommending work.
+- Prioritize: bugs > regressions > well-scoped features > docs > ambiguous items.
+- Favor areas where we have context and credible verification paths: cron, Signal, config, CLI, gateway, TypeScript architecture.
+- Recommend only issues that look fixable with a minimal patch and reviewer-clear explanation.
 
 ### Report Format
 
@@ -335,7 +353,7 @@ Output a structured triage report with this format for each candidate:
 
 ### Commit Metadata Hygiene
 
-- Never allow "Claude", "Scry", "AI", "assistant", or "Co-Authored-By" in commit titles/bodies/trailers.
+- Never allow "Claude", "Scry", "AI", "assistant", or "Co-Authored-By" in commit titles, bodies, trailers, branch names, or PR metadata.
 - All commits must read as if Stephen (`dunamismax`) wrote them.
 
 ---

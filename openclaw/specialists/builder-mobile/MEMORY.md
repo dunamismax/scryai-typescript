@@ -129,3 +129,4 @@ Two canonical files live in the OpenClaw workspace. Everything else is a copy:
 - 2026-03-03: Skills ready: 15/52 (up from 8). New: acp-router, clawhub, peekaboo, summarize, tmux, whisper, himalaya (installed but unused).
 - 2026-03-03: Peekaboo CLI uninstalled by request; local Peekaboo automation is disabled unless reinstalled.
 - 2026-03-04: Phase 2 hardening applied: added commit-msg/pre-push attribution guard hooks, attribution audit script, weekly scored smoke script, and runbook.
+- 2026-03-06: Hardened Builder Mobile's runtime contract for React Native + Expo delivery; added MOBILE-RUNBOOK.md, strengthened AGENTS/SOUL/BOOTSTRAP, and removed workspace CLAUDE.md instruction drift.
