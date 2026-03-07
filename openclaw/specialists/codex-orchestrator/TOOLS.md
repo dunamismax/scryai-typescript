@@ -35,6 +35,24 @@ python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-lane-
   /Users/sawyer/.openclaw/workspace-codex-orchestrator/runs/<run-dir>
 ```
 
+### Overview all tracked lanes
+
+```bash
+python3 /Users/sawyer/.openclaw/workspace-codex-orchestrator/scripts/codex-lanes-overview.py
+```
+
+Flags:
+- `--json` for machine-readable output
+- `--stale-minutes=<N>` to tune stale detection
+
+### Prompt template
+
+Start new lane prompts from:
+
+```bash
+/Users/sawyer/.openclaw/workspace-codex-orchestrator/templates/codex-lane-prompt.md
+```
+
 ## Preferred Codex Exec Flags
 
 For most non-trivial lanes:

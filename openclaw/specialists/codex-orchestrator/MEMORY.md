@@ -11,6 +11,8 @@ Durable operating memory for Codex.
 - Non-trivial runs should create artifacts under `runs/<timestamp>-<lane>/`.
 - Each lane needs: name, repo, task, status, health, verification target.
 - Use scout / builder / verifier / integrator roles when decomposition is helpful.
+- Use `scripts/codex-lanes-overview.py` before launching new work and during monitoring-heavy tasks.
+- Keep prompts standardized with `templates/codex-lane-prompt.md` unless a task needs a sharper custom prompt.
 
 ## Reporting
 - Push updates proactively on launch, plan confirmation, midpoint, blockers, and completion.

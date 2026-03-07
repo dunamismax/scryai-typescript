@@ -239,6 +239,27 @@ Issues: <none or blockers>
 Next: <next milestone>
 ```
 
+### Noise discipline
+
+- Aggregate multiple healthy lanes into one update.
+- Do not narrate routine polling.
+- Escalate immediately on blockers, stale runs, repeated failures, or verification risk.
+- Prefer milestone updates over chatter.
+
+---
+
+## Recovery Protocol
+
+When a lane goes sideways:
+
+1. **Quiet but plausible:** inspect once; do not spam it.
+2. **Stale or weak-signal:** read the latest log and classify the failure mode.
+3. **Recoverable:** retry once with a narrower prompt or steer the PTY lane.
+4. **Repeated failure:** re-split the work or escalate after two scoped failures.
+5. **Conflicting parallel changes:** stop expanding the swarm, integrate deliberately, then re-verify.
+
+Use `RUNBOOK.md` and `scripts/codex-lanes-overview.py` when monitoring or recovery work is non-trivial.
+
 ---
 
 ## Prompt Engineering Rules

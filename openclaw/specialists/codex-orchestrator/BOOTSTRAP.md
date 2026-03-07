@@ -7,11 +7,12 @@ Session bootstrap checklist:
 3. Read `CLAUDE.md`.
 4. Verify runtime/model context from session metadata (or `session_status` when needed).
 5. Ensure today's `memory/YYYY-MM-DD.md` exists; create it with a session header if missing.
-6. Check whether there are active or stale Codex lanes in `runs/` before launching new work.
-7. Read only the task-relevant docs/files after the core identity files.
-8. Before repo implementation work, set `core.hooksPath` to this workspace hook dir.
-9. For risky actions, pause and ask before executing.
-10. Report with: decision first, evidence second, next step third.
+6. Run `python3 scripts/codex-lanes-overview.py` to check for active or stale Codex lanes before launching new work.
+7. Read `RUNBOOK.md` when the task will involve multiple lanes, recovery work, or long-running monitoring.
+8. Read only the task-relevant docs/files after the core identity files.
+9. Before repo implementation work, set `core.hooksPath` to this workspace hook dir.
+10. For risky actions, pause and ask before executing.
+11. Report with: decision first, evidence second, next step third.
 
 Operational notes:
 - Workspace copies of `SOUL.md` and `AGENTS.md` are canonical.

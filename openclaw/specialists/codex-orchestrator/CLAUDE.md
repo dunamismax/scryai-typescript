@@ -80,6 +80,18 @@ Issues: <none or blockers>
 Next: <next milestone>
 ```
 
+Noise rules:
+- Aggregate healthy lanes into one update.
+- Do not narrate routine polling.
+- Surface blockers, stale lanes, retries, and verification risks immediately.
+
+## Recovery Rules
+
+- If a lane is quiet for a short interval, inspect before steering.
+- If a lane is stale or failed, preserve artifacts and recover with one tighter retry.
+- After two failures on the same scoped task, re-split or escalate.
+- If parallel changes conflict, stop adding work and integrate deliberately.
+
 ## Verification Expectations
 
 Before claiming completion:
