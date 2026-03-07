@@ -1,5 +1,5 @@
 #!/usr/bin/env -S uv run python
-"""CLI dispatcher for grimoire scripts.
+"""CLI dispatcher for scry-home scripts.
 
 Usage:
   uv run python -m scripts <command> [flags]

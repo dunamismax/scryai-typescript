@@ -12,12 +12,12 @@ Notes:
 
 - Readable files under `/etc/sudoers.d/` are auto-copied.
 - `~/.openclaw/openclaw.json` is copied in redacted form for reproducible config tracking.
-- Sensitive agent state should be captured in encrypted backups under `grimoire/vault/`.
+- Sensitive agent state should be captured in encrypted backups under `scry-home/vault/`.
 
 If you want a privileged one-off backup of `/etc/sudoers`, run:
 
 ```bash
-sudo cp /etc/sudoers /Users/sawyer/github/grimoire/workstation/macOS/etc/sudoers
+sudo cp /etc/sudoers /Users/sawyer/github/scry-home/workstation/macOS/etc/sudoers
 ```
 
 Review `macOS/etc/sudoers` before committing.

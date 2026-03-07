@@ -2,18 +2,21 @@
 set -euo pipefail
 
 home_dir="${HOME_DIR:-$HOME}"
-repo_root="${SCRY_REPO:-$home_dir/github/grimoire}"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root_default="$(cd "$script_dir/../.." && pwd)"
+repo_root="${SCRY_REPO:-$repo_root_default}"
 config_service="${SCRY_CONFIG_BACKUP_KEYCHAIN_SERVICE:-scry-config-backup-passphrase}"
 ssh_service="${SCRY_SSH_BACKUP_KEYCHAIN_SERVICE:-scry-ssh-backup-passphrase}"
 
 path_default="$home_dir/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$path_default:${PATH:-}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${TMPDIR:-/tmp}/uv-cache-scry-home}"
 
 log() {
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $*"
 }
 
-lock_dir="${TMPDIR:-/tmp}/grimoire-backup.lock"
+lock_dir="${TMPDIR:-/tmp}/scry-home-backup.lock"
 lock_stale_seconds=3600
 
 if ! mkdir "$lock_dir" 2>/dev/null; then
@@ -51,14 +54,14 @@ run_macos_snapshot() {
   log "done: tracked macOS config snapshot"
 }
 
-run_grimoire_task() {
+run_repo_task() {
   local name="$1"
   local command="$2"
   local passphrase="$3"
   local env_var="$4"
 
   if [[ ! -f "$repo_root/pyproject.toml" ]]; then
-    log "warn: missing grimoire repo at $repo_root; skipping $name"
+    log "warn: missing repo root at $repo_root; skipping $name"
     return 0
   fi
 
@@ -83,8 +86,8 @@ run_macos_snapshot
 config_passphrase="${SCRY_CONFIG_BACKUP_PASSPHRASE:-$(get_keychain_secret "$config_service")}"
 ssh_passphrase="${SCRY_SSH_BACKUP_PASSPHRASE:-$(get_keychain_secret "$ssh_service")}"
 
-run_grimoire_task "encrypted config backup" "setup:config_backup" "$config_passphrase" "SCRY_CONFIG_BACKUP_PASSPHRASE"
-run_grimoire_task "encrypted config backup verification" "verify:config_backup" "$config_passphrase" "SCRY_CONFIG_BACKUP_PASSPHRASE"
-run_grimoire_task "encrypted ssh backup" "setup:ssh_backup" "$ssh_passphrase" "SCRY_SSH_BACKUP_PASSPHRASE"
+run_repo_task "encrypted config backup" "setup:config_backup" "$config_passphrase" "SCRY_CONFIG_BACKUP_PASSPHRASE"
+run_repo_task "encrypted config backup verification" "verify:config_backup" "$config_passphrase" "SCRY_CONFIG_BACKUP_PASSPHRASE"
+run_repo_task "encrypted ssh backup" "setup:ssh_backup" "$ssh_passphrase" "SCRY_SSH_BACKUP_PASSPHRASE"
 
 log "backup run complete"

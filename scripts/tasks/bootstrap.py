@@ -1,4 +1,4 @@
-"""Bootstrap grimoire: check prerequisites, install deps."""
+"""Bootstrap scry-home: check prerequisites, install deps."""
 
 from __future__ import annotations
 

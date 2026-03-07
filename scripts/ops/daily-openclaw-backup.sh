@@ -3,11 +3,13 @@ set -euo pipefail
 
 SERVICE_NAME="scry.openclaw.config-backup.passphrase"
 ACCOUNT_NAME="${USER}"
-REPO_ROOT="${HOME}/github/grimoire"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 LOG_DIR="${HOME}/Library/Logs/scry"
 LOG_FILE="${LOG_DIR}/openclaw-critical-backup.log"
 
 export PATH="${HOME}/.bun/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${TMPDIR:-/tmp}/uv-cache-scry-home}"
 
 mkdir -p "${LOG_DIR}"
 

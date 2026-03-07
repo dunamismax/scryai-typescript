@@ -1,6 +1,6 @@
 # Workstation Snapshots
 
-Tracked workstation configuration snapshots imported from the former standalone `dotfiles` repo.
+Tracked workstation configuration snapshots folded in from the former standalone `dotfiles` repo.
 
 ## Structure
 
@@ -16,7 +16,7 @@ workstation/
 
 ## Purpose
 
-- Keep a readable, versioned copy of high-value workstation config in `grimoire`
+- Keep a readable, versioned copy of high-value workstation config in `scry-home`
 - Separate tracked plaintext snapshots here from encrypted artifacts in `vault/`
 - Use `scripts/ops/backup-macos-configs.sh` to refresh the macOS snapshot tree
 - Use `scripts/ops/run-automated-backups.sh` or `scripts/ops/install-backup-launchagent.sh` for scheduled refresh + encrypted backups

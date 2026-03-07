@@ -1,4 +1,4 @@
-"""Managed project definitions for grimoire CLI."""
+"""Managed project definitions for the scry-home CLI."""
 
 from __future__ import annotations
 
@@ -17,68 +17,46 @@ class ManagedProject:
 
 
 MANAGED_PROJECTS: list[ManagedProject] = [
-    # --- TypeScript Web Apps ---
     ManagedProject(
-        name="podwatch",
-        path=GITHUB / "podwatch",
+        name="scry-home",
+        path=GITHUB / "scry-home",
         install_command=["bun", "install"],
-        verify_commands=[["bun", "run", "lint"], ["bun", "run", "typecheck"]],
+        verify_commands=[
+            ["bun", "run", "lint"],
+            ["uv", "run", "python", "-m", "scripts", "doctor"],
+        ],
     ),
     ManagedProject(
-        name="rip",
-        path=GITHUB / "rip",
-        install_command=["bun", "install"],
-        verify_commands=[["bun", "run", "lint"], ["bun", "run", "typecheck"]],
-    ),
-    # --- Chess Platform ---
-    ManagedProject(
-        name="elchess",
-        path=GITHUB / "elchess",
-        install_command=["bun", "install"],
-        verify_commands=[["bun", "run", "lint"], ["bun", "run", "typecheck"]],
-    ),
-    # --- Mobile ---
-    ManagedProject(
-        name="CallRift",
-        path=GITHUB / "CallRift",
-        install_command=["bun", "install"],
-        verify_commands=[["bun", "run", "lint"], ["bun", "run", "typecheck"]],
-    ),
-    # --- CI Pipeline ---
-    ManagedProject(
-        name="pr-firefighter",
-        path=GITHUB / "pr-firefighter",
-        install_command=["bun", "install"],
-        verify_commands=[["bun", "run", "lint"], ["bun", "run", "typecheck"]],
-    ),
-    # --- Ops CLI ---
-    ManagedProject(
-        name="grimoire",
-        path=GITHUB / "grimoire",
-        install_command=["bun", "install"],
-        verify_commands=[["bun", "run", "lint"], ["bun", "run", "typecheck"]],
-    ),
-    # --- Content ---
-    ManagedProject(
-        name="Sawyer-Visual-Media",
-        path=GITHUB / "Sawyer-Visual-Media",
-        install_command=["bun", "install"],
+        name="dunamismax",
+        path=GITHUB / "dunamismax",
+        install_command=["echo", "no install needed"],
         verify_commands=[],
     ),
-    # --- Python ---
     ManagedProject(
-        name="scripts",
-        path=GITHUB / "scripts",
-        install_command=["echo", "no install needed"],
-        verify_commands=[["ruff", "check", "."]],
+        name="boring-go-web",
+        path=GITHUB / "boring-go-web",
+        install_command=["go", "mod", "download"],
+        verify_commands=[["go", "test", "./..."]],
     ),
     ManagedProject(
-        name="augur",
-        path=GITHUB / "augur",
+        name="c-from-the-ground-up",
+        path=GITHUB / "c-from-the-ground-up",
+        install_command=["echo", "no install needed"],
+        verify_commands=[],
+    ),
+    ManagedProject(
+        name="scryfall-discord-bot",
+        path=GITHUB / "scryfall-discord-bot",
         install_command=["uv", "sync"],
         verify_commands=[
             ["uv", "run", "ruff", "check", "."],
-            ["uv", "run", "mypy", "."],
+            ["uv", "run", "mypy", "oracle"],
         ],
+    ),
+    ManagedProject(
+        name="hello-world-from-hell",
+        path=GITHUB / "hello-world-from-hell",
+        install_command=["echo", "no install needed"],
+        verify_commands=[["make", "test"]],
     ),
 ]

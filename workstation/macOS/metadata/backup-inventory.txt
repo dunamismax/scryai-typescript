@@ -2,7 +2,7 @@ timestamp=2026-03-07T17:18:45Z
 host=__REDACTED__
 user=__REDACTED__
 source_home=~
-repo_root=~/github/grimoire
+repo_root=/Users/sawyer/github/scry-home
 
 files_present:
 workstation/macOS/etc/bashrc

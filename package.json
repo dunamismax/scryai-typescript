@@ -1,12 +1,12 @@
 {
-  "name": "grimoire",
+  "name": "scry-home",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "lint": "bunx @biomejs/biome check . && uv run ruff check .",
+    "lint": "bunx @biomejs/biome check . && UV_CACHE_DIR=${UV_CACHE_DIR:-/tmp/uv-cache-scry-home} uv run ruff check .",
     "lint:biome": "bunx @biomejs/biome check .",
-    "lint:ruff": "uv run ruff check .",
-    "format": "bunx @biomejs/biome format --write . && uv run ruff format .",
+    "lint:ruff": "UV_CACHE_DIR=${UV_CACHE_DIR:-/tmp/uv-cache-scry-home} uv run ruff check .",
+    "format": "bunx @biomejs/biome format --write . && UV_CACHE_DIR=${UV_CACHE_DIR:-/tmp/uv-cache-scry-home} uv run ruff format .",
     "scry:bootstrap": "uv run python -m scripts bootstrap",
     "scry:doctor": "uv run python -m scripts doctor",
     "scry:setup:workstation": "uv run python -m scripts setup:workstation",

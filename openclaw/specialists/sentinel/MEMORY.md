@@ -20,31 +20,20 @@
 
 ## Stack Contract
 
-See `AGENTS.md` for the full stack table. Default is TypeScript + Bun; Python/Rust/Go when genuinely better.
+See `AGENTS.md` for the full stack table. Current surviving local repos are Python, Go, or C.
 
-## Active Repos (TypeScript)
+## Active Repos
 
-All under `~/github`, dual SSH remotes. TypeScript + Bun unless noted:
+All under `~/github`, dual SSH remotes:
 
-1. **scry-home** (was `grimoire`, originally `scryai-typescript`) - Scry's identity/config repo, CLI tools, sync scripts
-2. **questlog** (was mylife-rpg) - RPG-style life tracker
-3. **podwatch** (was poddashboard) - Podcast dashboard
-4. **homepage** (was reactiveweb) - Personal website
-5. **sentinel** (was repo-monitor) - Repository monitoring
-6. **rip** (was open-video-downloader) - Video download tool
-7. **CallRift** - React Native + Expo SIP/VoIP app (zustand for client state)
-8. **elchess** - Self-hostable chess platform
+1. **scry-home** - identity/config repo, CLI tools, sync scripts, workstation snapshots, and backup automation
+2. **dunamismax** - GitHub profile README source
+3. **boring-go-web** - narrow Go web starter/app
+4. **c-from-the-ground-up** - project-based C learning repo
+5. **scryfall-discord-bot** - Python Discord MTG card lookup bot
+6. **hello-world-from-hell** - novelty/obfuscated C repo
 
-## Python Repos (Intentionally Python)
-
-- **augur** (was scry-trader) - Trading system (IBKR + LLM analysis). Python is best-in-class for this ecosystem.
-- **oracle** (was mtg-card-bot) - Discord MTG card lookup bot. Python's discord.py is the right tool.
-
-## Other Projects
-
-- **Sawyer-Visual-Media** - Stephen's drone photography/videography business (aerial work). DJI Mini 5 Pro. Keep this repo.
-
-## Archived Repos
+## Archived / Removed Local Repos
 
 - **scryai-swift**, **scryai-gorust**, **elixir**, **espanol** - archived (Phase 2), preserved on GitHub + Codeberg
 - **work**, **images** - deleted locally 2026-03-02, still on GitHub + Codeberg

@@ -2,12 +2,13 @@
 set -euo pipefail
 
 home_dir="${HOME_DIR:-$HOME}"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 label="${BACKUP_AGENT_LABEL:-com.sawyer.scry.backups}"
 interval="${BACKUP_INTERVAL_SECONDS:-21600}"
 launch_agents_dir="$home_dir/Library/LaunchAgents"
 logs_dir="$home_dir/Library/Logs"
 plist_path="$launch_agents_dir/$label.plist"
-runner_path="${BACKUP_RUNNER_PATH:-$home_dir/github/grimoire/scripts/ops/run-automated-backups.sh}"
+runner_path="${BACKUP_RUNNER_PATH:-$script_dir/run-automated-backups.sh}"
 
 if [[ ! "$interval" =~ ^[0-9]+$ ]] || [[ "$interval" -lt 300 ]]; then
   echo "error: BACKUP_INTERVAL_SECONDS must be an integer >= 300"

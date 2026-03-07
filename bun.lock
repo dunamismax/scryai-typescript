@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "grimoire",
+      "name": "scry-home",
       "devDependencies": {
         "@biomejs/biome": "^2.4.5",
       },

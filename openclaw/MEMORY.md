@@ -22,46 +22,28 @@
 
 ## Active Repos
 
-All primary repos under `~/github` are cloned locally and use dual SSH remotes with GitHub + Codeberg push URLs.
+All surviving primary repos under `~/github` are cloned locally and use dual SSH remotes with GitHub + Codeberg push URLs.
 
 **Current local inventory (2026-03-07):**
-- `CallRift`
-- `Sawyer-Visual-Media`
 - `boring-go-web`
 - `c-from-the-ground-up`
 - `dunamismax`
-- `elchess`
 - `hello-world-from-hell`
-- `imaging-services-ops`
-- `openclaw`
-- `podwatch`
-- `pr-firefighter`
-- `pyforge`
-- `questlog`
-- `rip`
 - `scry-home`
 - `scryfall-discord-bot`
-- `trade-desk-cli`
 
 **Known repo roles / notes:**
-- `scry-home` — Scry identity/config repo, CLI tools, sync scripts (renamed from `grimoire`)
-- `pyforge` — reusable Python scripts/utilities, automation, and tooling (renamed from `scripts`)
-- `trade-desk-cli` — trading system (IBKR + LLM analysis; renamed from `augur`)
-- `scryfall-discord-bot` — Discord MTG card lookup bot (renamed from `oracle`)
-- `boring-go-web` — Go web/server repo (renamed from `go-web-server`)
-- `imaging-services-ops` — consolidated imaging-services repo/workflow (renamed from `imagingservices`)
-- `podwatch` — podcast dashboard
-- `rip` — video download tool
-- `CallRift` — React Native + Expo SIP/VoIP app
-- `elchess` — self-hostable chess platform
-- `pr-firefighter` — autonomous CI fix pipeline
-- `Sawyer-Visual-Media` — drone photography/videography business; DJI Mini 5 Pro
-- `dunamismax` — GitHub profile README
+- `scry-home` — Scry identity/config repo, CLI tools, sync scripts, workstation snapshots, and backup automation
+- `dunamismax` — GitHub profile README source
+- `boring-go-web` — small Go web starter/app kept as an honest, narrow service skeleton
+- `c-from-the-ground-up` — project-based C learning repo and systems workbook
+- `scryfall-discord-bot` — Python Discord MTG card lookup bot
+- `hello-world-from-hell` — novelty/obfuscated C repo with safer build and test hygiene
 
 **OpenClaw local layout:**
-- `~/github/openclaw` — primary local repo clone
 - `~/openclaw` — live install checkout used by the running system
 - `~/github/forks/openclaw` — contribution fork/worktree source
+- no primary `~/github/openclaw` clone is kept locally after the March 2026 repo cleanup pass
 
 ## OpenClaw Setup
 
@@ -99,7 +81,7 @@ Workspace is canonical → synced to `scry-home` root + `openclaw/` dir via `syn
 - Workflow decision (2026-03-06): background Codex/GPT-5.4 coding work routes through `codex-orchestrator`; main and other specialists do not spawn Codex CLI or ACP `agentId:"codex"` directly for repo implementation. Repo specialists own framing; `codex-orchestrator` owns Codex execution, monitoring, and proactive status updates.
 - OpenClaw upstream queue policy (2026-03-06): keep `dunamismax` at **<= 10 active PRs** in `openclaw/openclaw`. `codex-orchestrator` must prune stale/weak/superseded PRs before launching or opening more when the queue is tight.
 - Codex-orchestrator prompt policy (2026-03-06): every spawned Codex CLI lane must be told to use local repo docs first for repo behavior, Context7 first for external/current docs and patterns, and web search only as fallback when Context7 lacks coverage or seems stale.
-- Grimoire CLI tools: `specialists:harden` (hook/template rollout), `cron:reconcile` (manifest convergence).
+- scry-home CLI tools: `specialists:harden` (hook/template rollout), `cron:reconcile` (manifest convergence).
 - `scry-home` workspace sync now mirrors specialist workspace docs under `scry-home/openclaw/specialists/<agentId>/` for bench backup coverage.
 - Cron smoke reconciliation covers all six specialists: codex-orchestrator, sentinel, scribe, research, luma, operator.
 - Reference docs (CONTRIBUTING_TO_OPENCLAW.md, issue candidates) live in `scry-home/reference/`, not workspace.
@@ -108,4 +90,4 @@ Workspace is canonical → synced to `scry-home` root + `openclaw/` dir via `syn
 - Reporting/memory discipline (2026-03-07): non-trivial work reports should lead with outcome → evidence → risks/open questions → next move; durable memory stores only stable preferences/decisions/facts, not transient task sludge.
 - Doc drift automation (2026-03-07): `openclaw:audit` CLI command checks workspace doc completeness, mirror consistency, and stale path references. Daily cron job `healthcheck:workspace-doc-drift` runs at 3:40 AM. Daily bench check expanded to require USER.md, TOOLS.md, BOOTSTRAP.md across all agent workspaces.
 - Sync/hardening improvements (2026-03-07): `sync_openclaw.py` now mirrors all `.md` files dynamically instead of a fixed list. `harden_specialists.py` now propagates USER.md, TOOLS.md, updated BOOTSTRAP template, and reporting/memory-hygiene rules into specialist workspaces.
-- Repo rename (2026-03-07): the old `grimoire` repo is now `scry-home` at `~/github/scry-home`; current docs, cron jobs, and operational paths should use `scry-home`.
+- Repo cleanup (2026-03-07): only `scry-home`, `dunamismax`, `boring-go-web`, `c-from-the-ground-up`, `scryfall-discord-bot`, and `hello-world-from-hell` remain under `~/github`; current docs, cron jobs, and operational paths should only track those repos unless Stephen explicitly expands the set again.

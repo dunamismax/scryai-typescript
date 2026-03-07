@@ -1,7 +1,7 @@
 [project]
-name = "grimoire"
+name = "scry-home"
 version = "0.1.0"
-description = "Scry's identity, config, and CLI automation"
+description = "Personal control plane for Scry ops, backups, and workstation bootstrap"
 requires-python = ">=3.12"
 dependencies = [
     "cryptography>=44.0",
@@ -10,6 +10,7 @@ dependencies = [
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+extend-exclude = ["openclaw"]
 
 [tool.ruff.lint]
 select = [

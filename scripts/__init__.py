@@ -1,1 +1,1 @@
-"""Grimoire CLI scripts — Python rewrite of the original TypeScript tooling."""
+"""scry-home CLI scripts."""

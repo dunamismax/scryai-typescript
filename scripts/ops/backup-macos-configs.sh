@@ -4,6 +4,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 dest_root="$repo_root/workstation/macOS"
 home_dir="${HOME_DIR:-$HOME}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${TMPDIR:-/tmp}/uv-cache-scry-home}"
 
 # Ensure inventory generation works even on a fresh clone.
 mkdir -p "$dest_root/home" "$dest_root/etc" "$dest_root/metadata"
@@ -313,7 +314,7 @@ inventory="$dest_root/metadata/backup-inventory.txt"
   echo "host=__REDACTED__"
   echo "user=__REDACTED__"
   echo "source_home=~"
-  echo "repo_root=~/github/grimoire"
+  echo "repo_root=$repo_root"
   echo
   echo "files_present:"
   find "$dest_root/home" "$dest_root/etc" -type f | sed "s|$repo_root/||" | sort

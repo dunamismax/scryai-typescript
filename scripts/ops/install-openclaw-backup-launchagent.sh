@@ -3,7 +3,8 @@ set -euo pipefail
 
 LABEL="com.scry.openclaw.backup"
 PLIST_PATH="${HOME}/Library/LaunchAgents/${LABEL}.plist"
-SCRIPT_PATH="${HOME}/github/grimoire/scripts/ops/daily-openclaw-backup.sh"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+SCRIPT_PATH="${REPO_ROOT}/scripts/ops/daily-openclaw-backup.sh"
 LOG_DIR="${HOME}/Library/Logs/scry"
 
 mkdir -p "${HOME}/Library/LaunchAgents" "${LOG_DIR}"
@@ -24,7 +25,7 @@ cat > "${PLIST_PATH}" <<EOF
   </array>
 
   <key>WorkingDirectory</key>
-  <string>${HOME}/github/grimoire</string>
+  <string>${REPO_ROOT}</string>
 
   <key>StartCalendarInterval</key>
   <dict>

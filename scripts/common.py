@@ -1,4 +1,4 @@
-"""Shared utilities for grimoire scripts."""
+"""Shared utilities for scry-home scripts."""
 
 from __future__ import annotations
 

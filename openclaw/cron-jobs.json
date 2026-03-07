@@ -78,7 +78,7 @@
         "kind": "agentTurn",
         "model": "openai-codex/gpt-5.4",
         "timeoutSeconds": 1800,
-        "message": "Generate a concise daily engineering summary for Stephen.\n\nContext:\n- Repos root: /Users/sawyer/github\n- Primary tracked repos: scry-home, pr-firefighter, CallRift, elchess, augur, podwatch, rip, Sawyer-Visual-Media\n\nTasks:\n1) Check each repo for branch state and uncommitted changes.\n2) Read each repo BUILD.md status line + next priorities when present.\n3) Produce a priority-ranked \"today\" list (top 5) with why.\n4) Include blockers/risk flags.\n\nOutput style:\n- 6–12 bullets max, high signal, no fluff.\n- Action-first and decision-oriented."
+        "message": "Generate a concise daily engineering summary for Stephen.\n\nContext:\n- Repos root: /Users/sawyer/github\n- Primary tracked repos: scry-home, dunamismax, boring-go-web, c-from-the-ground-up, scryfall-discord-bot, hello-world-from-hell\n\nTasks:\n1) Check each repo for branch state and uncommitted changes.\n2) Read each repo BUILD.md status line + next priorities when present.\n3) Produce a priority-ranked \"today\" list (top 5) with why.\n4) Include blockers/risk flags.\n\nOutput style:\n- 6–12 bullets max, high signal, no fluff.\n- Action-first and decision-oriented."
       },
       "delivery": {
         "mode": "announce",
@@ -115,7 +115,7 @@
         "kind": "agentTurn",
         "model": "openai-codex/gpt-5.4",
         "timeoutSeconds": 1800,
-        "message": "Run a weekly project review summary for Stephen.\n\nScope:\n- Repos: scry-home, pr-firefighter, CallRift, elchess, augur, podwatch, rip, Sawyer-Visual-Media\n\nTasks:\n1) Summarize progress vs BUILD.md in each repo.\n2) Identify stale trackers or missing verification evidence.\n3) Recommend next-week execution plan (top 3 initiatives + sequencing).\n4) Flag any integration opportunities with high ROI and low risk.\n\nOutput style:\n- Short executive summary first.\n- Then ranked action plan (top 3) with rationale.\n- Keep it concise and actionable."
+        "message": "Run a weekly project review summary for Stephen.\n\nScope:\n- Repos: scry-home, dunamismax, boring-go-web, c-from-the-ground-up, scryfall-discord-bot, hello-world-from-hell\n\nTasks:\n1) Summarize progress vs BUILD.md in each repo.\n2) Identify stale trackers or missing verification evidence.\n3) Recommend next-week execution plan (top 3 initiatives + sequencing).\n4) Flag any integration opportunities with high ROI and low risk.\n\nOutput style:\n- Short executive summary first.\n- Then ranked action plan (top 3) with rationale.\n- Keep it concise and actionable."
       },
       "delivery": {
         "mode": "announce",

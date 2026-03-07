@@ -11,7 +11,7 @@ Sensitive material is intentionally excluded (private keys, credential stores, a
 Refresh this tree from the live machine with:
 
 ```bash
-bash /Users/sawyer/github/grimoire/scripts/ops/backup-macos-configs.sh
+bash /Users/sawyer/github/scry-home/scripts/ops/backup-macos-configs.sh
 ```
 
 ## Auto-backed up highlights

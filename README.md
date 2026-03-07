@@ -1,37 +1,44 @@
-# Grimoire
+# scry-home
 
 <p align="center">
   <img src="assets/images/scry-clawdbot-profile.jpg" width="200" alt="Scry" />
 </p>
 
-Scry's identity, configuration, and operational tooling. The canonical source of truth for SOUL.md, AGENTS.md, and supporting infrastructure.
+Personal control plane for Scry and the local OpenClaw workspace.
 
-## What's Here
+This repo is the versioned home for:
+- operator docs copied out of the live OpenClaw workspace
+- local backup and restore automation
+- workstation bootstrap and config snapshots
+- small repo-management and audit scripts
 
-- `SOUL.md` — identity, worldview, voice
-- `AGENTS.md` — operational rules, stack contract, verification
+The live OpenClaw workspace is canonical for synced identity files. This repo is the durable export and operations repo around that workspace.
+
+## What This Repo Is
+
+- `SOUL.md` / `AGENTS.md` — synced copies of canonical workspace docs
 - `reference/CONTRIBUTING_TO_OPENCLAW.md` — field guide for OpenClaw contributions
-- `scripts/` — CLI tools, sync scripts, project management
-- `workstation/` — tracked workstation config snapshots imported from the former `dotfiles` repo
+- `scripts/` — CLI tasks for sync, bootstrap, backup, remotes, and audits
+- `workstation/` — tracked workstation config snapshots folded in from the former `dotfiles` repo
 - `openclaw/` — auto-synced from OpenClaw workspace (do not edit directly)
-- `vault/` — encrypted backups
+- `vault/` — encrypted backup artifacts
 
 ## Setup
 
 ```bash
-git clone git@github.com-dunamismax:dunamismax/grimoire.git
-cd grimoire
+git clone git@github.com-dunamismax:dunamismax/scry-home.git
+cd scry-home
 bun install
 uv run python -m scripts doctor
 ```
 
-## Scripts
+## Core Commands
 
 ```bash
 uv run python -m scripts doctor           # Verify prerequisites and project health
-uv run python -m scripts projects:doctor  # Check all managed repos
+uv run python -m scripts projects:doctor  # Check keeper repos tracked by this repo
 uv run python -m scripts sync:remotes     # Configure dual push remotes
-uv run python -m scripts sync:openclaw    # Sync workspace → repo
+uv run python -m scripts sync:openclaw    # Sync OpenClaw workspace → this repo
 uv run python -m scripts setup:config_backup  # Create/update encrypted critical config backup
 ```
 
@@ -39,7 +46,7 @@ uv run python -m scripts setup:config_backup  # Create/update encrypted critical
 
 - Snapshot tree: `workstation/`
 - Refresh tracked macOS configs: `bash scripts/ops/backup-macos-configs.sh`
-- The long-term scheduler is the existing nightly OpenClaw/grimoire flow.
+- The long-term scheduler is the existing nightly OpenClaw-to-`scry-home` flow.
 - `scripts/ops/install-backup-launchagent.sh` is retained only as an imported legacy helper from the former `dotfiles` repo.
 - Combined runner: `scripts/ops/run-automated-backups.sh`
 

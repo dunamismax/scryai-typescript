@@ -74,7 +74,7 @@ def setup_workstation() -> None:
     owner = os.environ.get("GITHUB_OWNER", "dunamismax")
     github_host_alias = os.environ.get("GITHUB_HOST_ALIAS", f"github.com-{owner}")
     codeberg_host_alias = os.environ.get("CODEBERG_HOST_ALIAS", f"codeberg.org-{owner}")
-    anchor_repo = os.environ.get("GITHUB_ANCHOR_REPO", "grimoire")
+    anchor_repo = os.environ.get("GITHUB_ANCHOR_REPO", "scry-home")
     profile_repo = os.environ.get("GITHUB_PROFILE_REPO", "dunamismax")
     repos_index_path = str(Path(github_root) / profile_repo / "REPOS.md")
     managed_project_repos = _unique(

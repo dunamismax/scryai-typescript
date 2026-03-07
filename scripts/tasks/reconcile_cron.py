@@ -20,6 +20,7 @@ from scripts.common import log_step, run_or_throw
 
 HOME = str(Path.home())
 WS = str(Path.home() / ".openclaw")
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 # ---------------------------------------------------------------------------
@@ -65,7 +66,7 @@ def _workspace_doc_drift_payload() -> str:
             "",
             "Execute exactly:",
             "set -euo pipefail",
-            "cd /Users/sawyer/github/grimoire",
+            f"cd {REPO_ROOT}",
             'OUT="$(uv run python -m scripts openclaw:audit 2>&1)" || RC=$?',
             "RC=${RC:-0}",
             "printf '%s\\n' \"$OUT\"",
