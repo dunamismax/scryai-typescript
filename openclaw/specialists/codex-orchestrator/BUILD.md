@@ -1,40 +1,43 @@
 # BUILD.md
 
-## Task
-Full local cleanup pass across `/Users/sawyer/github` with an aggressive keep/delete/consolidate stance.
+Status: `~/github` inspected, dirty repos verified, stale Codex runs terminated, and the one behind repo fast-forwarded.
 
-## User Directives
-- Keep these repos: `scry-home`, `dunamismax`, `boring-go-web`, `c-from-the-ground-up`, `scryfall-discord-bot`, `hello-world-from-hell`
-- Every other repo may be consolidated or deleted locally if that is the best call
-- Prefer Python going forward; if any kept repo were TypeScript-heavy, rewrite to Python/Django where sensible
-- Make local changes, commit them, push them, then report what remote-side renames/deletions Stephen should do manually
-- Use an iron fist; no sentimental preservation
+## Phase plan
+- [x] Inventory all git repos under `~/github`
+- [x] Identify repos with local changes or sync issues
+- [x] Inspect `podwatch` changes for completeness and correctness
+- [x] Inspect `questlog` changes for completeness and correctness
+- [x] Check whether any Codex/agent processes are still running for those repos
+- [x] Run relevant verification in each dirty repo
+- [x] Commit and push only the repos that pass verification or have explicitly scoped residual risk
+- [x] Summarize final repo state across `~/github`
 
-## Ranked Execution Checklist
-1. **Stabilize keepers**
-   - `scry-home`: resolve canonical naming/path drift, tighten docs to reality
-   - `dunamismax`: trim profile metadata to surviving repos and simplify generation surface
-   - `boring-go-web`: make repo honest, fix public auth/CRUD contradiction, remove stale schema/docs claims
-   - `c-from-the-ground-up`: fix README drift, repair multithreaded word-count bug, add compile-all smoke coverage, remove tracked build artifacts
-   - `scryfall-discord-bot`: simplify manager/process story, remove naming residue, trim unused deps, add minimal tests
-   - `hello-world-from-hell`: fix build/test hygiene, remove committed binaries, rewrite docs as novelty repo not serious systems artifact
-2. **Prune portfolio**
-   - Delete or archive all non-keeper repos locally after keeper references are updated
-   - Update cross-references in surviving repos so deleted repos are not presented as active projects
-3. **Verify**
-   - Run repo-specific lint/typecheck/test/build checks where applicable
-   - Inspect diffs and final state manually
-4. **Commit and push**
-   - Atomic commits per surviving repo
-   - Push to remotes only after verification
-5. **Final handoff**
-   - Report exact local changes, pushed commits, and remote-side actions Stephen should take manually
+## Acceptance checks / validation commands
+- `git status --short`
+- `git rev-list --left-right --count HEAD...@{u}`
+- `git fetch --all --prune --quiet`
+- `uv run --with-requirements requirements.txt python manage.py check`
+- `uv run --with-requirements requirements.txt python manage.py test`
+- `uv run --with-requirements requirements.txt python -m compileall ...`
+- `git pull --ff-only origin main` (for clean-behind repos when safe)
 
-## Active Lanes
-- `keeper-scry-home`
-- `keeper-dunamismax`
-- `keeper-boring-go-web`
-- `keeper-c-from-the-ground-up`
-- `keeper-scryfall-discord-bot`
-- `keeper-hello-world-from-hell`
-- later: local prune / verify / commit / push
+## Verification snapshot
+- Repo inventory after fetch: 15 repos under `~/github`.
+- `podwatch`: clean, synced, HEAD `b2681c8 rewrite podwatch as a Django app`.
+  - checks passed
+  - tests passed (4/4)
+  - compileall passed
+- `questlog`: clean, synced, HEAD `715577e rewrite questlog as a Django app`.
+  - checks passed
+  - tests passed (4/4)
+  - compileall passed
+- Stale live Codex processes for both rewrites were terminated after verifying the repos were already clean and synced.
+- `openclaw`: was behind `origin/main`; fast-forwarded safely to `e20f44509` and is now clean/synced.
+- All other repos in `~/github`: clean and synced with upstream tracking branches.
+
+## Immediate next-pass priorities
+1. Optional deeper code review of the Django rewrites if Stephen wants quality beyond green checks.
+2. Optional cleanup of ignored/local leftovers inside rewritten repos if they become distracting.
+
+## Blockers / pending decisions
+- None.

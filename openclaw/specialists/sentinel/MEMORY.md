@@ -1,121 +1,66 @@
-# MEMORY.md - Long-Term Memory
+# MEMORY.md
 
-> Curated durable facts, preferences, and project state.
-> Only loaded in the main private session. Updated as things change.
-> Daily context goes in `memory/YYYY-MM-DD.md`. This file is for things that outlive a day.
+Durable operating memory for Sentinel.
 
----
-
-## Stephen - Preferences & Patterns
-
+## Stephen — stable preferences
 - Alias: `dunamismax`
 - Home: `/Users/sawyer`
 - Projects root: `~/github`
 - Timezone: America/New_York
-- Primary model: `anthropic/claude-opus-4-6` (set as default again on 2026-03-03; switch manually with `/model codex` when needed)
-- Git identity: commits as `dunamismax`. No AI attribution ever - no "Claude", "Scry", "Co-Authored-By", or agent fingerprints
-- Dual remotes: GitHub (`github.com-dunamismax`) + Codeberg (`codeberg.org-dunamismax`), force-push to main
-- Communication channel: Signal (primary)
-- WhatsApp + BlueBubbles: disabled by Stephen's request (2026-03-02)
+- Primary model: `openai-codex/gpt-5.4`
+- Fallback model: `anthropic/claude-opus-4-6`
+- Git identity: commits as `dunamismax`; never include AI attribution
+- Communication surfaces in active use: Discord + Signal
 
-## Stack Contract
+## Stack contract
+- Default app/product stack: TypeScript + Bun
+- Python is preferred for scripts, automation, trading, data, ML, and standalone tools
+- Use Go / Rust / C when performance or systems constraints justify it
+- See `AGENTS.md` for the full contract; do not improvise a weaker default
 
-See `AGENTS.md` for the full stack table. Current surviving local repos are Python, Go, or C.
+## Current local repo picture (observed 2026-03-07)
+Primary working repos under `~/github` currently include:
+- `scry-home`
+- `openclaw`
+- `dunamismax`
+- `boring-go-web`
+- `c-from-the-ground-up`
+- `scryfall-discord-bot`
+- `trade-desk-cli`
+- `Sawyer-Visual-Media`
+- `imaging-services-ops`
+- `podwatch`
+- `questlog`
+- `rip`
+- `pyforge`
 
-## Active Repos
+Supporting dirs also exist under `~/github` for `forks/` and `worktrees/`.
+`CallRift` is not present locally anymore.
 
-All under `~/github`, dual SSH remotes:
+## OpenClaw runtime facts
+- Live install: `~/openclaw`
+- Contribution clone: `~/github/openclaw`
+- Fork/worktree source: `~/github/forks/openclaw`
+- Binary: `~/.local/bin/openclaw` → `~/openclaw/openclaw.mjs`
+- Workspace is canonical: `~/.openclaw/workspace`
+- Browser: Brave with `openclaw` and `chrome` profiles
+- ACP backend enabled; default ACP agent is codex
+- Discord is configured as the clean multi-agent front door
 
-1. **scry-home** - identity/config repo, CLI tools, sync scripts, workstation snapshots, and backup automation
-2. **dunamismax** - GitHub profile README source
-3. **boring-go-web** - narrow Go web starter/app
-4. **c-from-the-ground-up** - project-based C learning repo
-5. **scryfall-discord-bot** - Python Discord MTG card lookup bot
-6. **hello-world-from-hell** - novelty/obfuscated C repo
+## Durable operating rules
+- No AI attribution in git metadata. Ever.
+- Workspace docs are canonical; sync outward to `scry-home` rather than editing mirrors directly.
+- Use PTY-backed background coding agents for real implementation work; do not use ACP runtime for file-writing background lanes.
+- Keep verification explicit: outcome first, evidence second, risks third, next move fourth.
+- Treat security findings as real until disproven; separate actual risk from mirror/doc drift.
 
-## Archived / Removed Local Repos
+## Specialist bench
+Active specialists:
+- `codex-orchestrator`
+- `sentinel`
+- `scribe`
+- `research`
+- `luma`
+- `operator`
 
-- **scryai-swift**, **scryai-gorust**, **elixir**, **espanol** - archived (Phase 2), preserved on GitHub + Codeberg
-- **work**, **images** - deleted locally 2026-03-02, still on GitHub + Codeberg
-
-## OpenClaw Setup
-
-- **Install**: Git-based at `~/openclaw` (no npm install). `~/.openclaw/lib/node_modules/openclaw` symlinks to git repo. Update via `git pull` + restart.
-- **Binary**: `~/.local/bin/openclaw` → `~/openclaw/openclaw.mjs`
-- **Service**: LaunchAgent, port 18789
-- Gateway mode: local, loopback-only, Tailscale allowed
-- Signal channel: active, DM allowlist only
-- Auth profiles: `openai-codex:default` (OAuth), `anthropic:default` (OAuth)
-- Daily cron at 3am ET syncs workspace → `scry-home`
-- **Browser**: Brave configured, profiles `openclaw` (18800) + `chrome` (18792)
-- **ACP**: enabled, acpx backend, default codex, allows pi/claude/codex/opencode/gemini, 8 concurrent
-- **Sub-agents**: depth 2, 8 concurrent, 5 children/agent
-- **Web**: search (Brave, needs API key), fetch (50K chars, 30s timeout)
-
-### File Sync Model (keep in lockstep)
-
-Two canonical files live in the OpenClaw workspace. Everything else is a copy:
-
-| Canonical (workspace) | `scry-home` copies | Other repos |
-|---|---|---|
-| `SOUL.md` | `SOUL.md` (root) + `openclaw/SOUL.md` | - |
-| `AGENTS.md` | `AGENTS.md` (root) + `openclaw/AGENTS.md` | `CLAUDE.md` (points to `scry-home`) |
-
-- **AGENTS.md = CLAUDE.md content.** Same file, different name. `CLAUDE.md` in other repos points to `scry-home`.
-- **Workspace is always canonical.** Edit there, sync outward. Never edit `scry-home` copies directly.
-- **`sync-openclaw` script** copies workspace → `scry-home` root + `openclaw/` dir. Run with `--commit` to auto-push.
-- When `SOUL.md` or `AGENTS.md` change, sync immediately - don't let copies drift.
-
-### Signal Channel Config (tuned 2026-03-02)
-
-- Block streaming: **off** (single clean message per response)
-- Reasoning visibility: **off** (per-session `/reasoning off`)
-- Verbose: **off** (no tool call summaries leaked)
-- Human delay: **off** (no artificial latency)
-- Typing indicators: **thinking** (shows typing while processing)
-- Thinking level: **high** (full extended thinking, hidden from chat)
-- Heartbeat reasoning: **false**
-
-## Reference Docs
-
-- **CONTRIBUTING_TO_OPENCLAW.md** - field guide for contributing to OpenClaw. Repo setup, build system, PR template usage, Signal plugin architecture, test patterns, reviewer expectations. Lives in workspace (canonical) and `scry-home`.
-
-## Open-Source Contributions
-
-- **PR #32217** (2026-03-02): fix - Signal reaction messageId fallback + queued message channelId passthrough. Issue #17651.
-- **PR #32396** (2026-03-02): docs - Signal block streaming guide. **CLOSED** - block streaming not recommended for Signal DM use.
-- **PR #32397** (2026-03-02): test - Numeric messageId coverage for Signal reaction handler.
-- **PR #32398** (2026-03-02): docs - Recommended DM configuration for personal assistant use.
-- All authored as `dunamismax`. No Signal subsystem maintainer exists yet - opportunity to establish ownership.
-
-## Workflow Preferences
-
-- **Multi-agent orchestration:** Stephen loves it. When work is parallelizable, fan out Codex/ACP coding agents - one per repo/task, focused prompts, push-based completion via `openclaw system event`. Scry orchestrates, agents execute. Don't serialize what can be parallelized.
-- **Project tracking:** For longer-running builds/features, maintain a root `BUILD.md` in each repo and keep it continuously accurate (phase status, checklist progress, verification snapshot, and next-pass priorities).
-- **Background-first workflow:** Stephen strongly prefers background agents for implementation while keeping the main chat thread continuously available for coordination, updates, and parallel work across repos.
-- **Max-capability posture:** Stephen wants OpenClaw/Scry configured for maximum practical leverage via strong integrations, automation, and orchestration across his tool stack, with explicit tradeoff/consent handling for risky enables.
-## Decisions Log
-
-- 2026-03-02: Adopted Scry identity (uppercase S). Unified `SOUL.md`/`AGENTS.md` across workspace + repo.
-- 2026-03-02: Repos get `CLAUDE.md` pointing to `scry-home`, not their own `SOUL.md`/`AGENTS.md`.
-- 2026-03-02: Stripped all `Co-Authored-By: Claude` from 12 repos. No agent attribution, ever.
-- 2026-03-02: Completed Phase 1 of repo alignment - all 19 repos have `CLAUDE.md` + dual SSH remotes.
-- 2026-03-02: Adopted "right tool for the job" philosophy - scry-trader stays Python, stack contract is a default not a religion.
-- 2026-03-02: CallRift Phase 2 shipped - real SIP engine (sip.js), API client (TanStack Query), server Bun migration, Docker Compose.
-- 2026-03-02: Tuned OpenClaw Signal config - disabled block streaming, reasoning, verbose, human delay; enabled typing indicators.
-- 2026-03-02: Closed PR #32396 (block streaming guide) - bad advice for Signal DM use case.
-- 2026-03-03: Switched back to Codex as default model for OpenClaw/Scry due Anthropic reliability issues.
-- 2026-03-03: Configured dual OAuth model switching (`/model claude` and `/model codex`) with Codex retained as default.
-- 2026-03-03: Set Claude Opus back to the global default by request; keep `/model codex` available for manual override.
-- 2026-03-03: Standardized `BUILD.md` project ledgers for long-running work; keep root `BUILD.md` in active repos and update it alongside implementation progress.
-- 2026-03-03: Reaffirmed background-agent-first workflow as preferred mode: run coding agents in background, keep main thread responsive for orchestration and concurrent work.
-- 2026-03-03: Adopted explicit max-capability integration posture: prioritize durable OpenClaw integrations/automation across Stephen's stack, with clear risk/consent gates for high-impact enables.
-- 2026-03-03: Nuked npm OpenClaw install, symlinked `~/.openclaw/lib/node_modules/openclaw` → `~/openclaw` git repo. Git-only install going forward.
-- 2026-03-03: Enabled browser (Brave), ACP coding agents (acpx/codex), nested sub-agents (depth 2), web fetch. Created CAPABILITY-GUIDE.md.
-- 2026-03-03: Stephen's app stack: Notion, GitHub, Codeberg, Docker, VSCode, M365, macOS, Ghostty, RustDesk, Tailscale, Signal, Brave, LocalSend.
-- 2026-03-03: Stephen declined email integration (Himalaya/Gmail/M365). Removed config + keychain entries. No email access.
-- 2026-03-03: Notion "Scry" integration connected to "Stephen's Notion" workspace. Brave Search API key configured. Peekaboo, summarize, tmux, whisper, clawhub all installed.
-- 2026-03-03: Skills ready: 15/52 (up from 8). New: acp-router, clawhub, peekaboo, summarize, tmux, whisper, himalaya (installed but unused).
-- 2026-03-03: Peekaboo CLI uninstalled by request; local Peekaboo automation is disabled unless reinstalled.
-- 2026-03-04: Phase 2 hardening applied: added commit-msg/pre-push attribution guard hooks, attribution audit script, weekly scored smoke script, and runbook.
-- 2026-03-07: `grimoire` was renamed to `scry-home`; current docs, cron jobs, and operational paths should use `~/github/scry-home`.
+Retired local workspace leftovers like `workspace-claude` and `workspace-codex` may still exist on disk; do not assume they are part of the active bench without checking config.

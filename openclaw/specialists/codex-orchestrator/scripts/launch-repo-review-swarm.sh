@@ -9,12 +9,29 @@ LEDGER=$RUNROOT/ledger.tsv
 mkdir -p "$OUT" "$RUNROOT"
 
 typeset -a DEFAULT_REPOS=(
-  boring-go-web
+  augur
   c-from-the-ground-up
+  CallRift
+  dotfiles
   dunamismax
+  elchess
+  go-web-server
+  grimoire
   hello-world-from-hell
-  scry-home
-  scryfall-discord-bot
+  homepage
+  images
+  imaging-services-website
+  imagingservices
+  openclaw
+  oracle
+  podwatch
+  pr-firefighter
+  questlog
+  rip
+  Sawyer-Visual-Media
+  scripts
+  sentinel
+  xray-chrome
 )
 
 typeset -a REPOS

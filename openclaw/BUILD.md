@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = rename drift cleanup complete and verified · last updated = 2026-03-07 15:10 America/New_York · latest relevant commit = canonical docs, cron jobs, and launchagent paths reconciled to `scry-home`
+**Current status:** phase = cleanup + memory-search remediation complete and verifying backups · last updated = 2026-03-07 17:12 America/New_York · latest relevant focus = local Ollama memory indexing, inactive workspace pruning, artifact trim, and `scry-home` sync/backup verification
 
 ## Phase plan
 
@@ -69,8 +69,27 @@
 - [x] Re-run specialist weekly smokes; all six active specialists now pass 10/10 across protocol, verification, and attribution
 - [x] Sync refreshed specialist workspaces back into the `scry-home` mirror
 
+### Phase 9 — 2026-03-07 runtime/workspace audit
+- [x] Re-check live `openclaw status`
+- [x] Re-run `openclaw:audit` to identify mirror/path drift
+- [x] Identify stale context sources and dead paths in workspace docs/templates
+- [x] Remove the stale `CallRift` prompt from `workspace/prompts`
+- [x] Repair the codex-orchestrator repo-review output path
+- [x] Rewrite stale Sentinel durable memory to current reality
+- [x] Sync workspace/specialist changes back into `scry-home`
+- [x] Re-run `openclaw:audit` after sync to confirm the remaining drift is gone
+
+### Audit snapshot — 2026-03-07 16:58 ET
+- `openclaw status` shows the gateway healthy on 2026.3.3 with 7 active agents and 8 active sessions.
+- Security audit is clean of criticals, but still warns about (1) untrusted reverse-proxy headers if the Control UI is ever proxied and (2) the personal-assistant runtime being reachable by multiple users if Discord group access is treated as shared/untrusted.
+- `openclaw:audit` found real drift before cleanup: unsynced root/mirror markdown, a stale CallRift repo path in an old workspace prompt, and a dead repo-review output directory in the codex-orchestrator template.
+- Sentinel's old `MEMORY.md` was materially stale: wrong default model, old Signal-only comms posture, old repo inventory, and outdated reference-doc location.
+- Inactive legacy specialist workspaces from the old Claude/Codex era were removed. Codex-orchestrator run artifacts were trimmed to the current useful set.
+- Memory search anomaly was root-caused and fixed: without an embedding provider, OpenClaw intentionally skipped file/session sync entirely in FTS-only mode. Local Ollama embeddings (`nomic-embed-text`) are now configured and the index was rebuilt successfully.
+- `openclaw status` now reports populated memory (`11 files · 39 chunks`) and `openclaw memory status --deep` shows ready vector + FTS indexing across all active agents.
+
 ## Immediate next pass priorities
 
-1. If desired, tighten specialist-specific `IDENTITY.md` files beyond the shared verification/attribution anchors.
-2. Optionally run `cron:reconcile --scope=all --apply` to converge any manifest drift in managed jobs.
-3. Optionally prune any legacy Discord text channels that still exist unbound in the guild UI.
+1. Review and commit the freshly synced `scry-home` mirror, then push `main` to publish/backup the current canonical state.
+2. If desired, tighten specialist-specific `IDENTITY.md` files beyond the shared verification/attribution anchors.
+3. Optionally run `cron:reconcile --scope=all --apply` to converge any manifest drift in managed jobs.
