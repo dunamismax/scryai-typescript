@@ -38,6 +38,7 @@ Prompt filenames describe the thread's job directly. If two prompts could fit, c
 ### Codex
 - `codex/thread-scoped-implementation.md`
 - `codex/thread-mergeable-bug-hunt.md`
+- `codex/thread-openclaw-upstream-bug-hunt.md`
 - `codex/thread-adversarial-review.md`
 - `codex/thread-prototype-spike.md`
 
