@@ -97,8 +97,8 @@
         {
           "id": "17af8e6f-9d51-4a2b-a92a-a22844065e67",
           "pattern": "/usr/bin/cd",
-          "lastUsedAt": 1772928637255,
-          "lastUsedCommand": "cd /Users/sawyer/github/scry-home && ./scripts/ops/daily-openclaw-backup.sh",
+          "lastUsedAt": 1772928661493,
+          "lastUsedCommand": "cd /Users/sawyer/github/scry-home && ./scripts/ops/install-openclaw-backup-launchagent.sh",
           "lastResolvedPath": "/usr/bin/cd"
         },
         {
