@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = Discord infrastructure + OpenClaw runtime backup hardening finalized + verified · last updated = 2026-03-07 19:16 America/New_York · latest relevant focus = channel-based Discord architecture, encrypted runtime backup expansion, and off-machine backup validation
+**Current status:** phase = prompt library expansion for Discord bench/workspace lanes in progress · last updated = 2026-03-07 20:26 America/New_York · latest relevant focus = reusable prompt pack aligned to current agent homes, workspace channels, and specialist routing
 
 ## Phase plan
 
@@ -130,6 +130,24 @@
 - The temporary config cutover to home-channels-only was reverted and full workspace bindings were restored.
 - Custom shared skills created during the experiment were removed.
 - The OpenClaw mergeable bug scout prompt remains as a plain markdown prompt in `~/.openclaw/workspace/prompts/openclaw/bug-hunt-mergeable-fix-scout.md`.
+
+### Phase 13 — Prompt library expansion for the Discord bench
+- [x] Audit the current prompt directory and existing reusable prompt style
+- [x] Review the active specialist bench and mirrored specialist files
+- [x] Review the live Discord agent/workspace channel layout and lane topics
+- [x] Draft a broader reusable prompt pack aligned to the current lanes
+- [x] Add a prompt index so future routing is obvious
+- [x] Sync the updated prompt library into `scry-home`
+- [x] Run repo verification relevant to the mirrored prompt changes
+- [ ] Commit the prompt-library expansion cleanly
+
+### Prompt library snapshot — 2026-03-07 20:24 ET
+- The prompt library now mirrors the current Discord architecture instead of carrying only a single bug-hunt prompt.
+- New reusable prompts were added for orchestration, Codex ship/lab/review flows, Research deep-dive/market/decision work, Scribe drafting/docs distillation, Operator OpenClaw ops/automation/incidents, Sentinel security audits, and Luma creative treatment work.
+- `README.md` now acts as a quick index for future prompt selection.
+- `uv run python -m scripts sync:openclaw` ✅ propagated the new prompt pack into `~/github/scry-home/openclaw/prompts/openclaw/`.
+- `bun run lint` ✅ passed in `~/github/scry-home`.
+- `uv run python -m scripts openclaw:audit` ✅ passed after creating the intended local worktree root at `~/.openclaw/worktrees`, which existing codex-orchestrator docs already referenced.
 
 ## Immediate next pass priorities
 
