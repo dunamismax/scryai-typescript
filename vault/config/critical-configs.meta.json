@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-03-08T14:01:46.246876+00:00",
+  "createdAt": "2026-03-08T14:17:55.295953+00:00",
   "host": "Stephens-MacBook-Air.local",
   "sourceHome": "~",
   "encryptedBackupFile": "vault/config/critical-configs.tar.enc",
@@ -7,9 +7,9 @@
   "kdf": "pbkdf2",
   "kdfDigest": "sha256",
   "kdfIterations": 250000,
-  "sourceFingerprint": "697f72b3918449c08142efde04b13ebaaba9b3efb9878d9fc1c4dbbfd20ec768",
+  "sourceFingerprint": "3fe35e992a38e38c4aad8108d8dbc35b5378937b62ecbf49e1a77746a76f534a",
   "sourceFileCount": 142,
-  "sourceTotalBytes": 99519149,
+  "sourceTotalBytes": 100521743,
   "requestedPaths": [
     ".ssh",
     ".gitconfig",
@@ -80,5 +80,5 @@
   "missingPaths": [
     "Library/Application Support/Code/User/mcp.json"
   ],
-  "encryptedBackupSha256": "2ab005adddb4c4e3e8524c9c9642719010eb8b4dfdd1f8899cb524cac7f967d5"
+  "encryptedBackupSha256": "c35a258b4a06e255c7b82677605e4b8b1110ec62d5068e8226c836482d73cee6"
 }

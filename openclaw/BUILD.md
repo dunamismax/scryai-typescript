@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = heartbeat config + doc drift cleanup in progress · last updated = 2026-03-08 10:19 America/New_York · latest relevant focus = pinned `agents.defaults.heartbeat.directPolicy`, correcting stale OpenClaw install/channel notes in canonical docs, then re-syncing/auditing/backing up to `scry-home`
+**Current status:** phase = heartbeat config + doc drift cleanup complete · last updated = 2026-03-08 10:22 America/New_York · latest relevant focus = heartbeat direct-policy is now explicit, canonical docs were reconciled to the live OpenClaw 2026.3.7 install/channel posture, mirror audit is clean, and a fresh encrypted backup checkpoint has been prepared for push to `scry-home`
 
 ## Phase plan
 
@@ -262,9 +262,18 @@
 - [x] Inspect heartbeat config schema and current config before editing
 - [x] Pin `agents.defaults.heartbeat.directPolicy` explicitly to preserve current behavior across upgrades
 - [x] Correct stale install/channel/auth notes in canonical workspace docs (`TOOLS.md`, `MEMORY.md`)
-- [ ] Re-harden/sync specialist mirrors, rerun audit, and confirm drift is gone
-- [ ] Run a fresh encrypted OpenClaw backup and push `scry-home` checkpoint
-- [ ] Re-run doctor/status verification and reconcile final notes
+- [x] Re-harden/sync specialist mirrors, rerun audit, and confirm drift is gone
+- [x] Run a fresh encrypted OpenClaw backup and push `scry-home` checkpoint
+- [x] Re-run doctor/status verification and reconcile final notes
+
+### Phase 21 snapshot — 2026-03-08 10:22 ET
+- Ran `gateway config.schema.lookup` on `agents.defaults.heartbeat`, confirmed `directPolicy` supports `allow|block`, and patched the live config to set `directPolicy: 'allow'` using `config.patch` with the current `baseHash`.
+- Follow-up verification: `openclaw doctor --non-interactive` no longer reports the heartbeat direct-policy warning, and the earlier gateway-service token warning also remains gone.
+- Reconciled canonical docs to reality: `TOOLS.md` now reflects the custom-prefix package install at `~/.openclaw`, the `~/.local/bin/openclaw` wrapper path, and the correct manual fallback update flow; `MEMORY.md` now reflects the live runtime package install, OAuth auth profiles, Discord-primary / Signal-disabled channel posture, and current local OpenClaw layout.
+- Ran `uv run python -m scripts specialists:harden` so shared TOOLS/identity changes propagated to all six specialist workspaces, then `uv run python -m scripts sync:openclaw` to refresh the `scry-home` mirror.
+- `uv run python -m scripts openclaw:audit` now passes cleanly; the earlier codex-orchestrator specialist mirror drift was resolved by the sync.
+- `./scripts/ops/daily-openclaw-backup.sh` produced a fresh encrypted runtime backup artifact at 10:17 ET, ready for the next `scry-home` checkpoint commit/push.
+- Verification: `openclaw status --deep` ✅ gateway healthy on `2026.3.7`, Discord OK; `openclaw doctor --non-interactive` ✅ no heartbeat/service-token warning; `openclaw security audit --deep` unchanged except for the expected private-Discord personal-assistant warning.
 
 ## Immediate next pass priorities
 
