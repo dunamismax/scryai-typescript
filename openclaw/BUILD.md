@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = Discord infrastructure cutover finalized + verified · last updated = 2026-03-07 18:58 America/New_York · latest relevant focus = channel-based agent/workspace architecture, binding cleanup, and thread-sprawl removal
+**Current status:** phase = Discord infrastructure + OpenClaw runtime backup hardening finalized + verified · last updated = 2026-03-07 19:16 America/New_York · latest relevant focus = channel-based Discord architecture, encrypted runtime backup expansion, and off-machine backup validation
 
 ## Phase plan
 
@@ -103,8 +103,23 @@
 - OpenClaw config was patched so every new workspace channel is explicitly allowlisted and bound to the correct agent.
 - Verification: `openclaw status` stayed healthy after restart, and Discord `thread-list` now returns zero threads under `#scry`, `#codex`, `#research`, `#scribe`, `#operator`, `#sentinel`, and `#luma`.
 
+### Phase 11 — OpenClaw runtime backup hardening
+- [x] Audit what `scry-home` sync covers versus what live `~/.openclaw` state it misses
+- [x] Identify and fix the live backup-runner failure after repo/tooling drift
+- [x] Expand encrypted backup scope to include high-value OpenClaw runtime state (`agents`, `memory`, `subagents`, `cron`, `delivery-queue`)
+- [x] Generate and verify a fresh encrypted runtime-inclusive artifact
+- [x] Reload the LaunchAgent and verify scheduled backup health (`last exit code = 0`)
+- [x] Push the repaired backup flow + fresh encrypted artifact off-machine through private GitHub + Codeberg remotes
+
+### Backup hardening snapshot — 2026-03-07 19:12 ET
+- `scry-home` backup automation now captures the important OpenClaw working-brain state, not just mirrored docs/config.
+- The live runner failure was repaired by fixing launchd-safe path handling and explicit repo CLI invocation from the backup script.
+- Fresh encrypted artifact created at `~/github/scry-home/vault/config/critical-configs.tar.enc` with restore verification passing against session + memory requirements.
+- `launchctl print gui/$(id -u)/com.scry.openclaw.backup` now reports `last exit code = 0` after reload.
+- Off-machine publication succeeded to both private remotes; current artifact size is ~96 MB, so future migration to a dedicated blob backup target is still the cleaner long-term path.
+
 ## Immediate next pass priorities
 
-1. Review and commit the freshly synced `scry-home` mirror, then push `main` to publish/backup the current canonical state.
+1. If desired, move rotating encrypted runtime backup blobs out of normal git history and onto a dedicated backup target (restic/B2/S3/NAS) while keeping `scry-home` as the control plane/manifest.
 2. If desired, tighten specialist-specific `IDENTITY.md` files beyond the shared verification/attribution anchors.
 3. Optionally run `cron:reconcile --scope=all --apply` to converge any manifest drift in managed jobs.

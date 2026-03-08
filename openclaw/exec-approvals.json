@@ -97,8 +97,8 @@
         {
           "id": "17af8e6f-9d51-4a2b-a92a-a22844065e67",
           "pattern": "/usr/bin/cd",
-          "lastUsedAt": 1772928661493,
-          "lastUsedCommand": "cd /Users/sawyer/github/scry-home && ./scripts/ops/install-openclaw-backup-launchagent.sh",
+          "lastUsedAt": 1772928944890,
+          "lastUsedCommand": "cd /Users/sawyer/github/scry-home && uv run python -m scripts sync:openclaw --commit && uv run python -m scripts openclaw:audit",
           "lastResolvedPath": "/usr/bin/cd"
         },
         {
@@ -154,9 +154,9 @@
         {
           "id": "31cdf770-7330-4059-a8f5-926bfb9547a7",
           "pattern": "/usr/bin/git",
-          "lastUsedAt": 1772928593922,
-          "lastUsedCommand": "cd /Users/sawyer/github/scry-home && git status --short",
-          "lastResolvedPath": "/usr/bin/cd"
+          "lastUsedAt": 1772928938209,
+          "lastUsedCommand": "git -C /Users/sawyer/.openclaw/workspace add BUILD.md MEMORY.md memory/2026-03-07.md && git -C /Users/sawyer/.openclaw/workspace commit -m \"Record Discord and backup hardening state\"",
+          "lastResolvedPath": "/usr/bin/git"
         },
         {
           "id": "0f1c197f-735d-4055-aaa4-83033dda60de",
