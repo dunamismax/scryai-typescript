@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = Discord home-channel pinned note split complete · last updated = 2026-03-07 22:36 America/New_York · latest relevant focus = canonical per-channel Discord pinned-note sources now exist under the prompt pack, and all seven agent home channels have matching customized live pins
+**Current status:** phase = specialist identity polish + cron manifest reconcile complete · last updated = 2026-03-07 23:31 America/New_York · latest relevant focus = specialist `IDENTITY.md` files are now template-managed per agent via `specialists:harden`, and the managed cron manifest is converged with live state
 
 ## Phase plan
 
@@ -41,7 +41,7 @@
 - [x] Run `specialists:harden` to deploy updated templates/hooks/smoke to specialist workspaces
 - [x] Run `sync:openclaw` to mirror canonical workspace into `scry-home`
 - [x] Run `openclaw:audit` to verify full-stack consistency
-- [ ] Consider `cron:reconcile --scope=all --apply` to converge all manifest jobs
+- [x] Run `cron:reconcile --scope=all --apply` to converge all manifest jobs
 
 ### Phase 5 — Audit fix
 - [x] Diagnose false-positive path checks in `openclaw:audit`
@@ -227,8 +227,22 @@
 - Verification: re-read the changed chooser / overview / per-channel pin files manually; `uv run python -m scripts specialists:harden` ✅, `uv run python -m scripts sync:openclaw` ✅, `bun run lint` ✅, `uv run python -m scripts openclaw:audit` ✅; `message list-pins` confirmed the final live pin state across all seven home channels.
 - Commits: workspace and `scry-home` were both committed cleanly with message `Split Discord home-channel pinned notes`.
 
+### Phase 19 — Specialist identity polish + cron manifest reconcile
+- [x] Replace append-only specialist identity hardening with real per-agent `IDENTITY.md` templates
+- [x] Re-harden all six active specialist workspaces so the new identity files land live
+- [x] Run `cron:reconcile --scope=all --apply`
+- [x] Re-sync specialist mirrors and re-run verification (`bun run lint`, `openclaw:audit`, specialist weekly smokes)
+- [x] Reconcile `BUILD.md` with the new live state
+
+### Phase 19 snapshot — 2026-03-07 23:31 ET
+- `scripts/tasks/harden_specialists.py` now owns full specialist-specific `IDENTITY.md` generation via a new `IDENTITY_PROFILES` map instead of only appending shared verification/attribution footer lines.
+- All six active specialist workspaces were re-hardened successfully; sync mirrored the refreshed identity files into `scry-home/openclaw/specialists/`.
+- `uv run python -m scripts cron:reconcile --scope=all --apply` reported **no drift detected** across the managed cron manifest (`scope: all`, `8 managed jobs`, `16 live jobs total`).
+- Verification: `uv run python -m py_compile scripts/tasks/harden_specialists.py` ✅, `uv run python -m scripts specialists:harden` ✅, `uv run python -m scripts sync:openclaw` ✅, `bun run lint` ✅, `uv run python -m scripts openclaw:audit` ✅, and all six `specialist-weekly-smoke.sh` runs ✅ at 10/10.
+- Sync noise note: `sync:openclaw` also refreshed `openclaw/exec-approvals.json` in the mirror from live runtime state; treat that as incidental unless explicitly included in a later commit.
+
 ## Immediate next pass priorities
 
 1. If desired, move rotating encrypted runtime backup blobs out of normal git history and onto a dedicated backup target (restic/B2/S3/NAS) while keeping `scry-home` as the control plane/manifest.
-2. If desired, tighten specialist-specific `IDENTITY.md` files beyond the shared verification/attribution anchors.
-3. Optionally run `cron:reconcile --scope=all --apply` to converge any manifest drift in managed jobs.
+2. If desired, do a second-pass personality polish on specialist `SOUL.md` voice anchors now that `IDENTITY.md` is properly template-managed.
+3. Optionally prune incidental mirror churn like `openclaw/exec-approvals.json` from future content-focused commits.
