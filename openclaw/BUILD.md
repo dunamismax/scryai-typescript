@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = specialist identity polish + cron manifest reconcile complete · last updated = 2026-03-07 23:31 America/New_York · latest relevant focus = specialist `IDENTITY.md` files are now template-managed per agent via `specialists:harden`, and the managed cron manifest is converged with live state
+**Current status:** phase = OpenClaw 2026.3.7 update + backup checkpoint complete · last updated = 2026-03-08 10:14 America/New_York · latest relevant focus = canonical workspace was synced to `scry-home`, encrypted runtime backup was refreshed/pushed, and the live OpenClaw package install was manually updated to 2026.3.7 with doctor + restart verification
 
 ## Phase plan
 
@@ -240,6 +240,22 @@
 - `uv run python -m scripts cron:reconcile --scope=all --apply` reported **no drift detected** across the managed cron manifest (`scope: all`, `8 managed jobs`, `16 live jobs total`).
 - Verification: `uv run python -m py_compile scripts/tasks/harden_specialists.py` ✅, `uv run python -m scripts specialists:harden` ✅, `uv run python -m scripts sync:openclaw` ✅, `bun run lint` ✅, `uv run python -m scripts openclaw:audit` ✅, and all six `specialist-weekly-smoke.sh` runs ✅ at 10/10.
 - Sync noise note: `sync:openclaw` also refreshed `openclaw/exec-approvals.json` in the mirror from live runtime state; treat that as incidental unless explicitly included in a later commit.
+
+### Phase 20 — OpenClaw 2026.3.7 backup + update
+- [x] Inspect live runtime status, update availability, and backup posture before changing anything
+- [x] Sync canonical workspace state into `scry-home`
+- [x] Refresh the encrypted runtime backup artifact and push the checkpoint to both remotes
+- [x] Diagnose the updater path mismatch and choose a safe manual package-install flow
+- [x] Update the live install to 2026.3.7, run doctor, restart, and verify gateway health
+
+### Phase 20 snapshot — 2026-03-08 10:14 ET
+- Preflight confirmed the gateway was healthy on **2026.3.3**, `openclaw update status` showed **2026.3.7** available on the stable channel, and the backup LaunchAgent reported `last exit code = 0`.
+- `uv run python -m scripts sync:openclaw` refreshed the `scry-home` mirror, including the durable contributor-memory addition plus current cron/approval state.
+- `./scripts/ops/daily-openclaw-backup.sh` produced a fresh encrypted runtime backup artifact, and `scry-home` was committed/pushed to both GitHub and Codeberg as `23d13f5` (`Backup OpenClaw state before 2026.3.7 update`).
+- The control-plane updater and `openclaw update` both skipped because this machine uses a **custom-prefix package install** at `~/.openclaw`, not a git checkout and not a globally detectable npm/pnpm prefix.
+- Safe manual workaround used: `npm i -g openclaw@2026.3.7 --prefix /Users/sawyer/.openclaw --no-fund --no-audit --loglevel=error`, followed by `openclaw doctor --non-interactive` and a gateway restart.
+- Verification: `openclaw --version` ✅ `2026.3.7`; `openclaw status --deep` ✅ gateway healthy, Discord OK, app `2026.3.7`; `openclaw update status` ✅ no update available, stable channel still set.
+- Noted but deferred: `openclaw doctor` still recommends reinstalling the gateway service without an embedded `OPENCLAW_GATEWAY_TOKEN`, and the existing personal-assistant/multi-user heuristic warning remains expected for this private Discord deployment.
 
 ## Immediate next pass priorities
 
