@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = Discord workspaces retired + thread-first prompt-library rebuild done · last updated = 2026-03-07 21:16 America/New_York · latest relevant focus = live Discord config now targets only the seven agent home channels and the canonical prompt pack has been reorganized into per-agent thread-first folders, mirrored into specialist workspaces and `scry-home`
+**Current status:** phase = prompt-library refinement + OpenClaw upstream prompt pass done · last updated = 2026-03-07 21:45 America/New_York · latest relevant focus = the canonical thread-first prompt pack now has a stronger chooser/index, sharper thread-first wording, and a dedicated `openclaw/openclaw` upstream contribution slice for Scry, Codex, and Research; mirror sync and required verification completed
 
 ## Phase plan
 
@@ -177,6 +177,23 @@
 - Live OpenClaw config has been cleaned so `bindings` target only `#scry`, `#codex`, `#research`, `#scribe`, `#operator`, `#sentinel`, and `#luma`, and the Discord guild allowlist now contains only those seven home-channel IDs.
 - The canonical prompt pack under `workspace/prompts/openclaw/` has been rebuilt into per-agent folders (`scry/`, `codex/`, `research/`, `scribe/`, `operator/`, `sentinel/`, `luma/`) with thread-first starter prompts.
 - This phase supersedes the earlier channel-plus-workspaces experiment documented above.
+
+### Phase 16 — Prompt-library refinement + OpenClaw upstream prompts
+- [x] Re-read the canonical prompt library and current README before changing anything
+- [x] Audit the pack for naming, overlap, workflow fit, and weak prompt content
+- [x] Tighten the README so prompt selection is obvious and thread-first
+- [x] Refine the weaker prompts for consistency and sharper operating guidance
+- [x] Add OpenClaw-upstream-specific prompts for Scry, Codex, and Research
+- [x] Run propagation + required verification (`specialists:harden`, `sync:openclaw`, `bun run lint`, `openclaw:audit`)
+- [x] Commit the canonical workspace changes and mirrored `scry-home` changes cleanly
+
+### Phase 16 snapshot — 2026-03-07 21:45 ET
+- `prompts/openclaw/README.md` now acts like a real chooser: thread-first operating model, quick-start table, explicit OpenClaw upstream flow, tighter naming rules, and short descriptions for every prompt.
+- New upstream prompts added: `scry/thread-openclaw-upstream-pr-strategy.md`, `codex/thread-openclaw-upstream-mergeable-fix.md`, `codex/thread-openclaw-upstream-pr-polish.md`, and `research/thread-openclaw-upstream-issue-radar.md`.
+- Existing prompts were tightened for consistency with the home-channel + new-thread workflow, especially routing/orchestration wording and several prompts whose opening line no longer explicitly pointed at the agent home channel.
+- Manual consistency pass: re-read the changed README plus the changed prompt files after the rewrite.
+- Verification: `uv run python -m scripts specialists:harden` ✅, `uv run python -m scripts sync:openclaw` ✅, `bun run lint` ✅, `uv run python -m scripts openclaw:audit` ✅.
+- Sync cleaned up two stale mirror-only Codex upstream prompt filenames in `scry-home` (`thread-openclaw-upstream-bug-hunt.md`, `thread-openclaw-upstream-issue-executor.md`) so the mirror now matches the canonical pack.
 
 ## Immediate next pass priorities
 

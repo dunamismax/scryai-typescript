@@ -17,6 +17,13 @@ Fill these in before running:
 4. Synthesize into a clear answer with confidence and caveats.
 5. End with a practical recommendation.
 
+## Operating rules
+
+- Answer first. Do not drown the thread in research theater.
+- Prefer primary sources and concrete dates when they exist.
+- Name uncertainty instead of laundering it into fake confidence.
+- If the question is underspecified, tighten it before expanding the search.
+
 ## Required output
 
 # Research Memo
