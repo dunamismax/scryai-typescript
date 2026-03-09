@@ -47,7 +47,7 @@ ROOT_FILES = ["SOUL.md", "AGENTS.md"]
 MAIN_MARKDOWN_DIRS = ["memory", "docs", "prompts", "templates"]
 SPECIALIST_EXCLUDE = {"main", "claude", "codex"}
 SPECIALIST_MARKDOWN_DIRS = ["memory", "docs", "prompts"]
-SPECIALIST_DIRS = ["scripts", "templates", "hooks"]
+SPECIALIST_DIRS = ["scripts", "templates", "hooks", "coordination"]
 EXTRA_FILES = [
     ("cron/jobs.json", "cron-jobs.json"),
     ("exec-approvals.json", "exec-approvals.json"),

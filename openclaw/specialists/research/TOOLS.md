@@ -12,20 +12,21 @@
 - **Live runtime install**: local-prefix package install under `~/.openclaw/lib/node_modules/openclaw` (currently 2026.3.7)
 - **CLI wrapper**: `~/.local/bin/openclaw` → `~/.openclaw/lib/node_modules/openclaw/openclaw.mjs`
 - **Repo checkouts**:
-  - `~/github/openclaw` — primary local repo clone
-  - `~/openclaw` — separate dev/install checkout kept around for source work, not the live runtime path
+  - `~/github/openclaw` — primary local repo clone and contribution/worktree source
+- **No separate standalone OpenClaw dev checkout is currently present locally outside `~/github/openclaw`**
 - **Update method (live runtime)**: prefer `openclaw update` when detection works; if package-manager detection misses the custom prefix, use `npm i -g openclaw@latest --prefix ~/.openclaw`, then `openclaw doctor --non-interactive` and `openclaw gateway restart`
 - **Service**: LaunchAgent (`ai.openclaw.gateway.plist`), port 18789
 
 ## Reference Docs
 
-- **OpenClaw docs (local mirror)**: `/Users/sawyer/openclaw/docs`
+- **OpenClaw docs (local mirror)**: `/Users/sawyer/.local/lib/node_modules/openclaw/docs`
 - **OpenClaw docs index**: `https://docs.openclaw.ai/llms.txt`
-- **CONTRIBUTING_TO_OPENCLAW.md**: `~/github/scry-home/reference/CONTRIBUTING_TO_OPENCLAW.md` — read before any work on the OpenClaw repo. Covers repo setup, build system, PR template, Signal plugin architecture, test patterns, reviewer expectations.
+- **OpenClaw contribution guide**: `~/github/openclaw/CONTRIBUTING.md` — read before any work on the OpenClaw repo.
+- **OpenClaw issue candidates / local notes**: `~/github/scry-home/reference/openclaw-issue-candidates.md`
 
 ## Scry-Home CLI Commands
 
-- `uv run python -m scripts sync:openclaw` — sync workspace → `scry-home` (add `--commit` to auto-push); now mirrors all `.md` files dynamically
+- `uv run python -m scripts sync:openclaw` — sync workspace → `scry-home` (add `--commit` to auto-push); mirrors canonical and durable specialist markdown dynamically
 - `uv run python -m scripts specialists:harden` — deploy hooks, templates, smoke scripts, USER.md, TOOLS.md, and reporting rules to specialist workspaces
 - `uv run python -m scripts openclaw:audit` — check workspace doc completeness, `scry-home` mirror consistency, and stale path references
 - `uv run python -m scripts cron:reconcile` — reconcile managed cron jobs against manifest (add `--apply` to converge; `--scope=all` for system + smoke jobs)

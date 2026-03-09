@@ -45,9 +45,10 @@ SKIP_PATH_FRAGMENTS = (
     "<PROMPT>",
 )
 COMMON_GIT_REF_NAMES = {"main", "master", "develop", "dev", "HEAD"}
-IGNORED_TOP_LEVEL_DIRS = {"reviews", "runs"}
+IGNORED_TOP_LEVEL_DIRS = {"reviews", "runs", "tmp"}
 MAIN_MARKDOWN_DIRS = {"memory", "docs", "prompts", "templates"}
-PATH_SCAN_IGNORED_TOP_LEVEL_DIRS = {"memory", "reviews", "runs"}
+PATH_SCAN_IGNORED_TOP_LEVEL_DIRS = {"memory", "reviews", "runs", "tmp"}
+SKIP_PATH_SCAN_FILE_NAMES = {".coding-agent-skill.md", ".github-skill.md"}
 
 
 def _read(path: Path) -> str:
@@ -200,6 +201,8 @@ def audit_openclaw_docs() -> None:
     for root in source_markdown_roots:
         for rel in sorted(_workspace_markdown_files(root)):
             if rel.parts and rel.parts[0] in PATH_SCAN_IGNORED_TOP_LEVEL_DIRS:
+                continue
+            if rel.name in SKIP_PATH_SCAN_FILE_NAMES:
                 continue
             file_path = root / rel
             for token in sorted(_referenced_local_paths(file_path)):

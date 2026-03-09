@@ -40,7 +40,7 @@ Git / hygiene:
 - No AI attribution.
 - No assistant names in commit metadata.
 - Keep branch atomic and issue-scoped.
-- Never touch the live runtime checkout (`~/openclaw`) for OpenClaw issue work; use the contribution clone / worktree only.
+- Never touch the live runtime install (`~/.openclaw/lib/node_modules/openclaw`) for OpenClaw issue work; use the contribution clone / worktree only.
 
 When finished:
 - update `STATE.yaml` with final status/output/blockers if one is in scope,

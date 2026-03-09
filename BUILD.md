@@ -1,8 +1,8 @@
 # scry-home — Build Tracker
 
-**Status:** Python-only repo cleanup verified; local commit blocked by sandbox
-**Last Updated:** 2026-03-08
-**Latest Relevant Commit:** pending local checkpoint commit for Python-only cleanup
+**Status:** 2026-03-09 OpenClaw mirror/audit cleanup verified and committed locally; push optional
+**Last Updated:** 2026-03-09
+**Latest Relevant Commit:** current `HEAD` — `Checkpoint OpenClaw audit cleanup state`
 
 ---
 
@@ -46,7 +46,7 @@ The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror
 - [x] Run the repo doctor and managed-project doctor
 - [x] Syntax-check the modified Python entrypoints/modules
 - [x] Reconcile this tracker with the final state
-- [ ] Create a local commit if the checkpoint verifies cleanly
+- [x] Create a local commit if the checkpoint verifies cleanly
 
 ---
 
@@ -63,23 +63,27 @@ The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror
 ## Verification Snapshot
 
 - `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run ruff check .` ✅
+- `uv run ruff check scripts/tasks/sync_openclaw.py scripts/tasks/audit_openclaw_docs.py` ✅
 - `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run python -m scripts bootstrap` ✅ prerequisite check passed; local repo env synced; managed project installs now remain explicit
 - `uv run python -m scripts doctor` ✅ toolchain/core-file check passed; managed-project inventory still reports missing local clones for `boring-go-web`, `c-from-the-ground-up`, and `hello-world-from-hell`
 - `uv run python -m scripts projects:doctor` ✅ managed-project inventory ran; same three local clones are absent
 - `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run python -m py_compile scripts/cli.py scripts/projects_config.py scripts/tasks/bootstrap.py scripts/tasks/doctor.py scripts/tasks/harden_specialists.py scripts/tasks/projects.py` ✅
+- `uv run python -m py_compile scripts/tasks/sync_openclaw.py scripts/tasks/audit_openclaw_docs.py` ✅
+- `uv run python -m scripts openclaw:audit` ✅ workspace docs, mirrors, and path references consistent after the 2026-03-09 cleanup
 - Note: `uv` cache writes to `~/.cache/uv` are blocked by this sandbox, so cache-backed checks were rerun with `UV_CACHE_DIR=/tmp/uv-cache-scry-home`
+- `openclaw/cron-jobs.json`, `vault/config/critical-configs.meta.json`, and `vault/config/critical-configs.tar.enc` now reflect the latest successful 2026-03-09 scheduled runs / encrypted backup checkpoint, and that state has been captured in the current local checkpoint commit.
 
 ---
 
 ## Immediate Next Pass Priorities
 
-1. Create the local commit for this verified Python-only cleanup checkpoint.
-2. If the synced root `SOUL.md` / `AGENTS.md` changes should persist beyond this repo, propagate them upstream in the canonical OpenClaw workspace and re-sync.
-3. Revisit keeper-set policy separately if Stephen wants the managed project inventory itself narrowed to Python/Rust-only repos.
+1. Reconcile the cron tracked-repo inventory with the actual `~/github` tree so daily/weekly summaries stop naming missing repos as if they were still active.
+2. Decide whether rotating encrypted backup blobs should remain in normal git history or move to a dedicated backup target while `scry-home` keeps the manifest/control-plane role.
+3. Revisit managed-project inventory scope separately if Stephen wants the keeper set narrowed or renamed.
 
 ---
 
 ## Blockers / Human Decisions
 
-- Root `SOUL.md` and `AGENTS.md` are sync-governed copies, so their Python/Rust stack-policy edits in this repo can be overwritten by the next upstream sync unless the canonical workspace is updated separately.
-- This sandbox cannot create `/Users/sawyer/github/scry-home/.git/worktrees/stack-realign-20260308-105446/index.lock`, so the local commit must be created outside this lane even though the checkpoint verified cleanly.
+- Root `SOUL.md` and `AGENTS.md` are sync-governed copies, so future stack-policy edits must still originate in the canonical OpenClaw workspace to persist.
+- The encrypted backup artifact is large and changes frequently; keeping it in normal git history is workable for now but still carries churn/storage tradeoffs.

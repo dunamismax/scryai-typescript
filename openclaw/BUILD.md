@@ -1,6 +1,6 @@
 # BUILD.md
 
-**Current status:** phase = heartbeat config + doc drift cleanup complete · last updated = 2026-03-08 10:22 America/New_York · latest relevant focus = heartbeat direct-policy is now explicit, canonical docs were reconciled to the live OpenClaw 2026.3.7 install/channel posture, mirror audit is clean, and a fresh encrypted backup checkpoint has been prepared for push to `scry-home`
+**Current status:** phase = 2026-03-09 doc drift audit cleanup complete · last updated = 2026-03-09 08:58 America/New_York · latest relevant focus = the stale-path/mirror reminder was reproduced, canonical docs were reconciled to the current local repo reality, specialist mirror/audit tooling was tightened to ignore temporary skill-cache noise while still catching real drift, and `openclaw:audit` is clean again
 
 ## Phase plan
 
@@ -275,8 +275,22 @@
 - `./scripts/ops/daily-openclaw-backup.sh` produced a fresh encrypted runtime backup artifact at 10:17 ET, ready for the next `scry-home` checkpoint commit/push.
 - Verification: `openclaw status --deep` ✅ gateway healthy on `2026.3.7`, Discord OK; `openclaw doctor --non-interactive` ✅ no heartbeat/service-token warning; `openclaw security audit --deep` unchanged except for the expected private-Discord personal-assistant warning.
 
+### Phase 22 — 2026-03-09 doc drift audit cleanup
+- [x] Reproduce the 03:40 workspace doc audit failures and separate real stale refs from audit noise
+- [x] Fix canonical stale path references in `AGENTS.md`, `TOOLS.md`, and `MEMORY.md`
+- [x] Update specialist stale state (`workspace-sentinel/MEMORY.md`, `workspace-codex-orchestrator/BUILD.md`)
+- [x] Patch sync/audit tooling so durable coordination docs mirror while temporary skill-cache docs stop triggering false positives
+- [x] Re-run hardening, sync, and audit until the reminder clears
+
+### Phase 22 snapshot — 2026-03-09 08:58 ET
+- Real stale refs removed from canonical docs: the Python lane no longer assumes a local `pyforge` checkout, OpenClaw contribution guidance now points at `~/github/openclaw/CONTRIBUTING.md`, and `MEMORY.md` now reflects the actual 2026-03-09 `~/github` inventory instead of the older larger set.
+- Specialist stale state repaired: Sentinel durable memory now matches the live OpenClaw install/layout, and codex-orchestrator `BUILD.md` no longer points at the missing `courier-of-the-weird` checkout as if it were ready to use.
+- Tooling fixes in `scry-home`: `sync_openclaw.py` now mirrors specialist `coordination/`, and `audit_openclaw_docs.py` now ignores `tmp/`, `runs/`, `reviews/`, plus hidden cached skill docs like `.coding-agent-skill.md` during stale-path scans.
+- Verification: `uv run python -m py_compile scripts/tasks/sync_openclaw.py scripts/tasks/audit_openclaw_docs.py` ✅; `uv run python -m scripts specialists:harden` ✅; `uv run python -m scripts sync:openclaw` ✅; `uv run python -m scripts openclaw:audit` ✅.
+- Verification note: `bun run lint` was attempted in `~/github/scry-home` but the repo currently has no `lint` script, so lint evidence for this pass is limited to the Python compile check plus the end-to-end audit rerun.
+
 ## Immediate next pass priorities
 
-1. If desired, move rotating encrypted runtime backup blobs out of normal git history and onto a dedicated backup target (restic/B2/S3/NAS) while keeping `scry-home` as the control plane/manifest.
-2. If desired, do a second-pass personality polish on specialist `SOUL.md` voice anchors now that `IDENTITY.md` is properly template-managed.
-3. Optionally prune incidental mirror churn like `openclaw/exec-approvals.json` from future content-focused commits.
+1. Stabilize the dirty `scry-home` checkpoint: either commit or intentionally discard the current `openclaw/cron-jobs.json` plus encrypted-backup drift before more unrelated changes stack on top.
+2. Reconcile the tracked-repo inventory used by cron summaries so it matches the actual `~/github` tree instead of the older 8-repo set.
+3. If desired, move rotating encrypted runtime backup blobs out of normal git history and onto a dedicated backup target (restic/B2/S3/NAS) while keeping `scry-home` as the control plane/manifest.

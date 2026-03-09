@@ -10,7 +10,7 @@ Durable operating memory for Sentinel.
 - Primary model: `openai-codex/gpt-5.4`
 - Fallback model: `anthropic/claude-opus-4-6`
 - Git identity: commits as `dunamismax`; never include AI attribution
-- Communication surfaces in active use: Discord + Signal
+- Communication surfaces in active use: Discord primary; Signal currently disabled in live config but still available locally if re-enabled
 
 ## Stack contract
 - Default app/product stack: TypeScript + Bun
@@ -18,30 +18,22 @@ Durable operating memory for Sentinel.
 - Use Go / Rust / C when performance or systems constraints justify it
 - See `AGENTS.md` for the full contract; do not improvise a weaker default
 
-## Current local repo picture (observed 2026-03-07)
-Primary working repos under `~/github` currently include:
-- `scry-home`
-- `openclaw`
-- `dunamismax`
-- `boring-go-web`
-- `c-from-the-ground-up`
-- `scryfall-discord-bot`
-- `trade-desk-cli`
+## Current local repo picture (observed 2026-03-09)
+Primary local repos under `~/github` currently include:
 - `Sawyer-Visual-Media`
+- `changeledger`
+- `dunamismax`
 - `imaging-services-ops`
-- `podwatch`
-- `questlog`
+- `openclaw`
 - `rip`
-- `pyforge`
-
-Supporting dirs also exist under `~/github` for `forks/` and `worktrees/`.
-`CallRift` is not present locally anymore.
+- `scry-home`
+- `scryfall-discord-bot`
 
 ## OpenClaw runtime facts
-- Live install: `~/openclaw`
-- Contribution clone: `~/github/openclaw`
-- Fork/worktree source: `~/github/forks/openclaw`
-- Binary: `~/.local/bin/openclaw` → `~/openclaw/openclaw.mjs`
+- Live runtime package install: `~/.openclaw/lib/node_modules/openclaw`
+- Contribution clone and current worktree source: `~/github/openclaw`
+- No separate standalone OpenClaw dev/install checkout is currently present locally outside `~/github/openclaw`
+- CLI wrapper: `~/.local/bin/openclaw` → `~/.openclaw/lib/node_modules/openclaw/openclaw.mjs`
 - Workspace is canonical: `~/.openclaw/workspace`
 - Browser: Brave with `openclaw` and `chrome` profiles
 - ACP backend enabled; default ACP agent is codex
@@ -62,5 +54,3 @@ Active specialists:
 - `research`
 - `luma`
 - `operator`
-
-Retired local workspace leftovers like `workspace-claude` and `workspace-codex` may still exist on disk; do not assume they are part of the active bench without checking config.

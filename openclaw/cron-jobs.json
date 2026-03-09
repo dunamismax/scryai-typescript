@@ -8,7 +8,7 @@
       "name": "healthcheck:backup-freshness",
       "enabled": true,
       "createdAtMs": 1772532367675,
-      "updatedAtMs": 1772964652284,
+      "updatedAtMs": 1773051024587,
       "schedule": {
         "kind": "cron",
         "expr": "10 6 * * *",
@@ -26,11 +26,11 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1773051000000,
-        "lastRunAtMs": 1772964600013,
+        "nextRunAtMs": 1773137400000,
+        "lastRunAtMs": 1773051000011,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 52271,
+        "lastDurationMs": 24576,
         "lastDelivered": false,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0
@@ -66,7 +66,7 @@
       "name": "briefing:daily-repo-priority-summary",
       "enabled": true,
       "createdAtMs": 1772533964511,
-      "updatedAtMs": 1772973434811,
+      "updatedAtMs": 1773059880112,
       "schedule": {
         "kind": "cron",
         "expr": "35 8 * * *",
@@ -87,11 +87,11 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773059700000,
-        "lastRunAtMs": 1772973300014,
+        "nextRunAtMs": 1773146100000,
+        "lastRunAtMs": 1773059700013,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 134797,
+        "lastDurationMs": 180099,
         "lastDeliveryStatus": "unknown",
         "consecutiveErrors": 0
       }
@@ -103,7 +103,7 @@
       "name": "briefing:weekly-project-review",
       "enabled": true,
       "createdAtMs": 1772533970252,
-      "updatedAtMs": 1772913303656,
+      "updatedAtMs": 1773061457437,
       "schedule": {
         "kind": "cron",
         "expr": "0 9 * * 1",
@@ -124,7 +124,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773061200000
+        "nextRunAtMs": 1773666000000,
+        "lastRunAtMs": 1773061200009,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 257428,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     },
     {
@@ -134,7 +140,7 @@
       "name": "healthcheck:agent-bench-daily",
       "enabled": true,
       "createdAtMs": 1772542721502,
-      "updatedAtMs": 1772954427171,
+      "updatedAtMs": 1773040825112,
       "schedule": {
         "kind": "cron",
         "expr": "20 3 * * *",
@@ -152,11 +158,11 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1773040800000,
-        "lastRunAtMs": 1772954400015,
+        "nextRunAtMs": 1773127200000,
+        "lastRunAtMs": 1773040800014,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 27156,
+        "lastDurationMs": 25098,
         "lastDelivered": false,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0
@@ -169,7 +175,7 @@
       "name": "sync-and-validate-daily",
       "enabled": true,
       "createdAtMs": 1772542733941,
-      "updatedAtMs": 1772955064729,
+      "updatedAtMs": 1773041462031,
       "schedule": {
         "kind": "cron",
         "expr": "30 3 * * *",
@@ -187,11 +193,11 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1773041400000,
-        "lastRunAtMs": 1772955000014,
+        "nextRunAtMs": 1773127800000,
+        "lastRunAtMs": 1773041400008,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 64715,
+        "lastDurationMs": 62023,
         "lastDelivered": false,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0
@@ -204,7 +210,7 @@
       "name": "daily-lock-in",
       "enabled": true,
       "createdAtMs": 1772585596763,
-      "updatedAtMs": 1772974804272,
+      "updatedAtMs": 1773061616536,
       "schedule": {
         "kind": "cron",
         "expr": "0 9 * * *",
@@ -217,11 +223,11 @@
         "text": "Reminder: Lock the fuck in. Build something. Break something. Learn to code. No excuses, no ceremony — just ship."
       },
       "state": {
-        "nextRunAtMs": 1773061200000,
-        "lastRunAtMs": 1772974800014,
+        "nextRunAtMs": 1773147600000,
+        "lastRunAtMs": 1773061457437,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 4258,
+        "lastDurationMs": 159099,
         "lastDeliveryStatus": "not-requested",
         "consecutiveErrors": 0
       }
@@ -233,7 +239,7 @@
       "name": "healthcheck:sessions-autocleanup",
       "enabled": true,
       "createdAtMs": 1772636458182,
-      "updatedAtMs": 1772953231039,
+      "updatedAtMs": 1773039627657,
       "schedule": {
         "kind": "cron",
         "expr": "0 3 * * *",
@@ -251,11 +257,11 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1773039600000,
-        "lastRunAtMs": 1772953200016,
+        "nextRunAtMs": 1773126000000,
+        "lastRunAtMs": 1773039600010,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 31023,
+        "lastDurationMs": 27647,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0,
         "lastDelivered": false
@@ -266,7 +272,7 @@
       "name": "healthcheck:codex-orchestrator-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772814579004,
-      "updatedAtMs": 1772907726153,
+      "updatedAtMs": 1773064929081,
       "schedule": {
         "kind": "cron",
         "expr": "2 10 * * 1",
@@ -288,7 +294,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773064920000
+        "nextRunAtMs": 1773669720000,
+        "lastRunAtMs": 1773064920010,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 9071,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     },
     {
@@ -298,7 +310,7 @@
       "name": "healthcheck:sentinel-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772842044963,
-      "updatedAtMs": 1772907726940,
+      "updatedAtMs": 1773065049777,
       "schedule": {
         "kind": "cron",
         "expr": "4 10 * * 1",
@@ -320,13 +332,12 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773065040000,
-        "lastRunAtMs": 1772842083757,
+        "nextRunAtMs": 1773669840000,
+        "lastRunAtMs": 1773065040013,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 16608,
-        "lastDelivered": false,
-        "lastDeliveryStatus": "not-delivered",
+        "lastDurationMs": 9764,
+        "lastDeliveryStatus": "unknown",
         "consecutiveErrors": 0
       }
     },
@@ -337,7 +348,7 @@
       "name": "healthcheck:workspace-doc-drift",
       "enabled": true,
       "createdAtMs": 1772893167048,
-      "updatedAtMs": 1772955609477,
+      "updatedAtMs": 1773042015040,
       "schedule": {
         "kind": "cron",
         "expr": "40 3 * * *",
@@ -356,11 +367,11 @@
         "mode": "none"
       },
       "state": {
-        "nextRunAtMs": 1773042000000,
-        "lastRunAtMs": 1772955600013,
+        "nextRunAtMs": 1773128400000,
+        "lastRunAtMs": 1773042000018,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 9464,
+        "lastDurationMs": 15022,
         "lastDelivered": false,
         "lastDeliveryStatus": "not-delivered",
         "consecutiveErrors": 0
@@ -371,7 +382,7 @@
       "name": "healthcheck:agent-bench-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772907725354,
-      "updatedAtMs": 1772907725354,
+      "updatedAtMs": 1773063161921,
       "schedule": {
         "kind": "cron",
         "expr": "20 9 * * 1",
@@ -393,7 +404,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773062400000
+        "nextRunAtMs": 1773667200000,
+        "lastRunAtMs": 1773063087867,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 74054,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     },
     {
@@ -401,7 +418,7 @@
       "name": "healthcheck:scribe-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772907727757,
-      "updatedAtMs": 1772907727757,
+      "updatedAtMs": 1773065289148,
       "schedule": {
         "kind": "cron",
         "expr": "8 10 * * 1",
@@ -423,7 +440,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773065280000
+        "nextRunAtMs": 1773670080000,
+        "lastRunAtMs": 1773065280007,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 9141,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     },
     {
@@ -431,7 +454,7 @@
       "name": "healthcheck:research-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772907728559,
-      "updatedAtMs": 1772907728559,
+      "updatedAtMs": 1773065552108,
       "schedule": {
         "kind": "cron",
         "expr": "12 10 * * 1",
@@ -453,7 +476,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773065520000
+        "nextRunAtMs": 1773670320000,
+        "lastRunAtMs": 1773065520012,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 32096,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     },
     {
@@ -461,7 +490,7 @@
       "name": "healthcheck:luma-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772907729364,
-      "updatedAtMs": 1772907729364,
+      "updatedAtMs": 1773065769200,
       "schedule": {
         "kind": "cron",
         "expr": "16 10 * * 1",
@@ -483,7 +512,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773065760000
+        "nextRunAtMs": 1773670560000,
+        "lastRunAtMs": 1773065760005,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 9195,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     },
     {
@@ -491,7 +526,7 @@
       "name": "healthcheck:operator-weekly-smoke",
       "enabled": true,
       "createdAtMs": 1772907730176,
-      "updatedAtMs": 1772907730176,
+      "updatedAtMs": 1773066016112,
       "schedule": {
         "kind": "cron",
         "expr": "20 10 * * 1",
@@ -513,7 +548,13 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773066000000
+        "nextRunAtMs": 1773670800000,
+        "lastRunAtMs": 1773066000009,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 16103,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 0
       }
     }
   ]

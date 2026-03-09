@@ -52,21 +52,18 @@ Default stack unless something else is genuinely better for the task:
 
 | Layer | Default |
 |---|---|
-| Runtime / package manager | Bun |
-| App framework | Vite + React Router (framework mode, SPA-first `ssr: false`) |
-| UI | React + TypeScript |
-| Mobile | React Native + Expo |
-| Styling / components | Tailwind CSS + shadcn/ui |
-| Database | Postgres |
-| ORM / migrations | Drizzle ORM + drizzle-kit |
-| Server state | TanStack Query |
-| Auth | Better Auth (no Auth.js) |
-| Validation | Zod |
-| Formatting / linting | Biome (no ESLint/Prettier) |
+| Runtime / package manager | uv |
+| Primary language | Python |
+| Web / API | FastAPI |
+| CLI | Python stdlib or Typer when helpful |
+| Database | Postgres or SQLite |
+| Validation | Pydantic |
+| Formatting / linting | Ruff |
+| Systems language | Rust |
 
-**Language policy:** TypeScript + Bun for products. Python for scripting/automation/data/ML/utilities via `uv` + `ruff`. Rust/Go when systems constraints justify them.
+**Language policy:** Python by default via `uv` + Ruff. Rust when systems or performance constraints justify it. HTML/CSS are fine for static surfaces without a JS/TS toolchain.
 
-**Disallowed by default:** npm/pnpm/yarn, ESLint/Prettier, Next.js, Auth.js.
+**Disallowed by default:** Bun, npm, pnpm, yarn, TypeScript/JavaScript build stacks, ESLint/Prettier, Next.js, Auth.js.
 
 Always prefer latest stable and verify version claims against primary sources when the date or version matters.
 
@@ -82,41 +79,8 @@ Receive task → sharpen scope → choose one lane or a real swarm → launch �
 - Sharpen scope: turn fuzzy asks into a concrete deliverable before dispatch.
 - Choose the smallest swarm that preserves quality; one lane by default.
 - Launch with explicit context, constraints, verification commands, and stop conditions.
-- For Codex execution, use locally tracked Codex CLI lanes with logs/artifacts under `runs/`; do not use ACP thread execution for Codex work unless Stephen explicitly changes that standing rule.
 - Monitor health, artifacts, and blockers without narrating routine noise.
 - Verify what changed before calling it done.
-
----
-
-## Stateful Project Coordination (`STATE.yaml`)
-
-Default pattern for any real swarm, delegated PM, or tracked multi-step project:
-
-1. Create or reuse a shared `STATE.yaml`
-2. Register the project in `coordination/PROJECT_REGISTRY.yaml`
-3. Spawn workers against explicit task ids in that shared state file
-4. Require each worker to read/update `STATE.yaml` on start, block, handoff, and finish
-5. Keep the main session thin: scope, priority, verification, and user-facing synthesis
-
-Rules:
-- `STATE.yaml` is the single source of truth for project task state.
-- Prefer decentralized coordination through the file over message-by-message orchestration.
-- Main session should not become a traffic cop when a PM or worker can update shared state directly.
-- If a project already has an active registry entry, reuse that project/PM before spawning another overlapping one.
-- Every tracked lane should carry its `stateFile` and `stateTaskId` in its run manifest when available.
-- Use `next_actions` for concrete handoffs or unblock steps.
-- Keep the file truthful. No optimistic status. If blocked, say blocked.
-
-When this pattern applies:
-- multi-lane swarms
-- long-running delegated work
-- repo-wide audits/refactors/reviews
-- any project where multiple agents may touch the same objective over time
-
-When it does **not** need ceremony:
-- trivial direct answers
-- one-shot single-lane local fixes with no coordination surface
-- ephemeral read-only checks that do not create follow-on work
 
 ---
 
@@ -189,26 +153,13 @@ If a required gate cannot run, report what was skipped, why, and the residual ri
 
 Single-agent first. Bring in more lanes only when there is a real partition or a real verification need.
 
-### PM Delegation Pattern
-
-For stateful delegated projects:
-- Main session frames the objective, verification target, and priority order.
-- A PM lane or project state file owns task breakdown.
-- Workers self-serve from `STATE.yaml` instead of waiting for stepwise orchestration.
-- User updates come from the main session after checking shared state and artifacts.
-
-Target posture:
-- main session = strategy, verification, synthesis
-- workers = execution
-- `STATE.yaml` = coordination memory
-
 <!-- CODEX_ISSUE_LANE_START -->
 ### Issue Lane Isolation
 
 - Default pattern for concurrent issue implementation: **one issue = one branch = one git worktree = one lane**.
 - Never run two implementation lanes against the same checkout at the same time.
 - Never share a dirty working tree between active issue lanes.
-- For OpenClaw upstream work, use `~/github/openclaw` as the base clone and create per-issue worktrees from it; never implement from the live runtime checkout at `~/openclaw`.
+- For OpenClaw upstream work, use `~/github/openclaw` as the base clone and create per-issue worktrees from it; never implement from the live runtime install at `~/.openclaw/lib/node_modules/openclaw`.
 - Lane launchers should create or reuse a dedicated worktree before Codex starts writing.
 - If a task does not justify its own worktree (scout/read-only/review), keep it read-only.
 - If a lane discovers it needs to touch a second issue, stop and spin a new lane/worktree instead of widening scope in place.

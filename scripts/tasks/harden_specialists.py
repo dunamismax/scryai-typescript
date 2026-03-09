@@ -1401,7 +1401,7 @@ def _apply_codex_specific_overlays(ws: Path) -> int:
 - Default pattern for concurrent issue implementation: **one issue = one branch = one git worktree = one lane**.
 - Never run two implementation lanes against the same checkout at the same time.
 - Never share a dirty working tree between active issue lanes.
-- For OpenClaw upstream work, use `~/github/openclaw` as the base clone and create per-issue worktrees from it; never implement from the live runtime checkout at `~/openclaw`.
+- For OpenClaw upstream work, use `~/github/openclaw` as the base clone and create per-issue worktrees from it; never implement from the live runtime install at `~/.openclaw/lib/node_modules/openclaw`.
 - Lane launchers should create or reuse a dedicated worktree before Codex starts writing.
 - If a task does not justify its own worktree (scout/read-only/review), keep it read-only.
 - If a lane discovers it needs to touch a second issue, stop and spin a new lane/worktree instead of widening scope in place.
@@ -1418,7 +1418,7 @@ def _apply_codex_specific_overlays(ws: Path) -> int:
     bootstrap_section = """<!-- CODEX_BOOTSTRAP_START -->
 ## Codex Issue Lane Notes
 - For issue implementation, create a dedicated git worktree first; default launcher flow is `scripts/prepare-issue-worktree.sh` or `scripts/launch-issue-lane.sh`.
-- Never run OpenClaw issue implementation from the live runtime checkout at `~/openclaw`; use `~/github/openclaw` + a per-issue worktree.
+- Never run OpenClaw issue implementation from the live runtime install at `~/.openclaw/lib/node_modules/openclaw`; use `~/github/openclaw` + a per-issue worktree.
 <!-- CODEX_BOOTSTRAP_END -->"""
     if _upsert_marked_section(
         ws / "BOOTSTRAP.md",
@@ -1445,7 +1445,7 @@ Defaults:
 
 OpenClaw rule:
 - use `~/github/openclaw` as the base repo for issue worktrees
-- never implement from `~/openclaw` (live runtime checkout)
+- never implement from `~/.openclaw/lib/node_modules/openclaw` (live runtime install)
 
 ## 6) Launch an issue lane in its own worktree
 ```bash
@@ -1484,7 +1484,7 @@ Example:
 
 - Issue worktree root (Codex default): `~/.openclaw/worktrees/<repo>/<repo>-issue-<number>`
 - OpenClaw contribution clone for upstream issue work + per-issue worktrees: `~/github/openclaw`
-- Never implement upstream OpenClaw issues from the live runtime checkout at `~/openclaw`.
+- Never implement upstream OpenClaw issues from the live runtime install at `~/.openclaw/lib/node_modules/openclaw`.
 <!-- CODEX_TOOLS_END -->"""
     if _upsert_marked_section(
         ws / "TOOLS.md",

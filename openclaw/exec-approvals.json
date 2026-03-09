@@ -22,15 +22,15 @@
         {
           "id": "9519889d-4acf-4af6-a47a-792430b8f68d",
           "pattern": "/bin/ls",
-          "lastUsedAt": 1773003983640,
-          "lastUsedCommand": "pwd && ls -la && printf '\\n--- github root ---\\n' && ls -la ~/github && printf '\\n--- workspace scripts ---\\n' && ls -la scripts | sed -n '1,160p' && printf '\\n--- coding-agent skill ---\\n' && cat ~/.openclaw/lib/node_modules/openclaw/extensions/acpx/skills/coding-agent/SKILL.md",
-          "lastResolvedPath": "/bin/pwd"
+          "lastUsedAt": 1773012625489,
+          "lastUsedCommand": "ls -1 /Users/sawyer/github",
+          "lastResolvedPath": "/bin/ls"
         },
         {
           "id": "bfa8b5da-e7a3-4c88-aa15-ad85c058d89e",
           "pattern": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
-          "lastUsedAt": 1773006051337,
-          "lastUsedCommand": "python3 scripts/codex-state.py task-upsert runs/batches/20260308T210740Z-game-dev-pivot/STATE.yaml --id godot-csharp-lab --title 'Scaffold godot-csharp-lab' --owner 'codex:godot-csharp-lab' --status done --repo /Users/sawyer/github/godot-csharp-lab --run-dir /Users/sawyer/.openclaw/workspace-codex-orchestrator/runs/20260308T212130Z-godot-csharp-lab --append-note 'follow-up docs link fix committed and pushed to origin/main' && for r in godot-csharp-lab blender-game-assets game-dev-tools-py courier-of-the-weird dunamismax; do echo \"===== $r =====\"; git -C \"$HOME/github/$r\" status --short --branch; git -C \"$HOME/github/$r\" log --oneline -1; echo; done",
+          "lastUsedAt": 1773012661171,
+          "lastUsedCommand": "python3 - <<'PY'\nimport os, subprocess, json\nroot='/Users/sawyer/github'\nrows=[]\nfor name in sorted(os.listdir(root)):\n    path=os.path.join(root,name)\n    if not os.path.isdir(path): continue\n    if not (os.path.isdir(os.path.join(path,'.git')) or os.path.isfile(os.path.join(path,'.git'))): continue\n    out=subprocess.run(['git','-C',path,'status','--short'], text=True, capture_output=True).stdout.strip().splitlines()\n    if out:\n        rows.append({'name':name,'changes':out[:20]})\nprint(json.dumps(rows, indent=2))\nPY",
           "lastResolvedPath": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
         },
         {
@@ -85,15 +85,15 @@
         {
           "id": "a73dfbc9-26b5-4efd-9b3a-de477c6e2acf",
           "pattern": "/bin/pwd",
-          "lastUsedAt": 1772943888759,
-          "lastUsedCommand": "pwd && echo '---' && rg --files . | rg '(^|/)(BUILD\\.md|IDENTITY\\.md|harden_specialists\\.py|specialists/.*IDENTITY\\.md)$' && echo '---' && find . -maxdepth 4 -type d | sed 's#^./##' | sort | rg 'specialist|specialists|prompts|memory'",
+          "lastUsedAt": 1773067832204,
+          "lastUsedCommand": "pwd; echo '---'; git status --short --branch; echo '---'; git remote -v; echo '---'; ls -la",
           "lastResolvedPath": "/bin/pwd"
         },
         {
           "id": "8b70c9de-dc72-4c2c-af17-ea512bb7cdd7",
           "pattern": "/Users/sawyer/.local/bin/openclaw",
-          "lastUsedAt": 1772979560106,
-          "lastUsedCommand": "openclaw status --deep | sed -n '1,80p'",
+          "lastUsedAt": 1773062233526,
+          "lastUsedCommand": "openclaw gateway restart",
           "lastResolvedPath": "/Users/sawyer/.local/bin/openclaw"
         },
         {
@@ -106,9 +106,9 @@
         {
           "id": "a2840be7-5bce-4e4e-9c2e-c5a32a1c040d",
           "pattern": "/opt/homebrew/bin/rg",
-          "lastUsedAt": 1772979559092,
-          "lastUsedCommand": "openclaw doctor --non-interactive | rg -n \"Heartbeat defaults|directPolicy|OPENCLAW_GATEWAY_TOKEN|embeds\" -n || true",
-          "lastResolvedPath": "/Users/sawyer/.local/bin/openclaw"
+          "lastUsedAt": 1773062118710,
+          "lastUsedCommand": "rg -n \"update.run|openclaw update|Get Updates|self-update\" /Users/sawyer/.openclaw/lib/node_modules/openclaw/docs /Users/sawyer/openclaw/docs | head -n 40",
+          "lastResolvedPath": "/opt/homebrew/bin/rg"
         },
         {
           "id": "e51df518-3eac-45be-8dec-729f978eca01",
@@ -134,9 +134,9 @@
         {
           "id": "7e009642-08c3-4a10-9d1e-732add3a15e8",
           "pattern": "/usr/bin/sed",
-          "lastUsedAt": 1772979560106,
-          "lastUsedCommand": "openclaw status --deep | sed -n '1,80p'",
-          "lastResolvedPath": "/Users/sawyer/.local/bin/openclaw"
+          "lastUsedAt": 1773068157221,
+          "lastUsedCommand": "sed -n '1,260p' /Users/sawyer/github/scry-home/scripts/tasks/harden_specialists.py",
+          "lastResolvedPath": "/usr/bin/sed"
         },
         {
           "id": "170b4476-99bc-49b4-9e78-375f88faf802",
@@ -158,22 +158,22 @@
         {
           "id": "31cdf770-7330-4059-a8f5-926bfb9547a7",
           "pattern": "/usr/bin/git",
-          "lastUsedAt": 1772979639847,
-          "lastUsedCommand": "git add openclaw/BUILD.md openclaw/exec-approvals.json && git add -f vault/config/critical-configs.meta.json vault/config/critical-configs.tar.enc && git commit -m \"Refresh OpenClaw backup and cleanup checkpoint\" && git push origin main",
+          "lastUsedAt": 1773068132959,
+          "lastUsedCommand": "git status --short --branch",
           "lastResolvedPath": "/usr/bin/git"
         },
         {
           "id": "0f1c197f-735d-4055-aaa4-83033dda60de",
           "pattern": "/usr/bin/printf",
-          "lastUsedAt": 1772979561115,
-          "lastUsedCommand": "cd /Users/sawyer/github/scry-home && git status --short --branch && printf '\\n---\\n' && stat -f '%Sm %N' vault/config/critical-configs.tar.enc vault/config/critical-configs.meta.json openclaw/TOOLS.md openclaw/MEMORY.md openclaw/BUILD.md",
-          "lastResolvedPath": "/usr/bin/cd"
+          "lastUsedAt": 1773067873945,
+          "lastUsedCommand": "printf 'github inventory:\\n'; ls -1 /Users/sawyer/github | sed 's/^/- /'; echo '---'; for d in godot-csharp-lab blender-game-assets game-dev-tools-py courier-of-the-weird dunamismax abi-audit cargo-advisor cargo-trust explain-build; do if [ -d \"/Users/sawyer/github/$d\" ]; then echo \"EXISTS $d\"; git -C \"/Users/sawyer/github/$d\" status --short --branch 2>/dev/null | sed 's/^/  /'; else echo \"MISSING $d\"; fi; done",
+          "lastResolvedPath": "/usr/bin/printf"
         },
         {
           "id": "c877937d-7eb2-4bb9-833f-8a7db57b848f",
           "pattern": "/usr/bin/head",
-          "lastUsedAt": 1772979405810,
-          "lastUsedCommand": "rg -n \"config.patch|raw required|gateway config.patch|config\\.patch\" /Users/sawyer/openclaw/docs /Users/sawyer/openclaw/src -g '!**/node_modules/**' | head -n 80",
+          "lastUsedAt": 1773062118710,
+          "lastUsedCommand": "rg -n \"update.run|openclaw update|Get Updates|self-update\" /Users/sawyer/.openclaw/lib/node_modules/openclaw/docs /Users/sawyer/openclaw/docs | head -n 40",
           "lastResolvedPath": "/opt/homebrew/bin/rg"
         }
       ]

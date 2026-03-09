@@ -22,51 +22,36 @@
 
 ## Active Repos
 
-All primary repos under `~/github` are cloned locally and use dual SSH remotes with GitHub + Codeberg push URLs.
+`~/github` is the live local project root, but the checked-out inventory changes over time; trust the current tree over older summaries.
 
-**Current local inventory (2026-03-07):**
-- `CallRift`
+**Current local inventory (2026-03-09):**
 - `Sawyer-Visual-Media`
-- `boring-go-web`
-- `c-from-the-ground-up`
+- `changeledger`
 - `dunamismax`
-- `elchess`
-- `hello-world-from-hell`
 - `imaging-services-ops`
 - `openclaw`
-- `podwatch`
-- `pr-firefighter`
-- `pyforge`
-- `questlog`
 - `rip`
 - `scry-home`
 - `scryfall-discord-bot`
-- `trade-desk-cli`
 
 **Known repo roles / notes:**
 - `scry-home` — Scry identity/config repo, CLI tools, sync scripts (renamed from `grimoire`)
-- `pyforge` — reusable Python scripts/utilities, automation, and tooling (renamed from `scripts`)
-- `trade-desk-cli` — trading system (IBKR + LLM analysis; renamed from `augur`)
+- `openclaw` — primary local upstream/contribution clone
 - `scryfall-discord-bot` — Discord MTG card lookup bot (renamed from `oracle`)
-- `boring-go-web` — Go web/server repo (renamed from `go-web-server`)
 - `imaging-services-ops` — consolidated imaging-services repo/workflow (renamed from `imagingservices`)
-- `podwatch` — podcast dashboard
 - `rip` — video download tool
-- `CallRift` — React Native + Expo SIP/VoIP app
-- `elchess` — self-hostable chess platform
-- `pr-firefighter` — autonomous CI fix pipeline
 - `Sawyer-Visual-Media` — drone photography/videography business; DJI Mini 5 Pro
 - `dunamismax` — GitHub profile README
+- `changeledger` — local repo present under `~/github`; role not yet recorded here
 
 **OpenClaw local layout:**
-- `~/github/openclaw` — primary local repo clone
-- `~/openclaw` — separate dev/install checkout kept for source work
+- `~/github/openclaw` — primary local repo clone and current contribution/worktree source
 - `~/.openclaw/lib/node_modules/openclaw` — live runtime package install root
-- `~/github/forks/openclaw` — contribution fork/worktree source
+- No separate standalone OpenClaw dev/install checkout is currently present locally outside `~/github/openclaw`
 
 ## OpenClaw Setup
 
-- **Install**: live runtime is a local-prefix package install at `~/.openclaw/lib/node_modules/openclaw` (updated to 2026.3.7 on 2026-03-08). CLI wrapper: `~/.local/bin/openclaw` → `~/.openclaw/lib/node_modules/openclaw/openclaw.mjs`. `~/openclaw` remains a separate dev/install checkout, while `~/github/openclaw` is the primary local repo clone.
+- **Install**: live runtime is a local-prefix package install at `~/.openclaw/lib/node_modules/openclaw` (updated to 2026.3.7 on 2026-03-08). CLI wrapper: `~/.local/bin/openclaw` → `~/.openclaw/lib/node_modules/openclaw/openclaw.mjs`. `~/github/openclaw` is the primary local repo clone; there is no separate standalone OpenClaw dev/install checkout at the moment.
 - **Service**: LaunchAgent, port 18789, loopback-only + Tailscale auth allowance
 - **Auth**: `openai-codex:default` (OAuth), `anthropic:default` (OAuth)
 - **Signal**: currently disabled in live channel config; CLI/account details are still available locally if re-enabled later
@@ -104,12 +89,12 @@ Workspace is canonical → synced to `scry-home` root + `openclaw/` dir via `syn
 - `scry-home` CLI tools: `specialists:harden` (hook/template rollout), `cron:reconcile` (manifest convergence), `openclaw:audit` (workspace/mirror/path drift checks).
 - `scry-home` workspace sync now mirrors specialist workspace docs under `scry-home/openclaw/specialists/<agentId>/` for bench backup coverage.
 - Cron smoke reconciliation covers all six specialists: codex-orchestrator, sentinel, scribe, research, luma, operator.
-- Reference docs (CONTRIBUTING_TO_OPENCLAW.md, issue candidates) live in `scry-home/reference/`, not workspace.
+- OpenClaw contribution guidance lives in the upstream repo at `~/github/openclaw/CONTRIBUTING.md`; extra local issue notes live under `~/github/scry-home/reference/` when present.
 - Communication architecture (2026-03-06, updated 2026-03-08): Discord is the active multi-agent front door with one dedicated home channel per agent plus thread-bound session support. Signal is currently disabled in live config but remains available as a local integration option if re-enabled later.
 - Workspace discipline (2026-03-07): canonical main-workspace docs now explicitly include `BOOTSTRAP.md`; multi-step maintenance passes should keep `BUILD.md` current until handoff.
 - Reporting/memory discipline (2026-03-07): non-trivial work reports should lead with outcome → evidence → risks/open questions → next move; durable memory stores only stable preferences/decisions/facts, not transient task sludge.
 - Doc drift automation (2026-03-07): `openclaw:audit` CLI command checks workspace doc completeness, mirror consistency, and stale path references. Daily cron job `healthcheck:workspace-doc-drift` runs at 3:40 AM. Daily bench check expanded to require USER.md, TOOLS.md, BOOTSTRAP.md across all agent workspaces.
-- Sync/hardening improvements (2026-03-07): `sync_openclaw.py` now mirrors all `.md` files dynamically instead of a fixed list. `harden_specialists.py` now propagates USER.md, TOOLS.md, updated BOOTSTRAP template, and reporting/memory-hygiene rules into specialist workspaces.
+- Sync/hardening improvements (2026-03-07, refined 2026-03-09): `sync_openclaw.py` now mirrors durable canonical/specialist markdown dynamically instead of a fixed hand-maintained list, while `openclaw:audit` ignores temporary specialist caches (`tmp/`, `runs/`, `reviews/`) and hidden cached skill docs so example paths do not create false positives. `harden_specialists.py` propagates USER.md, TOOLS.md, updated BOOTSTRAP template, and reporting/memory-hygiene rules into specialist workspaces.
 - Specialist identity management (2026-03-07, late): `specialists:harden` now fully generates per-agent `IDENTITY.md` files from template data instead of appending only shared footer anchors; future bench identity polish should happen in `scripts/tasks/harden_specialists.py` and then be deployed with hardening.
 - Repo rename (2026-03-07): the old `grimoire` repo is now `scry-home` at `~/github/scry-home`; current docs, cron jobs, and operational paths should use `scry-home`.
 - Memory search fix (2026-03-07): local memory indexing now uses Ollama embeddings with `nomic-embed-text` plus a local placeholder API key (`ollama-local`). Codex OAuth does not satisfy memory embeddings.
