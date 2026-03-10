@@ -1,5 +1,5 @@
 registry: codex-orchestrator
-updated: "2026-03-08T22:10:41Z"
+updated: "2026-03-09T18:08:12Z"
 projects:
   - id: 20260308T162204Z-abi-audit
     label: abi-audit
@@ -51,6 +51,20 @@ projects:
     state_file: /Users/sawyer/.openclaw/workspace-codex-orchestrator/runs/batches/20260308T171352Z-pymodernize/STATE.yaml
     summary: Build pymodernize as a CLI-first, deterministic Python modernization assistant, starting with a conservative Phase 1 MVP (scan, plan, safe fixers, verify) in the empty pymodernize repo.
     updated: "2026-03-08T17:13:52Z"
+  - id: 20260309T170638Z-unity-csharp-onramp
+    label: unity-csharp-onramp
+    owner: codex-orchestrator
+    status: active
+    state_file: /Users/sawyer/.openclaw/workspace-codex-orchestrator/runs/batches/20260309T170638Z-unity-csharp-onramp/STATE.yaml
+    summary: Create and scaffold four new repos for a Unity + C# learning/build lane (unity-csharp-lab, csharp-systems-playground, blender-assets-lab, first-unity-game), with first-unity-game centered on Courier Run, then commit and push each repo.
+    updated: "2026-03-09T17:06:38Z"
+  - id: 20260309T180812Z-unity-csharp-onramp-finish
+    label: unity-csharp-onramp-finish
+    owner: codex-orchestrator
+    status: active
+    state_file: /Users/sawyer/.openclaw/workspace-codex-orchestrator/runs/batches/20260309T180812Z-unity-csharp-onramp-finish/STATE.yaml
+    summary: Finish the partially scaffolded Unity/C# starter repos by cleaning generated junk, completing missing docs/project structure, then committing and pushing unity-csharp-lab, csharp-systems-playground, blender-assets-lab, and first-unity-game.
+    updated: "2026-03-09T18:08:12Z"
   - id: 20260308T163901Z-verify-patch
     label: verify-patch
     owner: codex-orchestrator

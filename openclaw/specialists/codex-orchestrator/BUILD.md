@@ -1,35 +1,35 @@
 # BUILD.md
 
-Status: blocked — the old `courier-of-the-weird` first-playable tracker is stale because that repo is not currently present under the live `~/github` tree. Do not launch a new lane against it until the repo is restored locally and the prompt plus acceptance checks are rewritten around the real checkout.
+Status: done — orchestrator-layer cleanup/finish pass completed. All four Unity/C# starter repos are now scaffolded, committed, pushed to `main`, and clean locally.
 
-## Phase plan
-- [x] Preserve the prior toolchain snapshot (`dotnet`, Godot mono app, Blender app) for reference
-- [x] Confirm the older repo-specific path assumptions are now stale
-- [ ] Decide whether to restore `courier-of-the-weird` locally or retire this lane
-- [ ] If restored, rewrite the lane prompt and repo-specific checks against the real checkout
-- [ ] Only then launch a new tracked Codex lane
-
-## Active target repo
-- [ ] none currently — previous target `courier-of-the-weird` is absent locally
+## Completed work
+- [x] `unity-csharp-lab` — landed a truthful Unity-ready lab scaffold with docs, package manifest, project version, and prototype workflow materials
+- [x] `csharp-systems-playground` — replaced the stub with a real pure-C# systems playground, classic `.sln`, runnable sample, and console test runner
+- [x] `blender-assets-lab` — landed the strong Blender asset workflow scaffold and pushed it cleanly
+- [x] `first-unity-game` — landed the Courier Run starter scaffold, docs, Unity folder layout, and truthful first-open notes
 
 ## Acceptance checks / validation commands
-- `test -d /Users/sawyer/github && ls -1 /Users/sawyer/github`
-- `dotnet --version`
-- `/Applications/Godot_mono.app/Contents/MacOS/Godot --version`
+- `dotnet build CSharpSystemsPlayground.sln -v minimal`
+- `dotnet run --project tests/CSharpSystemsPlayground.Tests/CSharpSystemsPlayground.Tests.csproj`
+- `dotnet run --project samples/CSharpSystemsPlayground.Showcase/CSharpSystemsPlayground.Showcase.csproj`
+- `git diff --check` on Unity/Blender repos before landing
+- `rg -n '/Users/sawyer|assistant|AI' <repo>` hygiene scan
+- `/Applications/Unity/Hub/Editor/6000.3.10f1/Unity.app/Contents/MacOS/Unity -version`
 - `/Applications/Blender.app/Contents/MacOS/Blender --version | head -n1`
-- repo-specific `git status --short --branch` only after the target checkout exists locally
+- `git -C ~/github/<repo> status --short --branch`
 
 ## Verification snapshot
-- `.NET SDK` available: `10.0.103`
-- Godot app binary available at `/Applications/Godot_mono.app/Contents/MacOS/Godot` reporting `4.6.1.stable.mono.official.14d19694e`
-- Blender app binary available at `/Applications/Blender.app/Contents/MacOS/Blender` reporting `Blender 5.0.1`
-- `courier-of-the-weird` is not present in the current `/Users/sawyer/github` inventory as of 2026-03-09; treat the older path-specific notes as historical only
+- `unity-csharp-lab` pushed commit `cf1b163` — `Scaffold Unity C# lab repo`
+- `csharp-systems-playground` pushed commit `99da76b` — `Scaffold C# systems playground`
+- `blender-assets-lab` pushed commit `32166be` — `Scaffold Blender asset workflow repo`
+- `first-unity-game` pushed commit `ec09504` — `Scaffold Courier Run Unity starter repo`
+- All four repos are clean on `main`
+- Unity-facing repos remain truthful scaffolds; they still require a real editor open to generate `.meta` files, lockfiles, and first scenes/project assets
 
-## Immediate next-pass priorities
-- Reconcile this tracker with a real local target repo
-- Either restore `courier-of-the-weird` or replace it with the correct current project before launching Codex
-- Keep path-specific commands out of the tracker until the repo exists locally
+## Remaining follow-up
+- Open `unity-csharp-lab` and `first-unity-game` in Unity to generate editor-managed files and first scenes
+- Decide whether `Courier Run` graduates from scaffold into an actual gameplay implementation pass
+- Expand `csharp-systems-playground` with more systems examples only after using the current primitives
 
 ## Blockers / pending decisions
-- Missing local checkout for the previously targeted repo
-- `godot` and `blender` are still not on PATH, so commands should use the discovered app binaries directly unless PATH is updated later
+- None for the scaffold/push pass

@@ -29,8 +29,8 @@
         {
           "id": "bfa8b5da-e7a3-4c88-aa15-ad85c058d89e",
           "pattern": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
-          "lastUsedAt": 1773012661171,
-          "lastUsedCommand": "python3 - <<'PY'\nimport os, subprocess, json\nroot='/Users/sawyer/github'\nrows=[]\nfor name in sorted(os.listdir(root)):\n    path=os.path.join(root,name)\n    if not os.path.isdir(path): continue\n    if not (os.path.isdir(os.path.join(path,'.git')) or os.path.isfile(os.path.join(path,'.git'))): continue\n    out=subprocess.run(['git','-C',path,'status','--short'], text=True, capture_output=True).stdout.strip().splitlines()\n    if out:\n        rows.append({'name':name,'changes':out[:20]})\nprint(json.dumps(rows, indent=2))\nPY",
+          "lastUsedAt": 1773083933987,
+          "lastUsedCommand": "python3 - <<'PY'\nfrom pathlib import Path\nfor repo in ['unity-csharp-lab','first-unity-game']:\n    path = Path.home()/ 'github' / repo / '.gitignore'\n    text = path.read_text()\n    text = text.replace('/builds/*\\n!/builds/.gitkeep\\n', '/builds/*\\n!/builds/\\n!/builds/.gitkeep\\n')\n    path.write_text(text)\nPY\nfor r in unity-csharp-lab first-unity-game; do echo \"===== $r build ignore =====\"; grep -n 'builds' \"$HOME/github/$r/.gitignore\"; done",
           "lastResolvedPath": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
         },
         {
@@ -134,9 +134,9 @@
         {
           "id": "7e009642-08c3-4a10-9d1e-732add3a15e8",
           "pattern": "/usr/bin/sed",
-          "lastUsedAt": 1773068157221,
-          "lastUsedCommand": "sed -n '1,260p' /Users/sawyer/github/scry-home/scripts/tasks/harden_specialists.py",
-          "lastResolvedPath": "/usr/bin/sed"
+          "lastUsedAt": 1773068370707,
+          "lastUsedCommand": "git show --stat --oneline --summary 3cc1ca0 | sed -n '1,220p'",
+          "lastResolvedPath": "/usr/bin/git"
         },
         {
           "id": "170b4476-99bc-49b4-9e78-375f88faf802",
@@ -158,8 +158,8 @@
         {
           "id": "31cdf770-7330-4059-a8f5-926bfb9547a7",
           "pattern": "/usr/bin/git",
-          "lastUsedAt": 1773068132959,
-          "lastUsedCommand": "git status --short --branch",
+          "lastUsedAt": 1773068457041,
+          "lastUsedCommand": "git log --oneline --decorate --max-count=5 && echo '---' && git status --short --branch",
           "lastResolvedPath": "/usr/bin/git"
         },
         {
