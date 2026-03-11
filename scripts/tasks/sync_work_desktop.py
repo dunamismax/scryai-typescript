@@ -99,9 +99,11 @@ def _sync_clouds(dry_run: bool) -> None:
             if not dry_run:
                 try:
                     _copy_with_mtime(g["abs_path"], dest)
+                    copied += 1
                 except OSError as exc:
                     print(f"  [WARN] copy failed (cloud-only?): {rel} — {exc}")
-            copied += 1
+            else:
+                copied += 1
             continue
 
         if o and not g:
@@ -110,9 +112,11 @@ def _sync_clouds(dry_run: bool) -> None:
             if not dry_run:
                 try:
                     _copy_with_mtime(o["abs_path"], dest)
+                    copied += 1
                 except OSError as exc:
                     print(f"  [WARN] copy failed (cloud-only?): {rel} — {exc}")
-            copied += 1
+            else:
+                copied += 1
             continue
 
         if g and o:
@@ -144,9 +148,11 @@ def _sync_clouds(dry_run: bool) -> None:
             if not dry_run:
                 try:
                     _copy_with_mtime(src["abs_path"], dest_root / rel)
+                    updated += 1
                 except OSError as exc:
                     print(f"  [WARN] update failed (cloud-only?): {rel} — {exc}")
-            updated += 1
+            else:
+                updated += 1
 
     print(
         f"\n  result: {copied} copied, {updated} updated, {skipped} identical/skipped"

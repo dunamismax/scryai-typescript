@@ -53,10 +53,11 @@ uv run python -m scripts doctor
 
 ```bash
 uv run ruff check .                     # Repo lint
+uv run pytest                          # Repo tests
 uv run python -m scripts cab:new --project=scry-home --packet=repo-control-plane-slice
 uv run python -m scripts doctor           # Verify prerequisites and project health
 uv run python -m scripts projects:doctor  # Check active keeper repos tracked by this repo
-uv run python -m scripts sync:remotes     # Configure dual push remotes
+uv run python -m scripts sync:remotes     # Inspect/fix managed mirror remotes without rewriting custom clones
 uv run python -m scripts sync:openclaw    # Sync OpenClaw workspace → this repo
 uv run python -m scripts setup:config_backup  # Create/update encrypted critical config backup
 ```
@@ -89,7 +90,8 @@ uv run python -m scripts cab:new --project=openclaw --packet=weekly-review --dry
 - LaunchAgent installer: `scripts/ops/install-openclaw-backup-launchagent.sh`
 - Sensitive/manual backup scope notes: `workstation/macOS/metadata/manual-items.md`
 
-## OpenClaw Templates
+## OpenClaw Prompt Pack
 
-- GitHub agent prompt templates: `openclaw/templates/github/`
-- Integration checklist template: `openclaw/templates/integrations/INTEGRATION-CHECKLIST.md`
+- Prompt pack index: `openclaw/prompts/openclaw/README.md`
+- Discord pinned quickstart: `openclaw/prompts/openclaw/DISCORD_PINNED_QUICKSTART.md`
+- Orchestrator templates: `openclaw/specialists/codex-orchestrator/templates/`

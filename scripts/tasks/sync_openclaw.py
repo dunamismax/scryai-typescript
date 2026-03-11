@@ -62,6 +62,12 @@ class SyncResult:
         self.errors: list[str] = []
 
 
+def _record_error(result: SyncResult, message: str, exc: Exception) -> None:
+    detail = f"{message}: {exc}"
+    print(f"  [ERROR] {detail}", file=sys.stderr)
+    result.errors.append(detail)
+
+
 def _files_match(a: Path, b: Path) -> bool:
     if not a.exists() or not b.exists():
         return False
@@ -84,8 +90,7 @@ def _sync_file(src: Path, dest: Path, result: SyncResult) -> None:
         print(f"  [COPY] {src} → {dest}")
         result.copied += 1
     except Exception as exc:
-        print(f"  [ERROR] {src}: {exc}", file=sys.stderr)
-        result.errors.append(str(exc))
+        _record_error(result, f"copy {src} -> {dest}", exc)
 
 
 def _sync_markdown_dir(src_dir: Path, dest_dir: Path, result: SyncResult) -> None:
@@ -112,8 +117,7 @@ def _sync_markdown_dir(src_dir: Path, dest_dir: Path, result: SyncResult) -> Non
                 print(f"  [DELETE] {dest_path}")
                 result.deleted += 1
             except Exception as exc:
-                print(f"  [ERROR] delete {dest_path}: {exc}", file=sys.stderr)
-                result.errors.append(str(exc))
+                _record_error(result, f"delete {dest_path}", exc)
 
 
 def _sync_root_markdown_files(
@@ -147,8 +151,7 @@ def _sync_root_markdown_files(
             print(f"  [DELETE] {dest_path}")
             result.deleted += 1
         except Exception as exc:
-            print(f"  [ERROR] delete {dest_path}: {exc}", file=sys.stderr)
-            result.errors.append(str(exc))
+            _record_error(result, f"delete {dest_path}", exc)
 
 
 def _sync_markdown_tree(src_dir: Path, dest_dir: Path, result: SyncResult) -> None:
@@ -178,8 +181,7 @@ def _sync_markdown_tree(src_dir: Path, dest_dir: Path, result: SyncResult) -> No
             print(f"  [DELETE] {dest}")
             result.deleted += 1
         except Exception as exc:
-            print(f"  [ERROR] delete {dest}: {exc}", file=sys.stderr)
-            result.errors.append(str(exc))
+            _record_error(result, f"delete {dest}", exc)
 
     for path in sorted(dest_dir.rglob("*"), reverse=True):
         if path.is_dir():
@@ -259,8 +261,7 @@ def _sync_specialists(result: SyncResult) -> None:
                     print(f"  [DELETE] {dest_dir}")
                     result.deleted += 1
                 except Exception as exc:
-                    print(f"  [ERROR] delete {dest_dir}: {exc}", file=sys.stderr)
-                    result.errors.append(str(exc))
+                    _record_error(result, f"delete {dest_dir}", exc)
 
         for dirname in SPECIALIST_DIRS:
             src_dir = src_ws / dirname
@@ -273,8 +274,7 @@ def _sync_specialists(result: SyncResult) -> None:
                     print(f"  [DELETE] {dest_dir}")
                     result.deleted += 1
                 except Exception as exc:
-                    print(f"  [ERROR] delete {dest_dir}: {exc}", file=sys.stderr)
-                    result.errors.append(str(exc))
+                    _record_error(result, f"delete {dest_dir}", exc)
 
     existing_dirs = {d.name for d in dest_root.iterdir() if d.is_dir()} if dest_root.exists() else set()
     for agent_id in existing_dirs - seen:
@@ -284,8 +284,7 @@ def _sync_specialists(result: SyncResult) -> None:
             print(f"  [DELETE] {stale}")
             result.deleted += 1
         except Exception as exc:
-            print(f"  [ERROR] delete {stale}: {exc}", file=sys.stderr)
-            result.errors.append(str(exc))
+            _record_error(result, f"delete {stale}", exc)
 
 
 def sync_openclaw() -> None:
@@ -314,9 +313,12 @@ def sync_openclaw() -> None:
         if src_dir.exists():
             _sync_markdown_tree(src_dir, dest_dir, result)
         elif dest_dir.exists():
-            shutil.rmtree(dest_dir)
-            print(f"  [DELETE] {dest_dir}")
-            result.deleted += 1
+            try:
+                shutil.rmtree(dest_dir)
+                print(f"  [DELETE] {dest_dir}")
+                result.deleted += 1
+            except Exception as exc:
+                _record_error(result, f"delete {dest_dir}", exc)
 
     log_step("OpenClaw config files → openclaw/")
     for src, dest in EXTRA_FILES:
@@ -331,6 +333,13 @@ def sync_openclaw() -> None:
     print(f"  deleted: {result.deleted}")
     if result.errors:
         print(f"  errors: {len(result.errors)}")
+        for error in result.errors:
+            print(f"  - {error}")
+
+    if result.errors:
+        raise RuntimeError(
+            f"OpenClaw sync aborted after {len(result.errors)} filesystem error(s); nothing was committed."
+        )
 
     if not commit:
         if result.copied > 0 or result.deleted > 0:

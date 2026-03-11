@@ -1,7 +1,9 @@
-"""Verify encrypted config backup can be decrypted and contains required paths."""
+"""Verify encrypted config backup can be decrypted and matches recorded metadata."""
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import shutil
 import tempfile
@@ -12,15 +14,25 @@ from scripts.crypto import CryptoFormat, decrypt
 
 CONFIG_FORMAT = CryptoFormat(magic="SCRYCFG1")
 
-REQUIRED_RESTORE_PATHS = [
-    ".openclaw/openclaw.json",
-    ".openclaw/credentials",
-    ".openclaw/cron/jobs.json",
-    ".openclaw/identity",
-    ".openclaw/agents/main/sessions",
-    ".openclaw/memory",
-    ".openclaw/subagents",
-]
+
+def _load_metadata(metadata_file: Path) -> dict:
+    if not metadata_file.exists():
+        raise RuntimeError(f"Config backup metadata file not found: {metadata_file}")
+
+    try:
+        metadata = json.loads(metadata_file.read_text())
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Config backup metadata is invalid JSON: {metadata_file}") from exc
+
+    included_paths = metadata.get("includedPaths")
+    if not isinstance(included_paths, list) or not all(
+        isinstance(item, str) and item for item in included_paths
+    ):
+        raise RuntimeError(
+            "Config backup metadata is missing a valid includedPaths list."
+        )
+
+    return metadata
 
 
 def verify_config_backup() -> None:
@@ -30,6 +42,12 @@ def verify_config_backup() -> None:
         os.environ.get(
             "SCRY_CONFIG_BACKUP_FILE",
             str(repo_root / "vault" / "config" / "critical-configs.tar.enc"),
+        )
+    )
+    metadata_file = Path(
+        os.environ.get(
+            "SCRY_CONFIG_METADATA_FILE",
+            str(repo_root / "vault" / "config" / "critical-configs.meta.json"),
         )
     )
 
@@ -43,7 +61,16 @@ def verify_config_backup() -> None:
     if not encrypted_file.exists():
         raise RuntimeError(f"Encrypted backup file not found: {encrypted_file}")
 
+    metadata = _load_metadata(metadata_file)
     encrypted = encrypted_file.read_bytes()
+    expected_sha256 = metadata.get("encryptedBackupSha256")
+    if expected_sha256:
+        actual_sha256 = hashlib.sha256(encrypted).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise RuntimeError(
+                "Encrypted backup SHA-256 does not match metadata. "
+                f"metadata={expected_sha256} actual={actual_sha256}"
+            )
 
     log_step("Decrypting and extracting backup payload to temp workspace")
 
@@ -56,25 +83,28 @@ def verify_config_backup() -> None:
 
         run_or_throw(["tar", "-xf", str(tar_path), "-C", str(temp_dir)])
 
-        log_step("Validating required restore paths")
+        log_step("Validating recorded backup contents")
         missing: list[str] = []
+        included_paths = metadata["includedPaths"]
 
-        for rel_path in REQUIRED_RESTORE_PATHS:
+        for rel_path in included_paths:
             abs_path = temp_dir / rel_path
             if not abs_path.exists():
                 missing.append(rel_path)
 
         if missing:
             raise RuntimeError(
-                f"Restore preview missing required paths: {', '.join(missing)}"
+                f"Restore preview missing recorded paths: {', '.join(missing)}"
             )
 
         tar_size = tar_path.stat().st_size
 
         log_step("Config backup verification passed")
         print(f"artifact: {encrypted_file}")
+        print(f"metadata: {metadata_file}")
         print(f"decrypted tar bytes: {tar_size}")
-        print(f"required restore paths: {len(REQUIRED_RESTORE_PATHS)} present")
+        print(f"recorded backup paths: {len(included_paths)} present")
+        print(f"source fingerprint: {metadata.get('sourceFingerprint', 'unknown')}")
         print(f"home reference: {os.environ.get('HOME', str(Path.home()))}")
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)

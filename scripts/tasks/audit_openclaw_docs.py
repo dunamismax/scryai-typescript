@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 from scripts.common import log_step
@@ -49,6 +50,13 @@ IGNORED_TOP_LEVEL_DIRS = {"reviews", "runs", "tmp"}
 MAIN_MARKDOWN_DIRS = {"memory", "docs", "prompts", "templates"}
 PATH_SCAN_IGNORED_TOP_LEVEL_DIRS = {"memory", "reviews", "runs", "tmp"}
 SKIP_PATH_SCAN_FILE_NAMES = {".coding-agent-skill.md", ".github-skill.md"}
+SOFT_MISSING_COMMAND_PREFIXES = ("/Applications/",)
+
+
+@dataclass(frozen=True)
+class PathReference:
+    token: str
+    line: str
 
 
 def _read(path: Path) -> str:
@@ -107,14 +115,20 @@ def _expand_path(token: str) -> Path:
     return Path(token).expanduser()
 
 
-def _referenced_local_paths(md_path: Path) -> set[str]:
+def _referenced_local_paths(md_path: Path) -> list[PathReference]:
     text = _read(md_path)
-    found: set[str] = set()
-    for match in PATH_RE.finditer(text):
-        token = match.group("path").rstrip(TRAILING_PATH_PUNCT + " \t")
-        if any(fragment in token for fragment in SKIP_PATH_FRAGMENTS):
-            continue
-        found.add(token)
+    found: list[PathReference] = []
+    seen: set[tuple[str, str]] = set()
+    for line in text.splitlines():
+        for match in PATH_RE.finditer(line):
+            token = match.group("path").rstrip(TRAILING_PATH_PUNCT + " \t")
+            if any(fragment in token for fragment in SKIP_PATH_FRAGMENTS):
+                continue
+            key = (token, line)
+            if key in seen:
+                continue
+            seen.add(key)
+            found.append(PathReference(token=token, line=line))
     return found
 
 
@@ -137,6 +151,19 @@ def _is_example_path(token: str) -> bool:
 def _path_exists(token: str) -> bool:
     path = _expand_path(token)
     return path.exists() or _is_example_path(token)
+
+
+def _is_soft_missing_path(ref: PathReference) -> bool:
+    if not ref.token.startswith(SOFT_MISSING_COMMAND_PREFIXES):
+        return False
+
+    for snippet in re.findall(r"`([^`]+)`", ref.line):
+        if not snippet.startswith(ref.token):
+            continue
+        if len(snippet) > len(ref.token) and snippet[len(ref.token)].isspace():
+            return True
+
+    return False
 
 
 def audit_openclaw_docs() -> None:
@@ -205,10 +232,14 @@ def audit_openclaw_docs() -> None:
             if rel.name in SKIP_PATH_SCAN_FILE_NAMES:
                 continue
             file_path = root / rel
-            for token in sorted(_referenced_local_paths(file_path)):
+            for ref in _referenced_local_paths(file_path):
                 checked_refs += 1
-                if not _path_exists(token):
-                    issues.append(f"stale-path:{file_path}:{token}")
+                if _path_exists(ref.token):
+                    continue
+                if _is_soft_missing_path(ref):
+                    warnings.append(f"missing-tool-path:{file_path}:{ref.token}")
+                    continue
+                issues.append(f"stale-path:{file_path}:{ref.token}")
 
     print(f"checked main markdown files: {len(main_src_files)}")
     print(f"checked specialists: {len(specialist_ids)}")

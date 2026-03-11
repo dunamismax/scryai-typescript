@@ -1,8 +1,8 @@
 # scry-home — Build Tracker
 
-**Status:** 2026-03-09 OpenClaw mirror/audit cleanup verified and committed locally; push optional
-**Last Updated:** 2026-03-09
-**Latest Relevant Commit:** current `HEAD` — `Checkpoint OpenClaw audit cleanup state`
+**Status:** 2026-03-11 control-plane safety hardening verified locally; remotes, backup verification, sync failure handling, and OpenClaw audit drift are reconciled in the working tree
+**Last Updated:** 2026-03-11
+**Latest Relevant Commit:** current `HEAD` — working tree ahead with remote-policy hardening, backup verification contract fixes, and new regression tests
 
 ---
 
@@ -53,31 +53,37 @@ The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror
 ## Acceptance Checks
 
 - `uv run ruff check .`
+- `uv run pytest`
 - `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run python -m scripts bootstrap`
 - `uv run python -m scripts doctor`
+- `uv run python -m scripts sync:remotes`
+- `uv run python -m scripts openclaw:audit`
 - `uv run python -m scripts projects:doctor`
-- `uv run python -m py_compile scripts/cli.py scripts/projects_config.py scripts/tasks/bootstrap.py scripts/tasks/doctor.py scripts/tasks/harden_specialists.py scripts/tasks/projects.py`
+- `uv run python -m py_compile scripts/cli.py scripts/projects_config.py scripts/remote_policy.py scripts/tasks/bootstrap.py scripts/tasks/doctor.py scripts/tasks/harden_specialists.py scripts/tasks/projects.py scripts/tasks/sync_remotes.py scripts/tasks/setup_workstation.py scripts/tasks/sync_openclaw.py scripts/tasks/verify_config_backup.py scripts/tasks/sync_work_desktop.py scripts/tasks/audit_openclaw_docs.py`
 
 ---
 
 ## Verification Snapshot
 
 - `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run ruff check .` ✅
+- `uv run pytest` ✅ 8 regression tests cover remote policy safety, sync-openclaw commit gating, metadata-driven backup verification, work-desktop accounting, and audit path classification
 - `uv run ruff check scripts/tasks/sync_openclaw.py scripts/tasks/audit_openclaw_docs.py` ✅
 - `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run python -m scripts bootstrap` ✅ prerequisite check passed; local repo env synced; managed project installs now remain explicit
 - `uv run python -m scripts doctor` ✅ toolchain/core-file check passed; managed-project inventory still reports missing local clones for `boring-go-web`, `c-from-the-ground-up`, and `hello-world-from-hell`
+- `uv run python -m scripts sync:remotes` ✅ managed mirror repos clean; contribution clone `openclaw` is preserved as a custom upstream+fork topology instead of being flagged as an error
 - `uv run python -m scripts projects:doctor` ✅ managed-project inventory ran; same three local clones are absent
-- `UV_CACHE_DIR=/tmp/uv-cache-scry-home uv run python -m py_compile scripts/cli.py scripts/projects_config.py scripts/tasks/bootstrap.py scripts/tasks/doctor.py scripts/tasks/harden_specialists.py scripts/tasks/projects.py` ✅
-- `uv run python -m py_compile scripts/tasks/sync_openclaw.py scripts/tasks/audit_openclaw_docs.py` ✅
-- `uv run python -m scripts openclaw:audit` ✅ workspace docs, mirrors, and path references consistent after the 2026-03-09 cleanup
-- Note: `uv` cache writes to `~/.cache/uv` are blocked by this sandbox, so cache-backed checks were rerun with `UV_CACHE_DIR=/tmp/uv-cache-scry-home`
-- `openclaw/cron-jobs.json`, `vault/config/critical-configs.meta.json`, and `vault/config/critical-configs.tar.enc` now reflect the latest successful 2026-03-09 scheduled runs / encrypted backup checkpoint, and that state has been captured in the current local checkpoint commit.
+- `uv run python -m py_compile scripts/cli.py scripts/projects_config.py scripts/remote_policy.py scripts/tasks/bootstrap.py scripts/tasks/doctor.py scripts/tasks/harden_specialists.py scripts/tasks/projects.py scripts/tasks/sync_remotes.py scripts/tasks/setup_workstation.py scripts/tasks/sync_openclaw.py scripts/tasks/verify_config_backup.py scripts/tasks/sync_work_desktop.py scripts/tasks/audit_openclaw_docs.py` ✅
+- `uv run python -m scripts sync:openclaw` ✅ mirrored `openclaw/memory/2026-03-11.md` and refreshed `openclaw/cron-jobs.json` from the live workspace
+- `uv run python -m scripts openclaw:audit` ✅ workspace docs, mirrors, and path references are consistent; missing `/Applications/Blender...` probe is now reported as a warning instead of a hard failure
+- `uv run python -m scripts cab:new --project=scry-home --packet=review-check --dry-run` ✅
+- Note: earlier 2026-03-09 sandboxed verification used `UV_CACHE_DIR=/tmp/uv-cache-scry-home`; the current 2026-03-11 local pass ran directly with the normal local `uv` environment.
+- `openclaw/cron-jobs.json` was refreshed from the live workspace and committed; the latest 2026-03-11 encrypted backup artifact + metadata remain local-only because the rotated archive exceeds GitHub's 100 MB file limit, while the verification logic itself is now metadata-driven so default and scheduled scopes validate consistently.
 
 ---
 
 ## Immediate Next Pass Priorities
 
-1. Reconcile the cron tracked-repo inventory with the actual `~/github` tree so daily/weekly summaries stop naming missing repos as if they were still active.
+1. Decide whether the remaining single-origin personal repos (`boring-go-web`, `c-from-the-ground-up`, `podwatch`, `pyforge`, `questlog`) should be promoted to the managed dual-mirror policy or intentionally left as manual/single-host clones.
 2. Decide whether rotating encrypted backup blobs should remain in normal git history or move to a dedicated backup target while `scry-home` keeps the manifest/control-plane role.
 3. Revisit managed-project inventory scope separately if Stephen wants the keeper set narrowed or renamed.
 
@@ -86,4 +92,4 @@ The live OpenClaw workspace is canonical. The local `openclaw/` tree is a mirror
 ## Blockers / Human Decisions
 
 - Root `SOUL.md` and `AGENTS.md` are sync-governed copies, so future stack-policy edits must still originate in the canonical OpenClaw workspace to persist.
-- The encrypted backup artifact is large and changes frequently; keeping it in normal git history is workable for now but still carries churn/storage tradeoffs.
+- The encrypted backup artifact is large and changes frequently; the current 2026-03-11 archive exceeds GitHub's 100 MB push limit, so future publication needs either a dedicated blob target or a different repo/storage strategy instead of normal git history.

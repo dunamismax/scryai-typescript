@@ -1,10 +1,9 @@
-"""Workstation bootstrap: clone repos, enforce dual remotes, restore SSH if needed."""
+"""Workstation bootstrap: clone repos, reconcile remotes, restore SSH if needed."""
 
 from __future__ import annotations
 
 import os
 import re
-import subprocess
 from pathlib import Path
 
 from scripts.common import (
@@ -15,6 +14,13 @@ from scripts.common import (
     run_or_throw,
 )
 from scripts.projects_config import MANAGED_PROJECTS
+from scripts.remote_policy import (
+    apply_repo_remote_policy,
+    build_repo_remote_policy,
+    get_remote_push_default,
+    get_remote_urls,
+    list_git_remotes,
+)
 
 
 def _discover_repos(root: str) -> list[str]:
@@ -22,9 +28,9 @@ def _discover_repos(root: str) -> list[str]:
     if not root_path.exists():
         return []
     return [
-        d.name
-        for d in sorted(root_path.iterdir(), key=lambda p: p.name)
-        if d.is_dir() and is_git_repo(str(d))
+        directory.name
+        for directory in sorted(root_path.iterdir(), key=lambda path: path.name)
+        if directory.is_dir() and is_git_repo(str(directory))
     ]
 
 
@@ -32,10 +38,10 @@ def _unique(items: list[str]) -> list[str]:
     seen: set[str] = set()
     result: list[str] = []
     for item in items:
-        s = item.strip()
-        if s and s not in seen:
-            seen.add(s)
-            result.append(s)
+        stripped = item.strip()
+        if stripped and stripped not in seen:
+            seen.add(stripped)
+            result.append(stripped)
     return result
 
 
@@ -74,14 +80,17 @@ def setup_workstation() -> None:
     owner = os.environ.get("GITHUB_OWNER", "dunamismax")
     github_host_alias = os.environ.get("GITHUB_HOST_ALIAS", f"github.com-{owner}")
     codeberg_host_alias = os.environ.get("CODEBERG_HOST_ALIAS", f"codeberg.org-{owner}")
+    openclaw_upstream_url = os.environ.get(
+        "OPENCLAW_UPSTREAM_URL", "https://github.com/openclaw/openclaw.git"
+    )
     anchor_repo = os.environ.get("GITHUB_ANCHOR_REPO", "scry-home")
     profile_repo = os.environ.get("GITHUB_PROFILE_REPO", "dunamismax")
     repos_index_path = str(Path(github_root) / profile_repo / "REPOS.md")
     managed_project_repos = _unique(
         [
-            _repo_name_from_path(str(p.path))
-            for p in MANAGED_PROJECTS
-            if _repo_name_from_path(str(p.path))
+            _repo_name_from_path(str(project.path))
+            for project in MANAGED_PROJECTS
+            if _repo_name_from_path(str(project.path))
         ]
     )
 
@@ -92,19 +101,23 @@ def setup_workstation() -> None:
     def repo_dir(repo: str) -> str:
         return str(Path(github_root) / repo)
 
-    def github_url(repo: str) -> str:
-        return f"git@{github_host_alias}:{owner}/{repo}.git"
-
-    def codeberg_url(repo: str) -> str:
-        return f"git@{codeberg_host_alias}:{owner}/{repo}.git"
+    def remote_policy(repo: str):
+        return build_repo_remote_policy(
+            repo,
+            owner=owner,
+            github_host_alias=github_host_alias,
+            codeberg_host_alias=codeberg_host_alias,
+            openclaw_upstream_url=openclaw_upstream_url,
+        )
 
     def clone_or_fetch(repo: str) -> None:
         target = repo_dir(repo)
+        policy = remote_policy(repo)
         if not Path(target).exists():
             if local_only:
                 raise RuntimeError(f"Repository missing in local-only mode: {target}")
             log_step(f"Cloning {repo}")
-            run_or_throw(["git", "clone", github_url(repo), target])
+            run_or_throw(["git", "clone", policy.clone_url, target])
             return
 
         if not is_git_repo(target):
@@ -117,30 +130,8 @@ def setup_workstation() -> None:
         log_step(f"Fetching {repo}")
         run_or_throw(["git", "fetch", "--all", "--prune"], cwd=target)
 
-    def ensure_dual_push_urls(repo: str) -> None:
-        target = repo_dir(repo)
-        gh = github_url(repo)
-        cb = codeberg_url(repo)
-
-        remotes = run_or_throw(["git", "remote"], cwd=target, quiet=True).split("\n")
-        remotes = [r.strip() for r in remotes if r.strip()]
-
-        if "origin" not in remotes:
-            run_or_throw(["git", "remote", "add", "origin", gh], cwd=target)
-
-        run_or_throw(["git", "remote", "set-url", "origin", gh], cwd=target)
-
-        subprocess.run(
-            ["git", "-C", target, "config", "--unset-all", "remote.origin.pushurl"],
-            capture_output=True,
-        )
-
-        run_or_throw(
-            ["git", "remote", "set-url", "--add", "--push", "origin", gh], cwd=target
-        )
-        run_or_throw(
-            ["git", "remote", "set-url", "--add", "--push", "origin", cb], cwd=target
-        )
+    def ensure_repo_remotes(repo: str) -> None:
+        apply_repo_remote_policy(repo_dir(repo), remote_policy(repo))
 
     log_step("Checking workstation bootstrap prerequisites")
     required = ["git", "ssh"] + (["uv"] if restore_ssh else [])
@@ -203,25 +194,28 @@ def setup_workstation() -> None:
             continue
         clone_or_fetch(repo)
 
-    log_step("Enforcing dual push URL policy")
+    log_step("Reconciling remote policy")
     for repo in synced:
-        ensure_dual_push_urls(repo)
+        ensure_repo_remotes(repo)
 
     log_step("Remote summary")
     for repo in synced:
-        push_urls = run_or_throw(
-            ["git", "remote", "get-url", "--all", "--push", "origin"],
-            cwd=repo_dir(repo),
-            quiet=True,
-        )
-        urls = " | ".join(
-            line.strip() for line in push_urls.split("\n") if line.strip()
-        )
-        print(f"{repo}: {urls}")
+        target = repo_dir(repo)
+        for remote_name in list_git_remotes(target):
+            urls = get_remote_urls(target, remote_name)
+            if urls is None:
+                continue
+            fetch_url, push_urls = urls
+            push_summary = " | ".join(push_urls) if push_urls else "(fetch only)"
+            print(f"{repo}:{remote_name}: fetch={fetch_url} push={push_summary}")
+
+        push_default = get_remote_push_default(target)
+        if push_default:
+            print(f"{repo}: pushDefault={push_default}")
 
     if source == "fallback":
         synced_set = set(synced)
-        discovery_only = [r for r in discovered if r not in synced_set]
+        discovery_only = [repo for repo in discovered if repo not in synced_set]
         if discovery_only:
             log_step("Fallback discovery-only repositories")
             for repo in discovery_only:
